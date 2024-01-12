@@ -8,6 +8,8 @@ import {
   Keyboard,
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/Firebase';
 
 export interface LoginProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,6 +20,19 @@ export function Login(props: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+
+  const login = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        props.navigation.navigate('Home');
+      })
+      .catch((error) => {
+        setError(true);
+        console.log(error);
+      });
+  };
 
   return (
     <View style={{ backgroundColor: '#FFE8AF', height: '100%' }}>
@@ -51,7 +66,7 @@ export function Login(props: LoginProps) {
               paddingVertical: 10,
               paddingHorizontal: 20,
               borderWidth: 1,
-              borderColor: '#5C5C5C',
+              borderColor: error ? '#E74545' : '#5C5C5C',
               backgroundColor: '#F5F5F5',
               width: '100%',
               borderRadius: 15,
@@ -67,7 +82,8 @@ export function Login(props: LoginProps) {
               paddingVertical: 10,
               paddingHorizontal: 20,
               borderWidth: 1,
-              borderColor: '#5C5C5C',
+              color: error ? '#E74545' : '#000',
+              borderColor: error ? '#E74545' : '#5C5C5C',
               backgroundColor: '#F5F5F5',
               width: '100%',
               borderRadius: 15,
@@ -75,7 +91,7 @@ export function Login(props: LoginProps) {
           />
           <TouchableOpacity
             onPress={() => {
-              setError(true);
+              login();
               Keyboard.dismiss();
             }}
           >

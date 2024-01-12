@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "@expo/metro-config": "~0.10.7",
+    "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "expo": "49.0.16",
