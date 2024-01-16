@@ -34,13 +34,13 @@ export function RecoverScreen(props: RecoverScreenProps) {
                 textAlign: 'center',
               }}
             >
-              {'¿Olvidaste tu \ncontraseña?'}
+              {'¿Olvidaste tu\ncontraseña?'}
             </Text>
             <Text
               style={{
                 marginTop: 20,
                 color: '#fff',
-                fontSize: 15,
+                fontSize: 12,
                 textAlign: 'center',
               }}
             >

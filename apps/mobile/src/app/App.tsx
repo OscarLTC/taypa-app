@@ -15,7 +15,7 @@ export const App = () => {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="recover">
+        <Stack.Navigator initialRouteName="email-confirmation">
           <Stack.Screen
             name="login"
             options={{ headerShown: false }}
