@@ -16,17 +16,16 @@ export interface LoginProps {
   navigation: NavigationProp<any>;
 }
 
-export function Login(props: LoginProps) {
+export function LoginScreen(props: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
 
   const login = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        props.navigation.navigate('Home');
+      .then(async (userCredential) => {
+        //TODO: Revisar los parametros que se guardan en la base de datos
+        props.navigation.navigate('Sessions');
       })
       .catch((error) => {
         setError(true);
@@ -35,9 +34,9 @@ export function Login(props: LoginProps) {
   };
 
   return (
-    <View style={{ backgroundColor: '#FFE8AF', height: '100%' }}>
+    <View style={{ backgroundColor: '#941B0C', height: '100%' }}>
       <View style={{ marginTop: 32, padding: 30 }}>
-        <View style={{ position: 'absolute', top: 150, right: -85 }}>
+        <View style={{ position: 'absolute', top: 100, right: -125 }}>
           <Image
             source={require('../../../../assets/araña_fondo.png')}
             style={{ width: 250, height: 250 }}
@@ -53,11 +52,12 @@ export function Login(props: LoginProps) {
           }}
         >
           <Image
-            source={require('../../../../assets/logo.png')}
+            source={require('../../../../assets/logo_blanco.png')}
             style={{ width: 130, height: 100 }}
           ></Image>
           <TextInput
             placeholder="Ingresar correo"
+            placeholderTextColor={'#F5F5F5'}
             inputMode="email"
             onChangeText={(text) => setEmail(text)}
             onFocus={() => setError(false)}
@@ -65,26 +65,27 @@ export function Login(props: LoginProps) {
               marginTop: 80,
               paddingVertical: 10,
               paddingHorizontal: 20,
-              borderWidth: 1,
-              borderColor: error ? '#E74545' : '#5C5C5C',
-              backgroundColor: '#F5F5F5',
+              color: '#fff',
+              backgroundColor: error ? '#CE3E21' : '#621708',
               width: '100%',
               borderRadius: 15,
             }}
           />
+
           <TextInput
             placeholder="Ingresar contraseña"
+            placeholderTextColor={'#F5F5F5'}
             secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
-            onFocus={() => setError(false)}
+            onFocus={() => {
+              setError(false);
+            }}
             style={{
               marginTop: 30,
               paddingVertical: 10,
               paddingHorizontal: 20,
-              borderWidth: 1,
-              color: error ? '#E74545' : '#000',
-              borderColor: error ? '#E74545' : '#5C5C5C',
-              backgroundColor: '#F5F5F5',
+              color: '#fff',
+              backgroundColor: error ? '#CE3E21' : '#621708',
               width: '100%',
               borderRadius: 15,
             }}
@@ -113,18 +114,23 @@ export function Login(props: LoginProps) {
               marginTop: 20,
               textDecorationLine: 'underline',
               fontWeight: 'bold',
-              color: '#BC3908',
+              color: '#D9D9D9',
               fontSize: 10,
-              marginBottom: error ? 0 : 66,
             }}
           >
             ¿Olvidaste tu contraseña?
           </Text>
-          <View style={{ marginTop: 35, display: error ? 'flex' : 'none' }}>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              display: error ? 'flex' : 'none',
+            }}
+          >
             <Text
               style={{
                 fontWeight: 'bold',
-                color: '#5C5C5C',
+                color: '#FFFFFF',
                 fontSize: 11,
                 textAlign: 'center',
               }}
@@ -135,7 +141,7 @@ export function Login(props: LoginProps) {
             </Text>
           </View>
         </View>
-        <View style={{ position: 'absolute', bottom: -10, left: -3 }}>
+        <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
           <Image
             source={require('../../../../assets/mono_fondo.png')}
             style={{ width: 160, height: 110 }}
@@ -146,4 +152,4 @@ export function Login(props: LoginProps) {
   );
 }
 
-export default Login;
+export default LoginScreen;

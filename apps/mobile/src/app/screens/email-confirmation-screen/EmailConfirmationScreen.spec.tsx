@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-import Login from './Login';
+import EmailConfirmationScreen from './EmailConfirmationScreen';
 
-describe('Login', () => {
+describe('EmailConfirmationScreen', () => {
   it('should render successfully', () => {
-    const { root } = render(< Login />);
+    const { root } = render(< EmailConfirmationScreen />);
     expect(root).toBeTruthy();
   });
 });

@@ -9,9 +9,9 @@ export interface HomeProps {
   navigation: NavigationProp<any>;
 }
 
-export function Home(props: HomeProps) {
+export function HomeScreen(props: HomeProps) {
   return (
-    <View>
+    <View style={{ marginTop: 30 }}>
       <Text>Welcome to Home!</Text>
       <Button
         onPress={() => props.navigation.navigate('Login')}
@@ -21,4 +21,4 @@ export function Home(props: HomeProps) {
   );
 }
 
-export default Home;
+export default HomeScreen;

@@ -15,7 +15,9 @@
     "react-native-svg-transformer": "*",
     "react": "*",
     "@react-navigation/native": "*",
-    "@react-navigation/stack": "*"
+    "@react-navigation/stack": "*",
+    "firebase": "*",
+    "recoil": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobile && cp package-lock.json apps/mobile",
