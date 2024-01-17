@@ -81,7 +81,7 @@ export function HomeScreen(props: HomeProps) {
             onPress={() => console.log('asd')}
             key={index}
           >
-            <Text style={{ fontSize: 18 }}>{f}</Text>
+            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{f}</Text>
           </TouchableHighlight>
         ))}
       </View>

@@ -8,6 +8,8 @@ import { RecoilRoot } from 'recoil';
 import Sessions from './screens/sessions-screen/SessionsScreen';
 import RecoverScreen from './screens/recover-screen/RecoverScreen';
 import EmailConfirmationScreen from './screens/email-confirmation-screen/EmailConfirmationScreen';
+import RolesScreen from './screens/roles-screen/RolesScreen';
+import WorkersScreen from './screens/workers-screen/WorkersScreen';
 
 export const App = () => {
   const Stack = createStackNavigator();
@@ -15,7 +17,7 @@ export const App = () => {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="home">
+        <Stack.Navigator initialRouteName="roles">
           <Stack.Screen
             name="login"
             options={{ headerShown: false }}
@@ -40,6 +42,16 @@ export const App = () => {
             name="sessions"
             options={{ headerShown: false }}
             component={Sessions}
+          />
+          <Stack.Screen
+            name="roles"
+            options={{ headerShown: false }}
+            component={RolesScreen}
+          />
+          <Stack.Screen
+            name="workers"
+            options={{ headerShown: false }}
+            component={WorkersScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
