@@ -1,12 +1,31 @@
 import React from 'react';
 
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  ScrollView,
+} from 'react-native';
 
 /* eslint-disable-next-line */
 export interface WorkersScreenProps {}
 
 export function WorkersScreen(props: WorkersScreenProps) {
   const workers = [
+    { name: 'Rafael Sanchez' },
+    {
+      name: 'Luis Fernandez',
+    },
+    {
+      name: 'Alexandra Marquez',
+    },
+    {
+      name: 'Liz Cardenas',
+    },
+    {
+      name: 'Mauricio Delgado',
+    },
     { name: 'Rafael Sanchez' },
     {
       name: 'Luis Fernandez',
@@ -71,34 +90,68 @@ export function WorkersScreen(props: WorkersScreenProps) {
         <Text style={{ fontSize: 15, textAlign: 'center' }}>
           {'Seleccione su nombre'}
         </Text>
-        <View
+        <ScrollView
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 20,
             marginTop: 100,
+            marginBottom: 100,
+            paddingHorizontal: 10,
           }}
         >
           {workers.map((worker, index) => (
-            <TouchableHighlight
-              key={index}
-              underlayColor={'#F6AA1C'}
-              delayPressOut={100}
-              onPress={() => console.log('click')}
+            <View
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 10,
+                height: 60,
                 width: '100%',
-                justifyContent: 'center',
-                paddingVertical: 15,
-                paddingHorizontal: 10,
                 elevation: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: 10,
+                marginBottom: 10,
               }}
             >
-              <Text style={{ fontWeight: 'bold' }}>{worker.name}</Text>
-            </TouchableHighlight>
+              <Image
+                source={require('../../../../assets/foto_default.webp')}
+                style={{
+                  width: 60,
+                  height: 60,
+                  position: 'absolute',
+                  objectFit: 'cover',
+                  borderTopLeftRadius: 10,
+                  borderBottomLeftRadius: 10,
+                  zIndex: 1,
+                }}
+              />
+              <TouchableHighlight
+                key={index}
+                underlayColor={'#F6AA1C'}
+                delayPressOut={100}
+                onPress={() => console.log('clicka')}
+                style={{
+                  paddingLeft: 70,
+                  paddingHorizontal: 10,
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 10,
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                  }}
+                >
+                  {worker.name}
+                </Text>
+              </TouchableHighlight>
+            </View>
           ))}
-        </View>
+        </ScrollView>
         <Text
           style={{
             position: 'absolute',
