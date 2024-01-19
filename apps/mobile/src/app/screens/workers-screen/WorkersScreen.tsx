@@ -1,3 +1,4 @@
+import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
 
 import {
@@ -9,7 +10,10 @@ import {
 } from 'react-native';
 
 /* eslint-disable-next-line */
-export interface WorkersScreenProps {}
+export interface WorkersScreenProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  navigation: NavigationProp<any>;
+}
 
 export function WorkersScreen(props: WorkersScreenProps) {
   const workers = [
@@ -68,7 +72,10 @@ export function WorkersScreen(props: WorkersScreenProps) {
             backgroundColor: '#FFFFFF',
           }}
           delayPressOut={100}
-          onPress={() => console.log('asd')}
+          onPress={() => {
+            console.log('dishes');
+            props.navigation.navigate('dishes');
+          }}
         >
           <Image
             style={{
@@ -91,12 +98,12 @@ export function WorkersScreen(props: WorkersScreenProps) {
           {'Seleccione su nombre'}
         </Text>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           style={{
             display: 'flex',
             flexDirection: 'column',
             marginTop: 100,
             marginBottom: 100,
-            paddingHorizontal: 10,
           }}
         >
           {workers.map((worker, index) => (
@@ -112,6 +119,7 @@ export function WorkersScreen(props: WorkersScreenProps) {
                 marginTop: 10,
                 marginBottom: 10,
               }}
+              key={index}
             >
               <Image
                 source={require('../../../../assets/foto_default.webp')}
@@ -128,7 +136,8 @@ export function WorkersScreen(props: WorkersScreenProps) {
               <TouchableHighlight
                 key={index}
                 underlayColor={'#F6AA1C'}
-                delayPressOut={100}
+                delayPressOut={200}
+                delayPressIn={100}
                 onPress={() => console.log('clicka')}
                 style={{
                   paddingLeft: 70,

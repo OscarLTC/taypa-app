@@ -10,6 +10,7 @@ import RecoverScreen from './screens/recover-screen/RecoverScreen';
 import EmailConfirmationScreen from './screens/email-confirmation-screen/EmailConfirmationScreen';
 import RolesScreen from './screens/roles-screen/RolesScreen';
 import WorkersScreen from './screens/workers-screen/WorkersScreen';
+import Dishes from './screens/dishes/Dishes';
 
 export const App = () => {
   const Stack = createStackNavigator();
@@ -52,6 +53,11 @@ export const App = () => {
             name="workers"
             options={{ headerShown: false }}
             component={WorkersScreen}
+          />
+          <Stack.Screen
+            name="dishes"
+            options={{ headerShown: false }}
+            component={Dishes}
           />
         </Stack.Navigator>
       </NavigationContainer>
