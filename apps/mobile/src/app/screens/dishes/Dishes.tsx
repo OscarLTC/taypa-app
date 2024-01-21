@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import DishList from './dish-list/DishList';
 import DishForm from './dish-form/DishForm';
+import DishDetails from './dish-details/DishDetails';
 
 /* eslint-disable-next-line */
 export interface DishesProps {}
@@ -9,7 +10,7 @@ export interface DishesProps {}
 export function Dishes(props: DishesProps) {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="dish-list">
+    <Stack.Navigator initialRouteName="dish-details">
       <Stack.Screen
         name="dish-list"
         options={{ headerShown: false }}
@@ -19,6 +20,11 @@ export function Dishes(props: DishesProps) {
         name="dish-form"
         options={{ headerShown: false }}
         component={DishForm}
+      />
+      <Stack.Screen
+        name="dish-details"
+        options={{ headerShown: false }}
+        component={DishDetails}
       />
     </Stack.Navigator>
   );

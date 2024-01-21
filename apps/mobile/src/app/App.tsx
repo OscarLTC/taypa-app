@@ -18,7 +18,7 @@ export const App = () => {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="workers">
+        <Stack.Navigator initialRouteName="dishes">
           <Stack.Screen
             name="login"
             options={{ headerShown: false }}
