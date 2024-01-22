@@ -32,12 +32,12 @@ export const App = () => {
           />
           <Stack.Screen
             name="recover"
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animationEnabled: false }}
             component={RecoverScreen}
           />
           <Stack.Screen
             name="email-confirmation"
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animationEnabled: false }}
             component={EmailConfirmationScreen}
           />
           <Stack.Screen

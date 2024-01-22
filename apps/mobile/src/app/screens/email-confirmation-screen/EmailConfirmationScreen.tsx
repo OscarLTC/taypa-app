@@ -1,9 +1,13 @@
+import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
 
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 /* eslint-disable-next-line */
-export interface EmailConfirmationScreenProps {}
+export interface EmailConfirmationScreenProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  navigation: NavigationProp<any>;
+}
 
 export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
   return (
@@ -60,7 +64,11 @@ export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
                 'Revisa tu bandeja de entrada de spam o promociones,\npor si aún no te ha llegado nuestro email.'
               }
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('login');
+              }}
+            >
               <View
                 style={{
                   marginTop: 40,

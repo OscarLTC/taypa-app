@@ -90,18 +90,27 @@ export function LoginScreen(props: LoginProps) {
               borderRadius: 15,
             }}
           />
-          <Text
+          <TouchableOpacity
             style={{
-              marginTop: 5,
-              textDecorationLine: 'underline',
-              fontWeight: 'bold',
-              color: '#D9D9D9',
-              fontSize: 10,
-              alignSelf: 'flex-end',
+              alignItems: 'flex-end',
+              width: '100%',
+            }}
+            onPress={() => {
+              props.navigation.navigate('recover');
             }}
           >
-            ¿Olvidaste tu contraseña?
-          </Text>
+            <Text
+              style={{
+                marginTop: 5,
+                textDecorationLine: 'underline',
+                fontWeight: 'bold',
+                color: '#D9D9D9',
+                fontSize: 10,
+              }}
+            >
+              ¿Olvidaste tu contraseña?
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               login();

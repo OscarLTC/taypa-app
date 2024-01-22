@@ -1,11 +1,41 @@
-import React from 'react';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import React, { useState } from 'react';
 
-import { View, Image, Text, TouchableOpacity, TextInput } from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ToastAndroid,
+} from 'react-native';
+import { auth } from '../../config/Firebase';
+import { NavigationProp } from '@react-navigation/native';
 
 /* eslint-disable-next-line */
-export interface RecoverScreenProps {}
+export interface RecoverScreenProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  navigation: NavigationProp<any>;
+}
 
 export function RecoverScreen(props: RecoverScreenProps) {
+  const [email, setEmail] = useState('');
+
+  const recoverPassword = async () => {
+    await sendPasswordResetEmail(auth, email)
+      .then(() => {
+        props.navigation.navigate('email-confirmation');
+      })
+      .catch((error) => {
+        if (error.code === 'auth/invalid-email') {
+          ToastAndroid.show('Correo inválido', ToastAndroid.SHORT);
+        }
+        if (error.code === 'auth/user-not-found') {
+          ToastAndroid.show('Usuario no encontrado', ToastAndroid.SHORT);
+        }
+      });
+  };
+
   return (
     <View style={{ backgroundColor: '#941B0C' }}>
       <View style={{ backgroundColor: '#0B0A0A6B', height: '100%' }}>
@@ -55,8 +85,9 @@ export function RecoverScreen(props: RecoverScreenProps) {
                 width: '100%',
                 borderRadius: 15,
               }}
+              onChangeText={(text) => setEmail(text)}
             />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={recoverPassword}>
               <View
                 style={{
                   marginTop: 40,
@@ -64,14 +95,13 @@ export function RecoverScreen(props: RecoverScreenProps) {
                   paddingHorizontal: 20,
                   backgroundColor: '#0B0A0A',
                   width: '100%',
-                  borderRadius: 15,
+                  borderRadius: 10,
                 }}
               >
                 <Text style={{ color: 'white' }}>Recuperar contraseña</Text>
               </View>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity></TouchableOpacity>
           <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
             <Image
               source={require('../../../../assets/mono_fondo.png')}
