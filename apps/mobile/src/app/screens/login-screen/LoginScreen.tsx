@@ -25,7 +25,7 @@ export function LoginScreen(props: LoginProps) {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         //TODO: Revisar los parametros que se guardan en la base de datos
-        props.navigation.navigate('Sessions');
+        props.navigation.navigate('home');
       })
       .catch((error) => {
         setError(true);
@@ -90,6 +90,18 @@ export function LoginScreen(props: LoginProps) {
               borderRadius: 15,
             }}
           />
+          <Text
+            style={{
+              marginTop: 5,
+              textDecorationLine: 'underline',
+              fontWeight: 'bold',
+              color: '#D9D9D9',
+              fontSize: 10,
+              alignSelf: 'flex-end',
+            }}
+          >
+            ¿Olvidaste tu contraseña?
+          </Text>
           <TouchableOpacity
             onPress={() => {
               login();
@@ -100,26 +112,38 @@ export function LoginScreen(props: LoginProps) {
               style={{
                 marginTop: 40,
                 paddingVertical: 10,
-                paddingHorizontal: 60,
                 backgroundColor: '#0B0A0A',
-                width: '100%',
-                borderRadius: 15,
+                width: 200,
+                borderRadius: 10,
               }}
             >
-              <Text style={{ color: 'white' }}>Ingresar</Text>
+              <Text style={{ color: 'white', textAlign: 'center' }}>
+                Ingresar
+              </Text>
             </View>
           </TouchableOpacity>
-          <Text
-            style={{
-              marginTop: 20,
-              textDecorationLine: 'underline',
-              fontWeight: 'bold',
-              color: '#D9D9D9',
-              fontSize: 10,
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('register');
             }}
           >
-            ¿Olvidaste tu contraseña?
-          </Text>
+            <View
+              style={{
+                marginTop: 10,
+                paddingVertical: 10,
+                backgroundColor: 'trasparent',
+                borderColor: 'white',
+                borderWidth: 1,
+                width: 200,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ color: 'white', textAlign: 'center' }}>
+                Registrarse
+              </Text>
+            </View>
+          </TouchableOpacity>
+
           <View
             style={{
               position: 'absolute',

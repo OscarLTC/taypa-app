@@ -11,6 +11,7 @@ import EmailConfirmationScreen from './screens/email-confirmation-screen/EmailCo
 import RolesScreen from './screens/roles-screen/RolesScreen';
 import WorkersScreen from './screens/workers-screen/WorkersScreen';
 import Dishes from './screens/dishes/Dishes';
+import RegisterScreen from './screens/register-screen/RegisterScreen';
 
 export const App = () => {
   const Stack = createStackNavigator();
@@ -18,11 +19,16 @@ export const App = () => {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="dishes">
+        <Stack.Navigator initialRouteName="login">
           <Stack.Screen
             name="login"
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animationEnabled: false }}
             component={LoginScreen}
+          />
+          <Stack.Screen
+            name="register"
+            options={{ headerShown: false, animationEnabled: false }}
+            component={RegisterScreen}
           />
           <Stack.Screen
             name="recover"
