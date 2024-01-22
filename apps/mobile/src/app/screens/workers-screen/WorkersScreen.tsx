@@ -73,8 +73,7 @@ export function WorkersScreen(props: WorkersScreenProps) {
           }}
           delayPressOut={100}
           onPress={() => {
-            console.log('dishes');
-            props.navigation.navigate('dishes');
+            props.navigation.goBack();
           }}
         >
           <Image

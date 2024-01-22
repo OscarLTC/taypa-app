@@ -9,9 +9,9 @@ import Sessions from './screens/sessions-screen/SessionsScreen';
 import RecoverScreen from './screens/recover-screen/RecoverScreen';
 import EmailConfirmationScreen from './screens/email-confirmation-screen/EmailConfirmationScreen';
 import RolesScreen from './screens/roles-screen/RolesScreen';
-import WorkersScreen from './screens/workers-screen/WorkersScreen';
 import Dishes from './screens/dishes/Dishes';
 import RegisterScreen from './screens/register-screen/RegisterScreen';
+import Workers from './screens/workers/Workers';
 
 export const App = () => {
   const Stack = createStackNavigator();
@@ -19,7 +19,7 @@ export const App = () => {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login">
+        <Stack.Navigator initialRouteName="home">
           <Stack.Screen
             name="login"
             options={{ headerShown: false, animationEnabled: false }}
@@ -58,7 +58,7 @@ export const App = () => {
           <Stack.Screen
             name="workers"
             options={{ headerShown: false }}
-            component={WorkersScreen}
+            component={Workers}
           />
           <Stack.Screen
             name="dishes"

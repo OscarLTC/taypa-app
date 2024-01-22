@@ -1,7 +1,13 @@
 import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
 
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native';
 
 /* eslint-disable-next-line */
 export interface HomeProps {
@@ -10,15 +16,27 @@ export interface HomeProps {
 }
 
 export function HomeScreen(props: HomeProps) {
-  const functions = [
-    'Gestión de Platos',
-    'Gestión de Bebidas',
-    'Gestión de Adicionales',
-    'Gestión de Mesas',
-    'Historial de Ventas',
-    'Listado de Sesiones',
-    'Bloqueo de Vista Simplificada',
-    'Manejo de Perfil',
+  const featuresData = [
+    {
+      title: 'Gestión de Mesas',
+      image: require('../../../../assets/cuadricula.png'),
+      redirect: 'tables',
+    },
+    {
+      title: 'Gestión de Empleados',
+      image: require('../../../../assets/usuarios_alt.png'),
+      redirect: 'workers',
+    },
+    {
+      title: 'Historial de Ventas',
+      image: require('../../../../assets/monedas.png'),
+      redirect: 'sales',
+    },
+    {
+      title: 'Sesiones',
+      image: require('../../../../assets/ojo.png'),
+      redirect: 'sessions',
+    },
   ];
 
   return (
@@ -37,15 +55,17 @@ export function HomeScreen(props: HomeProps) {
           justifyContent: 'center',
         }}
       >
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Accesos</Text>
         <TouchableHighlight
           underlayColor={'#F6AA1C'}
           style={{
             position: 'absolute',
-            left: 0,
+            right: 0,
             padding: 10,
             alignSelf: 'center',
             borderRadius: 100,
-            backgroundColor: '#FFFFFF',
+            backgroundColor: '#E74545',
+            zIndex: 1,
           }}
           delayPressOut={100}
           onPress={() => console.log('asd')}
@@ -55,10 +75,15 @@ export function HomeScreen(props: HomeProps) {
               width: 20,
               height: 20,
             }}
-            source={require('../../../../assets/arrow_back.png')}
+            source={require('../../../../assets/usuario.png')}
           />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Accesos</Text>
+        <View style={{ position: 'absolute', top: -30, right: -30 }}>
+          <Image
+            source={require('../../../../assets/araña_cortada_titulo.png')}
+            style={{ width: 175, height: 190 }}
+          ></Image>
+        </View>
       </View>
       <View
         style={{
@@ -68,22 +93,181 @@ export function HomeScreen(props: HomeProps) {
           gap: 10,
         }}
       >
-        {functions.map((f, index) => (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#D61717',
+              padding: 5,
+              borderRadius: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              width: '30%',
+              height: 120,
+              overflow: 'hidden',
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: 13,
+              }}
+            >
+              Gestión de Platos
+            </Text>
+            <Image
+              style={{
+                position: 'absolute',
+                bottom: -20,
+                left: 20,
+                width: 150,
+                height: 100,
+                objectFit: 'contain',
+              }}
+              source={require('../../../../assets/lomo_saltado.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#EF4242',
+              padding: 5,
+              borderRadius: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              width: '30%',
+              height: 120,
+              overflow: 'hidden',
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: 13,
+              }}
+            >
+              Gestión de Bebidas
+            </Text>
+            <Image
+              style={{
+                position: 'absolute',
+                bottom: -20,
+                left: 20,
+                width: 150,
+                height: 100,
+                objectFit: 'contain',
+              }}
+              source={require('../../../../assets/bebida.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#FE8282',
+              padding: 5,
+              borderRadius: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              width: '30%',
+              height: 120,
+              overflow: 'hidden',
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: 13,
+              }}
+            >
+              Gestión de Adicionales
+            </Text>
+            <Image
+              style={{
+                position: 'absolute',
+                bottom: -20,
+                left: 30,
+                width: 150,
+                height: 100,
+                objectFit: 'contain',
+              }}
+              source={require('../../../../assets/adicional.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            marginTop: 40,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 20,
+          }}
+        >
+          {featuresData.map((feature, index) => (
+            <TouchableHighlight
+              key={index}
+              underlayColor={'#F6AA1C'}
+              delayPressOut={100}
+              onPress={() => props.navigation.navigate(feature.redirect)}
+              style={{
+                backgroundColor: '#FFFFFF',
+                paddingVertical: 20,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 30,
+              }}
+            >
+              <>
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                  source={feature.image}
+                />
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                  }}
+                >
+                  {feature.title}
+                </Text>
+              </>
+            </TouchableHighlight>
+          ))}
           <TouchableHighlight
             underlayColor={'#F6AA1C'}
-            style={{
-              backgroundColor: '#FFFFFF',
-              paddingVertical: 15,
-              paddingHorizontal: 10,
-              borderRadius: 10,
-            }}
             delayPressOut={100}
-            onPress={() => console.log('asd')}
-            key={index}
+            onPress={() => console.log('click')}
+            style={{
+              backgroundColor: '#890303',
+              paddingVertical: 20,
+              borderRadius: 10,
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 30,
+            }}
           >
-            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{f}</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                textAlign: 'center',
+                color: '#FFFFFF',
+              }}
+            >
+              Bloqueo a Vista Administrativa
+            </Text>
           </TouchableHighlight>
-        ))}
+        </View>
       </View>
     </View>
   );
