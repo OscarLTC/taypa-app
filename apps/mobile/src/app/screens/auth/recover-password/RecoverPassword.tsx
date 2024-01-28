@@ -9,8 +9,8 @@ import {
   TextInput,
   ToastAndroid,
 } from 'react-native';
-import { auth } from '../../config/Firebase';
 import { NavigationProp } from '@react-navigation/native';
+import { auth } from '../../../config/Firebase';
 
 /* eslint-disable-next-line */
 export interface RecoverScreenProps {
@@ -18,7 +18,7 @@ export interface RecoverScreenProps {
   navigation: NavigationProp<any>;
 }
 
-export function RecoverScreen(props: RecoverScreenProps) {
+export function RecoverPassword(props: RecoverScreenProps) {
   const [email, setEmail] = useState('');
 
   const recoverPassword = async () => {
@@ -42,7 +42,7 @@ export function RecoverScreen(props: RecoverScreenProps) {
         <View style={{ marginTop: 32, padding: 30 }}>
           <View style={{ position: 'absolute', top: 160, right: -85 }}>
             <Image
-              source={require('../../../../assets/araña_fondo.png')}
+              source={require('../../../../../assets/araña_fondo.png')}
               style={{ width: 250, height: 250 }}
             ></Image>
           </View>
@@ -104,7 +104,7 @@ export function RecoverScreen(props: RecoverScreenProps) {
           </View>
           <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
             <Image
-              source={require('../../../../assets/mono_fondo.png')}
+              source={require('../../../../../assets/mono_fondo.png')}
               style={{ width: 160, height: 110 }}
             ></Image>
           </View>
@@ -114,4 +114,4 @@ export function RecoverScreen(props: RecoverScreenProps) {
   );
 }
 
-export default RecoverScreen;
+export default RecoverPassword;

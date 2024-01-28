@@ -1,5 +1,5 @@
-import { NavigationProp } from '@react-navigation/native';
-import React from 'react';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 import {
   View,
@@ -8,11 +8,12 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../storage/user/user.atom';
 
 /* eslint-disable-next-line */
 export interface HomeProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  navigation: NavigationProp<any>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export function HomeScreen(props: HomeProps) {
@@ -38,6 +39,12 @@ export function HomeScreen(props: HomeProps) {
       redirect: 'sessions',
     },
   ];
+
+  const user = useRecoilValue(userState);
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   return (
     <View

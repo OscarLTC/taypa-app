@@ -16,7 +16,7 @@ export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
         <View style={{ marginTop: 32, padding: 30 }}>
           <View style={{ position: 'absolute', top: 160, right: -85 }}>
             <Image
-              source={require('../../../../assets/araña_fondo.png')}
+              source={require('../../../../../assets/araña_fondo.png')}
               style={{ width: 250, height: 250 }}
             ></Image>
           </View>
@@ -86,7 +86,7 @@ export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
           <TouchableOpacity></TouchableOpacity>
           <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
             <Image
-              source={require('../../../../assets/mono_fondo.png')}
+              source={require('../../../../../assets/mono_fondo.png')}
               style={{ width: 160, height: 110 }}
             ></Image>
           </View>

@@ -10,7 +10,7 @@ import {
   TextInput,
   ToastAndroid,
 } from 'react-native';
-import { auth } from '../../config/Firebase';
+import { auth } from '../../../config/Firebase';
 
 /* eslint-disable-next-line */
 export interface RegisterScreenProps {
@@ -18,7 +18,7 @@ export interface RegisterScreenProps {
   navigation: NavigationProp<any>;
 }
 
-export function RegisterScreen(props: RegisterScreenProps) {
+export function SignUp(props: RegisterScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -75,7 +75,7 @@ export function RegisterScreen(props: RegisterScreenProps) {
       <View style={{ marginTop: 32, padding: 30 }}>
         <View style={{ position: 'absolute', top: 100, right: -125 }}>
           <Image
-            source={require('../../../../assets/araña_fondo.png')}
+            source={require('../../../../../assets/araña_fondo.png')}
             style={{ width: 250, height: 250 }}
           ></Image>
         </View>
@@ -225,7 +225,7 @@ export function RegisterScreen(props: RegisterScreenProps) {
         </View>
         <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
           <Image
-            source={require('../../../../assets/mono_fondo.png')}
+            source={require('../../../../../assets/mono_fondo.png')}
             style={{ width: 160, height: 110 }}
           ></Image>
         </View>
@@ -234,4 +234,4 @@ export function RegisterScreen(props: RegisterScreenProps) {
   );
 }
 
-export default RegisterScreen;
+export default SignUp;
