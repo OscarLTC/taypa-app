@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { LoginData } from '../../../model/login.model';
+import { LoginData } from '../../../model/auth.model';
 import { auth } from '../../../config/Firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useSetRecoilState } from 'recoil';
@@ -210,7 +210,7 @@ export function SignIn(props: LoginProps) {
                   : 'flex',
             }}
             onPress={() => {
-              props.navigation.navigate('register');
+              props.navigation.navigate('sign-up');
             }}
           >
             <Text style={{ color: 'white', textAlign: 'center' }}>

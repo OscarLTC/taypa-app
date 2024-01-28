@@ -75,7 +75,9 @@ export function HomeScreen(props: HomeProps) {
             zIndex: 1,
           }}
           delayPressOut={100}
-          onPress={() => console.log('asd')}
+          onPress={() => {
+            props.navigation.navigate('sign-in');
+          }}
         >
           <Image
             style={{

@@ -1,6 +1,6 @@
-import { NavigationProp } from '@react-navigation/native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React, { useState } from 'react';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import React from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   View,
@@ -8,66 +8,59 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  ToastAndroid,
+  Keyboard,
 } from 'react-native';
+import { RegisterData } from '../../../model/auth.model';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../config/Firebase';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../../../storage/user/user.atom';
 
 /* eslint-disable-next-line */
 export interface RegisterScreenProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  navigation: NavigationProp<any>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export function SignUp(props: RegisterScreenProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const setUser = useSetRecoilState(userState);
 
-  const register = () => {
+  const signUpUser = (email: string, password: string) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         console.log(userCredential.user);
+        setUser(userCredential.user);
         props.navigation.navigate('home');
       })
       .catch((error) => {
         console.log(error);
         if (error.code === 'auth/email-already-in-use') {
-          ToastAndroid.show('El correo ya esta en uso', ToastAndroid.SHORT);
+          setError('email', {
+            type: 'manual',
+            message: 'El correo ya está en uso',
+          });
+        }
+        if (error.code === 'auth/invalid-email') {
+          setError('email', {
+            type: 'manual',
+            message: 'El correo es inválido',
+          });
         }
       });
   };
 
-  const validateEmail = (email: string) => {
-    const regex = /\S+@\S+\.\S+/;
-    return regex.test(email);
-  };
+  const {
+    control,
+    handleSubmit,
+    clearErrors,
+    setError,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterData>();
 
-  const validatePassword = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,20}$/;
-    return regex.test(password);
-  };
-
-  const validateConfirmPassword = (password: string) => {
-    return password === confirmPassword;
-  };
-
-  const validate = () => {
-    if (!validateEmail(email)) {
-      setEmailError(true);
-      return;
-    }
-    if (!validatePassword(password)) {
-      setPasswordError(true);
-      return;
-    }
-    if (!validateConfirmPassword(password)) {
-      setConfirmPasswordError(true);
-      return;
-    }
-    register();
+  const onSubmitPress: SubmitHandler<RegisterData> = (data) => {
+    Keyboard.dismiss();
+    signUpUser(data.email, data.password);
+    console.log(data);
   };
 
   return (
@@ -96,127 +89,194 @@ export function SignUp(props: RegisterScreenProps) {
               width: '100%',
               marginTop: 50,
               flexDirection: 'column',
-              gap: 20,
             }}
           >
-            <View>
-              <TextInput
-                placeholder="Ingresar correo"
-                placeholderTextColor={'#F5F5F5'}
-                inputMode="email"
-                onChangeText={(text) => setEmail(text)}
-                onFocus={() => setEmailError(false)}
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  color: '#fff',
-                  backgroundColor: emailError ? '#CE3E21' : '#621708',
-                  borderRadius: 15,
-                  marginBottom: 5,
-                }}
-              />
-              <Text
-                style={{
-                  color: '#FFFFFF',
-                  fontSize: 8,
-                  marginLeft: 10,
-                  display: emailError ? 'flex' : 'none',
-                }}
-              >
-                El correo debe ser un formato valido (ejemplo@dominio.com)
-              </Text>
-            </View>
-
-            <View>
-              <TextInput
-                placeholder="Ingresar contraseña"
-                placeholderTextColor={'#F5F5F5'}
-                secureTextEntry={true}
-                onChangeText={(text) => setPassword(text)}
-                onFocus={() => setPasswordError(false)}
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  color: '#fff',
-                  backgroundColor: passwordError ? '#CE3E21' : '#621708',
-                  width: '100%',
-                  borderRadius: 15,
-                  marginBottom: 5,
-                }}
-              />
-              <Text
-                style={{
-                  color: '#FFFFFF',
-                  fontSize: 8,
-                  marginLeft: 10,
-                  display: passwordError ? 'flex' : 'none',
-                }}
-              >
-                La contraseña debe ser entre 8 y 20 caracteres, contener letras,
-                números y caracteres especiales.
-              </Text>
-            </View>
-            <View>
-              <TextInput
-                placeholder="Confirmar contraseña"
-                placeholderTextColor={'#F5F5F5'}
-                secureTextEntry={true}
-                onChangeText={(text) => setConfirmPassword(text)}
-                onFocus={() => setConfirmPasswordError(false)}
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  color: '#fff',
-                  backgroundColor: confirmPasswordError ? '#CE3E21' : '#621708',
-                  width: '100%',
-                  borderRadius: 15,
-                  marginBottom: 5,
-                }}
-              />
-              <Text
-                style={{
-                  color: '#FFFFFF',
-                  fontSize: 8,
-                  marginLeft: 10,
-                  display: confirmPasswordError ? 'flex' : 'none',
-                }}
-              >
-                Las contraseñas no son iguales.
-              </Text>
-            </View>
+            <Controller
+              control={control}
+              rules={{
+                required: {
+                  message: 'Correo requerido',
+                  value: true,
+                },
+                pattern: {
+                  message: 'Correo inválido',
+                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                },
+                maxLength: {
+                  message: 'Correo muy largo',
+                  value: 50,
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Ingresar correo"
+                    placeholderTextColor={'#F5F5F5'}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    onFocus={() => {
+                      clearErrors('email');
+                      clearErrors('root');
+                    }}
+                    value={value}
+                    style={{
+                      paddingVertical: 10,
+                      paddingHorizontal: 20,
+                      color: '#fff',
+                      backgroundColor:
+                        errors.email || errors.root ? '#CE3E21' : '#621708',
+                      borderRadius: 15,
+                      marginBottom: errors.email ? 3 : 25,
+                    }}
+                  />
+                  {errors.email && (
+                    <Text
+                      style={{ color: 'white', fontSize: 10, marginBottom: 7 }}
+                    >
+                      {errors.email.message}
+                    </Text>
+                  )}
+                </>
+              )}
+              name="email"
+            />
+            <Controller
+              control={control}
+              rules={{
+                required: {
+                  message: 'Contraseña requerida',
+                  value: true,
+                },
+                minLength: {
+                  message: 'Contraseña muy corta',
+                  value: 8,
+                },
+                maxLength: {
+                  message: 'Contraseña muy larga',
+                  value: 20,
+                },
+                pattern: {
+                  message: 'Contraseña inválida',
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,20}$/,
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Ingresar contraseña"
+                    placeholderTextColor={'#F5F5F5'}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    onFocus={() => {
+                      clearErrors('root');
+                      clearErrors('password');
+                    }}
+                    value={value}
+                    secureTextEntry={true}
+                    style={{
+                      paddingVertical: 10,
+                      paddingHorizontal: 20,
+                      color: '#fff',
+                      backgroundColor:
+                        errors.password || errors.root ? '#CE3E21' : '#621708',
+                      width: '100%',
+                      borderRadius: 15,
+                      marginBottom: errors.password ? 3 : 25,
+                    }}
+                  />
+                  {errors.password && (
+                    <Text
+                      style={{ color: 'white', fontSize: 10, marginBottom: 7 }}
+                    >
+                      {errors.password.message}
+                    </Text>
+                  )}
+                </>
+              )}
+              name="password"
+            />
+            <Controller
+              control={control}
+              rules={{
+                required: {
+                  message: 'Confirmar contraseña requerida',
+                  value: true,
+                },
+                validate: (value) => {
+                  if (value === watch('password')) {
+                    return true;
+                  } else {
+                    return 'Las contraseñas no coinciden';
+                  }
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <TextInput
+                    placeholder="Confirmar contraseña"
+                    placeholderTextColor={'#F5F5F5'}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    onFocus={() => {
+                      clearErrors('root');
+                      clearErrors('passwordConfirmation');
+                    }}
+                    value={value}
+                    secureTextEntry={true}
+                    style={{
+                      paddingVertical: 10,
+                      paddingHorizontal: 20,
+                      color: '#fff',
+                      backgroundColor:
+                        errors.passwordConfirmation || errors.root
+                          ? '#CE3E21'
+                          : '#621708',
+                      width: '100%',
+                      borderRadius: 15,
+                      marginBottom: errors.passwordConfirmation ? 3 : 25,
+                    }}
+                  />
+                  {errors.passwordConfirmation && (
+                    <Text
+                      style={{ color: 'white', fontSize: 10, marginBottom: 7 }}
+                    >
+                      {errors.passwordConfirmation.message}
+                    </Text>
+                  )}
+                </>
+              )}
+              name="passwordConfirmation"
+            />
           </View>
           <TouchableOpacity
-            onPress={() => {
-              validate();
+            style={{
+              marginTop: 40,
+              paddingVertical: 10,
+              backgroundColor: '#0B0A0A',
+              width: 200,
+              borderRadius: 10,
             }}
+            onPress={handleSubmit(onSubmitPress)}
           >
-            <View
-              style={{
-                marginTop: 40,
-                paddingVertical: 10,
-                backgroundColor: '#0B0A0A',
-                width: 200,
-                borderRadius: 10,
-              }}
-            >
-              <Text style={{ color: 'white', textAlign: 'center' }}>
-                Registrar
-              </Text>
-            </View>
+            <Text style={{ color: 'white', textAlign: 'center' }}>
+              Registrar
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
+            style={{
+              marginTop: 20,
+            }}
             onPress={() => {
-              props.navigation.navigate('login');
+              props.navigation.navigate('sign-in');
             }}
           >
             <Text
               style={{
-                marginTop: 20,
                 textDecorationLine: 'underline',
                 fontWeight: 'bold',
                 color: '#D9D9D9',
                 fontSize: 10,
-                alignSelf: 'flex-end',
               }}
             >
               ¿Ya tienes una cuenta? Inicia sesión
