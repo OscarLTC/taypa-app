@@ -53,7 +53,7 @@ export function HomeScreen(props: HomeProps) {
   };
 
   const onSignOutPress = () => {
-    props.navigation.navigate('auth', { screen: 'sign-in' });
+    props.navigation.navigate('auth');
     onAuthStateChanged(auth, (user) => {
       if (user) {
         clearAllData();
