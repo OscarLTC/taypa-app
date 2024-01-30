@@ -1,5 +1,4 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { useEffect } from 'react';
 
 import {
   View,
@@ -8,8 +7,9 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../storage/user/user.atom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../config/Firebase';
 
 /* eslint-disable-next-line */
 export interface HomeProps {
@@ -40,11 +40,26 @@ export function HomeScreen(props: HomeProps) {
     },
   ];
 
-  const user = useRecoilValue(userState);
+  //TODO: No esta funcionando setUser
+  // const setUser = useSetRecoilState(userState);
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  const clearAllData = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('Storage successfully cleared!');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSignOutPress = () => {
+    props.navigation.navigate('auth', { screen: 'sign-in' });
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        clearAllData();
+      }
+    });
+  };
 
   return (
     <View
@@ -75,9 +90,7 @@ export function HomeScreen(props: HomeProps) {
             zIndex: 1,
           }}
           delayPressOut={100}
-          onPress={() => {
-            props.navigation.navigate('sign-in');
-          }}
+          onPress={onSignOutPress}
         >
           <Image
             style={{

@@ -6,15 +6,45 @@ import Workers from './screens/workers/Workers';
 import Dishes from './screens/dishes/Dishes';
 import Auth from './screens/auth/Auth';
 import { RecoilRoot } from 'recoil';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './config/Firebase';
+import { Text, View } from 'react-native';
 
 export const App = () => {
   const Stack = createStackNavigator();
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const checkIfUserIsLoggedIn = () => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+      }
+      setIsLoading(false);
+    });
+
+    return unsubscribe;
+  };
+
+  useEffect(() => {
+    checkIfUserIsLoggedIn();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    ); // Replace with your loading component
+  }
 
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="auth">
+        <Stack.Navigator initialRouteName={isUserLoggedIn ? 'home' : 'auth'}>
           <Stack.Screen
             name="auth"
             options={{ headerShown: false }}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Image,
@@ -12,32 +12,33 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { LoginData } from '../../../model/auth.model';
 import { auth } from '../../../config/Firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useSetRecoilState } from 'recoil';
-import { userState } from '../../../storage/user/user.atom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface LoginProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
 export function SignIn(props: LoginProps) {
-  const setUser = useSetRecoilState(userState);
+  // const setUser = useSetRecoilState(userState);
 
   const {
     control,
     handleSubmit,
     clearErrors,
     setError,
+    setValue,
     formState: { errors },
   } = useForm<LoginData>();
 
   const signInUser = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        setUser(userCredential.user);
+        // setUser(userCredential.user);
         props.navigation.navigate('home');
+        setValue('email', '');
+        setValue('password', '');
       })
       .catch((error) => {
-        console.log(error.code);
         if (
           error.code == 'auth/user-not-found' ||
           error.code == 'auth/wrong-password'
@@ -53,8 +54,22 @@ export function SignIn(props: LoginProps) {
   const onSubmitPress: SubmitHandler<LoginData> = (data) => {
     Keyboard.dismiss();
     signInUser(data.email, data.password);
-    console.log(data);
   };
+
+  useEffect(() => {
+    const printAllKeysAndValues = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const result = await AsyncStorage.multiGet(keys);
+        result.forEach(([key, value]) => {
+          console.log(`Key: ${key}, Value: ${value}`);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    printAllKeysAndValues();
+  }, []);
 
   return (
     <View style={{ backgroundColor: '#941B0C', height: '100%' }}>
