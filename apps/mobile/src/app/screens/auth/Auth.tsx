@@ -5,6 +5,7 @@ import SignUp from './sign-up/SignUp';
 import RecoverPassword from './recover-password/RecoverPassword';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../storage/user/user.atom';
+import EmailConfirmation from './email-confirmation/EmailConfirmation';
 
 /* eslint-disable-next-line */
 export interface AuthProps {}
@@ -37,7 +38,7 @@ export function Auth(props: AuthProps) {
       <Stack.Screen
         name="email-confirmation"
         options={{ headerShown: false, animationEnabled: false }}
-        component={RecoverPassword}
+        component={EmailConfirmation}
       />
     </Stack.Navigator>
   );

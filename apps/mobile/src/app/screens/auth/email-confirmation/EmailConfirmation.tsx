@@ -1,15 +1,14 @@
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import React from 'react';
 
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 /* eslint-disable-next-line */
 export interface EmailConfirmationScreenProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  navigation: NavigationProp<any>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
-export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
+export function EmailConfirmation(props: EmailConfirmationScreenProps) {
   return (
     <View style={{ backgroundColor: '#941B0C' }}>
       <View style={{ backgroundColor: '#0B0A0A6B', height: '100%' }}>
@@ -65,22 +64,18 @@ export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
               }
             </Text>
             <TouchableOpacity
+              style={{
+                marginTop: 40,
+                paddingVertical: 10,
+                paddingHorizontal: 60,
+                backgroundColor: '#0B0A0A',
+                borderRadius: 15,
+              }}
               onPress={() => {
-                props.navigation.navigate('login');
+                props.navigation.navigate('sign-in');
               }}
             >
-              <View
-                style={{
-                  marginTop: 40,
-                  paddingVertical: 10,
-                  paddingHorizontal: 60,
-                  backgroundColor: '#0B0A0A',
-                  width: '100%',
-                  borderRadius: 15,
-                }}
-              >
-                <Text style={{ color: 'white' }}>Entendido</Text>
-              </View>
+              <Text style={{ color: 'white' }}>Entendido</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity></TouchableOpacity>
@@ -96,4 +91,4 @@ export function EmailConfirmationScreen(props: EmailConfirmationScreenProps) {
   );
 }
 
-export default EmailConfirmationScreen;
+export default EmailConfirmation;

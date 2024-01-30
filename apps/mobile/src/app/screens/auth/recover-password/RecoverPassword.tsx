@@ -1,39 +1,50 @@
-import { sendPasswordResetEmail } from 'firebase/auth';
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ToastAndroid,
-} from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { View, Image, Text, TouchableOpacity, TextInput } from 'react-native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../../config/Firebase';
 
 /* eslint-disable-next-line */
 export interface RecoverScreenProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  navigation: NavigationProp<any>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export function RecoverPassword(props: RecoverScreenProps) {
-  const [email, setEmail] = useState('');
+  const {
+    control,
+    handleSubmit,
+    clearErrors,
+    setError,
+    formState: { errors },
+  } = useForm<{ email: string }>();
 
-  const recoverPassword = async () => {
+  const recoverPassword = async (email: string) => {
     await sendPasswordResetEmail(auth, email)
       .then(() => {
+        console.log(email);
         props.navigation.navigate('email-confirmation');
       })
       .catch((error) => {
+        console.log(error);
         if (error.code === 'auth/invalid-email') {
-          ToastAndroid.show('Correo inválido', ToastAndroid.SHORT);
+          setError('email', {
+            type: 'manual',
+            message: 'Correo inválido',
+          });
         }
         if (error.code === 'auth/user-not-found') {
-          ToastAndroid.show('Usuario no encontrado', ToastAndroid.SHORT);
+          setError('email', {
+            type: 'manual',
+            message: 'Correo no registrado',
+          });
         }
       });
+  };
+
+  const onSubmitPress: SubmitHandler<{ email: string }> = (data) => {
+    recoverPassword(data.email);
   };
 
   return (
@@ -74,32 +85,54 @@ export function RecoverPassword(props: RecoverScreenProps) {
                 textAlign: 'center',
               }}
             >
-              {'Ingrese su correo electrónico para recuperar su contraseña'}
+              {'Ingrese su correo electrónico para\nrecuperar su contraseña'}
             </Text>
-            <TextInput
-              placeholder="Ingresar correo"
+            <Controller
+              control={control}
+              rules={{
+                required: {
+                  message: 'Correo requerido',
+                  value: true,
+                },
+                pattern: {
+                  message: 'Correo inválido',
+                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  placeholder="Ingresar correo"
+                  placeholderTextColor={'#F5F5F5'}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  onFocus={() => {
+                    clearErrors('email');
+                  }}
+                  value={value}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    width: '100%',
+                    borderRadius: 15,
+                    marginTop: 40,
+                    color: '#fff',
+                    backgroundColor: errors.email ? '#CE3E21' : '#721708',
+                  }}
+                />
+              )}
+              name="email"
+            />
+            <TouchableOpacity
+              onPress={handleSubmit(onSubmitPress)}
               style={{
+                marginTop: 40,
                 paddingVertical: 10,
                 paddingHorizontal: 20,
-                backgroundColor: '#fff',
-                width: '100%',
-                borderRadius: 15,
+                backgroundColor: '#0B0A0A',
+                borderRadius: 10,
               }}
-              onChangeText={(text) => setEmail(text)}
-            />
-            <TouchableOpacity onPress={recoverPassword}>
-              <View
-                style={{
-                  marginTop: 40,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  backgroundColor: '#0B0A0A',
-                  width: '100%',
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: 'white' }}>Recuperar contraseña</Text>
-              </View>
+            >
+              <Text style={{ color: 'white' }}>Recuperar contraseña</Text>
             </TouchableOpacity>
           </View>
           <View style={{ position: 'absolute', bottom: 0, left: 0 }}>

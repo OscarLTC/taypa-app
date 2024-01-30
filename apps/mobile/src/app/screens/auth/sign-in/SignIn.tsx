@@ -164,7 +164,7 @@ export function SignIn(props: LoginProps) {
               marginTop: 5,
             }}
             onPress={() => {
-              props.navigation.navigate('recover');
+              props.navigation.navigate('recover-password');
             }}
           >
             <Text
