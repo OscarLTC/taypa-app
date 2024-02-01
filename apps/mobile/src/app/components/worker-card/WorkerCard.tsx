@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { View, Text, TouchableHighlight, Image } from 'react-native';
-import { Worker } from '../../model/woker.mode';
+import { Worker } from '../../model/woker.model';
 
 /* eslint-disable-next-line */
 export interface WorkerCardProps {
@@ -57,7 +57,7 @@ export function WorkerCard(props: WorkerCardProps) {
             fontSize: 15,
           }}
         >
-          {props.worker.name}
+          {props.worker.names}
         </Text>
       </TouchableHighlight>
     </View>

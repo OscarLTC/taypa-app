@@ -1,7 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import WorkersList from './workers-list/WorkersList';
+import WorkerList from './worker-list/WorkerList';
+import WorkerAdd from './worker-add/WorkerAdd';
 
 /* eslint-disable-next-line */
 export interface WorkersProps {}
@@ -13,7 +14,12 @@ export function Workers(props: WorkersProps) {
       <Stack.Screen
         name="workers-list"
         options={{ headerShown: false }}
-        component={WorkersList}
+        component={WorkerList}
+      />
+      <Stack.Screen
+        name="worker-add"
+        options={{ headerShown: false }}
+        component={WorkerAdd}
       />
     </Stack.Navigator>
   );

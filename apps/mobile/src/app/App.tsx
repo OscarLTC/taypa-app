@@ -10,8 +10,12 @@ import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/Firebase';
 import { Text, View } from 'react-native';
+import { decode } from 'base-64';
 
 export const App = () => {
+  if (typeof global.atob === 'undefined') {
+    global.atob = decode;
+  }
   const Stack = createStackNavigator();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,10 +39,11 @@ export const App = () => {
 
   if (isLoading) {
     return (
+      //TODO: Splash Screen
       <View>
         <Text>Loading...</Text>
       </View>
-    ); // Replace with your loading component
+    );
   }
 
   return (

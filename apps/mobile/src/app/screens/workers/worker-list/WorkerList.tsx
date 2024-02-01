@@ -1,5 +1,5 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -11,33 +11,23 @@ import {
 } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import WorkerCard from '../../../components/worker-card/WorkerCard';
+import { Worker } from '../../../model/woker.model';
 
-/* eslint-disable-next-line */
-export interface WorkersListProps {
+export interface WorkerListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function WorkersList(props: WorkersListProps) {
-  const [workers, setWorkers] = useState<
-    Array<{ id: string; name: string; image: string }>
-  >([]);
+export function WorkerList(props: WorkerListProps) {
+  const [workers, setWorkers] = useState<Worker[]>();
 
   const getWorkers = async () => {
-    onSnapshot(collection(firestore, 'workers'), (snapshot) => {
-      const updatedWorkersDb: Array<{
-        id: string;
-        name: string;
-        image: string;
-      }> = [];
-      snapshot.forEach((doc) => {
-        updatedWorkersDb.push({
-          id: doc.id,
-          ...(doc.data() as { name: string; image: string }),
-        });
-      });
-      setWorkers(updatedWorkersDb);
-      console.log(updatedWorkersDb);
-    });
+    const workerCollection = collection(firestore, 'workers');
+    const workerSnapshot = await getDocs(workerCollection);
+    const workers = workerSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setWorkers(workers as Worker[]);
   };
 
   useEffect(() => {
@@ -58,7 +48,6 @@ export function WorkersList(props: WorkersListProps) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
-          position: 'relative',
         }}
       >
         <TouchableHighlight
@@ -97,7 +86,9 @@ export function WorkersList(props: WorkersListProps) {
             zIndex: 100,
           }}
           delayPressOut={100}
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('worker-add');
+          }}
         >
           <Image
             style={{
@@ -123,8 +114,10 @@ export function WorkersList(props: WorkersListProps) {
           flexDirection: 'column',
         }}
       >
-        {workers.length > 0 ? (
-          workers.map((worker) => <WorkerCard worker={worker} />)
+        {workers && workers.length > 0 ? (
+          workers.map((worker) => (
+            <WorkerCard key={worker.id} worker={worker} />
+          ))
         ) : (
           <View
             style={{
@@ -152,4 +145,4 @@ export function WorkersList(props: WorkersListProps) {
   );
 }
 
-export default WorkersList;
+export default WorkerList;

@@ -5,7 +5,7 @@ import { View, Text, Image, TouchableHighlight, TextInput } from 'react-native';
 /* eslint-disable-next-line */
 export interface DishFormProps {}
 
-export function DishForm(props: DishFormProps) {
+export function DishApp(props: DishFormProps) {
   return (
     <>
       <View
@@ -211,4 +211,4 @@ export function DishForm(props: DishFormProps) {
   );
 }
 
-export default DishForm;
+export default DishApp;

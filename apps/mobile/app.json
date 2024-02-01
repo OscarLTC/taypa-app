@@ -34,6 +34,12 @@
           "skipProguard": false,
           "subdomains": ["10.0.2.2", "localhost"]
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos so that you can use them in the forms."
+        }
       ]
     ]
   }

@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import DishList from './dish-list/DishList';
-import DishForm from './dish-form/DishForm';
+import DishApp from './dish-add/DishAdd';
 import DishDetails from './dish-details/DishDetails';
 
 /* eslint-disable-next-line */
@@ -19,7 +19,7 @@ export function Dishes(props: DishesProps) {
       <Stack.Screen
         name="dish-form"
         options={{ headerShown: false }}
-        component={DishForm}
+        component={DishApp}
       />
       <Stack.Screen
         name="dish-details"
