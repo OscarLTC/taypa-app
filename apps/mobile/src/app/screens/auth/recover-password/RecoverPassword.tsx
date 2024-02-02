@@ -5,9 +5,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../../config/Firebase';
-
-/* eslint-disable-next-line */
-export interface RecoverScreenProps {
+interface RecoverScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
@@ -23,11 +21,9 @@ export function RecoverPassword(props: RecoverScreenProps) {
   const recoverPassword = async (email: string) => {
     await sendPasswordResetEmail(auth, email)
       .then(() => {
-        console.log(email);
         props.navigation.navigate('email-confirmation');
       })
       .catch((error) => {
-        console.log(error);
         if (error.code === 'auth/invalid-email') {
           setError('email', {
             type: 'manual',

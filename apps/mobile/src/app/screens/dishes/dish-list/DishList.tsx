@@ -221,7 +221,7 @@ export function DishList(props: DishListProps) {
                     }}
                     delayPressOut={100}
                     onPress={() => {
-                      console.log('dishes');
+                      console.log(dish.name);
                     }}
                   >
                     <Image

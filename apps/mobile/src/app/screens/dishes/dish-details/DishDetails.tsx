@@ -1,3 +1,4 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import React from 'react';
 
 import {
@@ -9,7 +10,9 @@ import {
 } from 'react-native';
 
 /* eslint-disable-next-line */
-export interface DishDetailsProps {}
+export interface DishDetailsProps {
+  navigation: NavigationProp<ParamListBase>;
+}
 
 export function DishDetails(props: DishDetailsProps) {
   return (
@@ -41,7 +44,7 @@ export function DishDetails(props: DishDetailsProps) {
           }}
           delayPressOut={100}
           onPress={() => {
-            console.log('dishes');
+            props.navigation.goBack();
           }}
         >
           <Image

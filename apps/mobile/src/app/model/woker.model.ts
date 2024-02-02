@@ -3,6 +3,6 @@ export interface Worker {
   names: string;
   lastnames: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  roles: any;
+  roles: string[];
   image: string;
 }

@@ -27,12 +27,15 @@ export function SignUp(props: RegisterScreenProps) {
   const signUpUser = (email: string, password: string) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        console.log(userCredential.user);
-        setUser(userCredential.user);
+        const token = await userCredential.user.getIdToken();
+        setUser({
+          accessToken: token,
+          email: userCredential.user.email,
+          userId: userCredential.user.uid,
+        });
         props.navigation.navigate('home');
       })
       .catch((error) => {
-        console.log(error);
         if (error.code === 'auth/email-already-in-use') {
           setError('email', {
             type: 'manual',
@@ -60,7 +63,6 @@ export function SignUp(props: RegisterScreenProps) {
   const onSubmitPress: SubmitHandler<RegisterData> = (data) => {
     Keyboard.dismiss();
     signUpUser(data.email, data.password);
-    console.log(data);
   };
 
   return (

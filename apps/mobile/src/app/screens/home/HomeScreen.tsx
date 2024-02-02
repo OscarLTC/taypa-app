@@ -7,9 +7,10 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/Firebase';
+import { useResetRecoilState } from 'recoil';
+import { userState } from '../../storage/user/user.atom';
 
 /* eslint-disable-next-line */
 export interface HomeProps {
@@ -41,22 +42,13 @@ export function HomeScreen(props: HomeProps) {
   ];
 
   //TODO: No esta funcionando setUser
-  // const setUser = useSetRecoilState(userState);
-
-  const clearAllData = async () => {
-    try {
-      await AsyncStorage.clear();
-      console.log('Storage successfully cleared!');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const resetUser = useResetRecoilState(userState);
 
   const onSignOutPress = () => {
     props.navigation.navigate('auth');
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        clearAllData();
+        resetUser();
       }
     });
   };

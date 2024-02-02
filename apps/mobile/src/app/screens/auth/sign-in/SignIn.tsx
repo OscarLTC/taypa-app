@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Image,
@@ -12,14 +12,15 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { LoginData } from '../../../model/auth.model';
 import { auth } from '../../../config/Firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../../../storage/user/user.atom';
 
-export interface LoginProps {
+interface SignInProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function SignIn(props: LoginProps) {
-  // const setUser = useSetRecoilState(userState);
+export function SignIn(props: SignInProps) {
+  const setUser = useSetRecoilState(userState);
 
   const {
     control,
@@ -33,15 +34,21 @@ export function SignIn(props: LoginProps) {
   const signInUser = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        // setUser(userCredential.user);
+        const token = await userCredential.user.getIdToken();
+
+        setUser({
+          email: userCredential.user.email,
+          userId: userCredential.user.uid,
+          accessToken: token,
+        });
         props.navigation.navigate('home');
         setValue('email', '');
         setValue('password', '');
       })
       .catch((error) => {
         if (
-          error.code == 'auth/user-not-found' ||
-          error.code == 'auth/wrong-password'
+          error.code === 'auth/user-not-found' ||
+          error.code === 'auth/wrong-password'
         ) {
           setError('root', {
             type: 'manual',
@@ -55,21 +62,6 @@ export function SignIn(props: LoginProps) {
     Keyboard.dismiss();
     signInUser(data.email, data.password);
   };
-
-  useEffect(() => {
-    const printAllKeysAndValues = async () => {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        const result = await AsyncStorage.multiGet(keys);
-        result.forEach(([key, value]) => {
-          console.log(`Key: ${key}, Value: ${value}`);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    printAllKeysAndValues();
-  }, []);
 
   return (
     <View style={{ backgroundColor: '#941B0C', height: '100%' }}>

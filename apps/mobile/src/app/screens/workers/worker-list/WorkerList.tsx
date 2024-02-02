@@ -1,6 +1,10 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useFocusEffect,
+} from '@react-navigation/native';
 import { collection, getDocs } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   View,
@@ -30,9 +34,13 @@ export function WorkerList(props: WorkerListProps) {
     setWorkers(workers as Worker[]);
   };
 
-  useEffect(() => {
-    getWorkers();
-  }, []);
+  //para que se actualice la lista de trabajadores cada vez que se entra a la pantalla
+  useFocusEffect(
+    useCallback(() => {
+      getWorkers();
+      return;
+    }, [])
+  );
 
   return (
     <View
@@ -106,17 +114,21 @@ export function WorkerList(props: WorkerListProps) {
         </View>
       </View>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         style={{
           marginTop: 60,
           marginBottom: 30,
           borderRadius: 20,
-          padding: 10,
           flexDirection: 'column',
         }}
       >
         {workers && workers.length > 0 ? (
           workers.map((worker) => (
-            <WorkerCard key={worker.id} worker={worker} />
+            <WorkerCard
+              key={worker.id}
+              worker={worker}
+              navigation={props.navigation}
+            />
           ))
         ) : (
           <View

@@ -26,8 +26,9 @@ export function WorkerAdd(props: WorkerAddProps) {
     control,
     handleSubmit,
     clearErrors,
-    setError,
+    getValues,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<Worker>();
 
@@ -52,10 +53,12 @@ export function WorkerAdd(props: WorkerAddProps) {
   };
 
   const addWorker = async (worker: Worker) => {
-    await uploadImageToFirebae().then(() => {
-      addDoc(collection(firestore, 'workers'), worker).then(() => {
-        props.navigation.goBack();
-      });
+    const imageUrl = await uploadImageToFirebae();
+    addDoc(collection(firestore, 'workers'), {
+      ...worker,
+      image: imageUrl,
+    }).then(() => {
+      props.navigation.goBack();
     });
   };
 
@@ -66,19 +69,18 @@ export function WorkerAdd(props: WorkerAddProps) {
     const imageBlob = await fetchResponse.blob();
     const storageRef = ref(storage, `workers/${imageName}`);
 
-    //REVIEW: Puse return para que retorne una promesa y que puedo usar el await en el addWorker
-    return uploadBytesResumable(storageRef, imageBlob).then(
-      async (snapshot) => {
-        await getDownloadURL(snapshot.ref).then((downloadURL) => {
-          setValue('image', downloadURL);
-        });
-      }
-    );
+    const snapshot = await uploadBytesResumable(storageRef, imageBlob);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    return downloadURL;
   };
 
   const onSubmitPress: SubmitHandler<Worker> = (data) => {
     Keyboard.dismiss();
-    const selectedRoles = roles.filter((role) => data.roles[role]);
+
+    const selectedRoles = data.roles.filter(
+      (role) => role !== '' && role !== undefined
+    );
 
     if (selectedRoles.length === 0) {
       setError('roles', {
@@ -92,7 +94,12 @@ export function WorkerAdd(props: WorkerAddProps) {
       setError('image', { type: 'manual', message: 'Debe subir una imagen' });
       return;
     }
-    addWorker(data);
+
+    //TODO: Agregar id de admin
+    addWorker({
+      ...data,
+      roles: selectedRoles,
+    });
   };
 
   return (
@@ -246,6 +253,10 @@ export function WorkerAdd(props: WorkerAddProps) {
                 gap: 10,
                 marginTop: 20,
                 justifyContent: 'space-between',
+                borderColor: errors.roles ? '#CE3E21' : 'transparent',
+                borderWidth: 1,
+                borderRadius: 10,
+                padding: 10,
               }}
             >
               {roles.map((role, index) => (
@@ -256,7 +267,9 @@ export function WorkerAdd(props: WorkerAddProps) {
                     <TouchableOpacity
                       activeOpacity={0.8}
                       onPress={() => {
-                        onChange(!value);
+                        const newRoles = getValues('roles');
+                        newRoles[index] = !newRoles[index] ? role : '';
+                        setValue('roles', newRoles);
                         clearErrors('roles');
                       }}
                       style={{
@@ -264,8 +277,6 @@ export function WorkerAdd(props: WorkerAddProps) {
                         padding: 15,
                         borderRadius: 10,
                         elevation: 2,
-                        borderWidth: 1,
-                        borderColor: errors.roles ? '#CE3E21' : 'transparent',
                       }}
                     >
                       <Text
@@ -278,8 +289,7 @@ export function WorkerAdd(props: WorkerAddProps) {
                       </Text>
                     </TouchableOpacity>
                   )}
-                  name={`roles.${role}`}
-                  defaultValue={false}
+                  name={`roles.${index}`}
                 />
               ))}
             </View>

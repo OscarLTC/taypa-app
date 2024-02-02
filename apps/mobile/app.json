@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -21,7 +23,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.taypa.app"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -32,7 +38,10 @@
         "@config-plugins/detox",
         {
           "skipProguard": false,
-          "subdomains": ["10.0.2.2", "localhost"]
+          "subdomains": [
+            "10.0.2.2",
+            "localhost"
+          ]
         }
       ],
       [
@@ -41,6 +50,11 @@
           "photosPermission": "The app accesses your photos so that you can use them in the forms."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "09191098-2f11-41cf-8972-423df4d19f32"
+      }
+    }
   }
 }

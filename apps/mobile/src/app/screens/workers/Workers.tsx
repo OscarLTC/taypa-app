@@ -3,6 +3,7 @@ import React from 'react';
 
 import WorkerList from './worker-list/WorkerList';
 import WorkerAdd from './worker-add/WorkerAdd';
+import WorkerDetails from './worker-details/WorkerDetails';
 
 /* eslint-disable-next-line */
 export interface WorkersProps {}
@@ -12,7 +13,7 @@ export function Workers(props: WorkersProps) {
   return (
     <Stack.Navigator initialRouteName="workers-list">
       <Stack.Screen
-        name="workers-list"
+        name="worker-list"
         options={{ headerShown: false }}
         component={WorkerList}
       />
@@ -20,6 +21,11 @@ export function Workers(props: WorkersProps) {
         name="worker-add"
         options={{ headerShown: false }}
         component={WorkerAdd}
+      />
+      <Stack.Screen
+        name="worker-details"
+        options={{ headerShown: false }}
+        component={WorkerDetails}
       />
     </Stack.Navigator>
   );

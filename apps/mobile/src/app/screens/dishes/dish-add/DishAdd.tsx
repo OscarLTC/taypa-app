@@ -1,9 +1,11 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import React from 'react';
 
 import { View, Text, Image, TouchableHighlight, TextInput } from 'react-native';
 
-/* eslint-disable-next-line */
-export interface DishFormProps {}
+export interface DishFormProps {
+  navigation: NavigationProp<ParamListBase>;
+}
 
 export function DishApp(props: DishFormProps) {
   return (
@@ -36,7 +38,7 @@ export function DishApp(props: DishFormProps) {
             }}
             delayPressOut={100}
             onPress={() => {
-              console.log('dishes');
+              props.navigation.goBack();
             }}
           >
             <Image

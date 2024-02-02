@@ -2,10 +2,10 @@ import React from 'react';
 
 import { View, Text, TouchableHighlight, Image } from 'react-native';
 import { Worker } from '../../model/woker.model';
-
-/* eslint-disable-next-line */
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 export interface WorkerCardProps {
   worker: Worker;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export function WorkerCard(props: WorkerCardProps) {
@@ -25,14 +25,19 @@ export function WorkerCard(props: WorkerCardProps) {
       key={props.worker.id}
     >
       <Image
-        source={require('../../../../assets/foto_default.webp')}
+        source={
+          props.worker.image
+            ? { uri: props.worker.image }
+            : require('../../../../assets/foto_default.webp')
+        }
         style={{
-          width: 60,
-          height: 60,
+          width: 50,
+          height: 50,
+          alignSelf: 'center',
+          marginLeft: 5,
           position: 'absolute',
           objectFit: 'cover',
-          borderTopLeftRadius: 10,
-          borderBottomLeftRadius: 10,
+          borderRadius: 50,
           zIndex: 1,
         }}
       />
@@ -40,7 +45,11 @@ export function WorkerCard(props: WorkerCardProps) {
         underlayColor={'#F6AA1C'}
         delayPressOut={200}
         delayPressIn={100}
-        onPress={() => console.log('clicka')}
+        onPress={() =>
+          props.navigation?.navigate('worker-details', {
+            workerId: props.worker.id,
+          })
+        }
         style={{
           paddingLeft: 70,
           paddingHorizontal: 10,

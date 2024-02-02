@@ -1,8 +1,9 @@
-import { User } from 'firebase/auth';
 import { atom } from 'recoil';
+import { Session } from '../../model/session.model';
+import { localStorageEffect } from '../effect';
 
-export const userState = atom<User | null>({
-  key: 'user',
+export const userState = atom<Session | null>({
+  key: 'userState',
   default: null,
-  // effects_UNSTABLE: [localStorageEffect('user')],
+  effects_UNSTABLE: [localStorageEffect('userState')],
 });
