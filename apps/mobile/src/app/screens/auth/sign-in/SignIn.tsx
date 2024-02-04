@@ -130,14 +130,6 @@ export function SignIn(props: SignInProps) {
                 message: 'Contraseña requerida',
                 value: true,
               },
-              minLength: {
-                message: 'Contraseña muy corta',
-                value: 8,
-              },
-              maxLength: {
-                message: 'Contraseña muy larga',
-                value: 20,
-              },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput

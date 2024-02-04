@@ -1,16 +1,14 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-import {
-  View,
-  Text,
-  Image,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, TouchableHighlight } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/Firebase';
 import { useResetRecoilState } from 'recoil';
 import { userState } from '../../storage/user/user.atom';
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
+import { MainManagementCard } from '../../components/home/MainManagementCard';
 
 /* eslint-disable-next-line */
 export interface HomeProps {
@@ -21,31 +19,29 @@ export function HomeScreen(props: HomeProps) {
   const featuresData = [
     {
       title: 'Gestión de Mesas',
-      image: require('../../../../assets/cuadricula.png'),
+      icon: <Fontisto name="nav-icon-grid" size={20} color="black" />,
       redirect: 'tables',
     },
     {
       title: 'Gestión de Empleados',
-      image: require('../../../../assets/usuarios_alt.png'),
+      icon: <FontAwesome name="group" size={20} color="black" />,
       redirect: 'workers',
     },
     {
       title: 'Historial de Ventas',
-      image: require('../../../../assets/monedas.png'),
+      icon: <FontAwesome5 name="coins" size={20} color="black" />,
       redirect: 'sales',
     },
     {
       title: 'Sesiones',
-      image: require('../../../../assets/ojo.png'),
+      icon: <Fontisto name="eye" size={17} color="black" />,
       redirect: 'sessions',
     },
   ];
-
-  //TODO: No esta funcionando setUser
   const resetUser = useResetRecoilState(userState);
 
   const onSignOutPress = () => {
-    props.navigation.navigate('auth');
+    props.navigation.navigate('sign-in');
     onAuthStateChanged(auth, (user) => {
       if (user) {
         resetUser();
@@ -75,22 +71,20 @@ export function HomeScreen(props: HomeProps) {
           style={{
             position: 'absolute',
             right: 0,
-            padding: 10,
             alignSelf: 'center',
             borderRadius: 100,
             backgroundColor: '#E74545',
             zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           delayPressOut={100}
           onPress={onSignOutPress}
         >
-          <Image
-            style={{
-              width: 20,
-              height: 20,
-            }}
-            source={require('../../../../assets/usuario.png')}
-          />
+          <FontAwesome name="user" size={25} color="white" />
         </TouchableHighlight>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
@@ -107,112 +101,7 @@ export function HomeScreen(props: HomeProps) {
           gap: 10,
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#D61717',
-              padding: 5,
-              borderRadius: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              width: '30%',
-              height: 120,
-              overflow: 'hidden',
-            }}
-          >
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                fontSize: 13,
-              }}
-            >
-              Gestión de Platos
-            </Text>
-            <Image
-              style={{
-                position: 'absolute',
-                bottom: -20,
-                left: 20,
-                width: 150,
-                height: 100,
-                objectFit: 'contain',
-              }}
-              source={require('../../../../assets/lomo_saltado.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#EF4242',
-              padding: 5,
-              borderRadius: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              width: '30%',
-              height: 120,
-              overflow: 'hidden',
-            }}
-          >
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                fontSize: 13,
-              }}
-            >
-              Gestión de Bebidas
-            </Text>
-            <Image
-              style={{
-                position: 'absolute',
-                bottom: -20,
-                left: 20,
-                width: 150,
-                height: 100,
-                objectFit: 'contain',
-              }}
-              source={require('../../../../assets/bebida.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#FE8282',
-              padding: 5,
-              borderRadius: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              width: '30%',
-              height: 120,
-              overflow: 'hidden',
-            }}
-          >
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                fontSize: 13,
-              }}
-            >
-              Gestión de Adicionales
-            </Text>
-            <Image
-              style={{
-                position: 'absolute',
-                bottom: -20,
-                left: 30,
-                width: 150,
-                height: 100,
-                objectFit: 'contain',
-              }}
-              source={require('../../../../assets/adicional.png')}
-            />
-          </TouchableOpacity>
-        </View>
+        <MainManagementCard />
         <View
           style={{
             marginTop: 40,
@@ -239,13 +128,7 @@ export function HomeScreen(props: HomeProps) {
               }}
             >
               <>
-                <Image
-                  style={{
-                    width: 20,
-                    height: 20,
-                  }}
-                  source={feature.image}
-                />
+                {feature.icon}
                 <Text
                   style={{
                     fontWeight: 'bold',

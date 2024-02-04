@@ -16,6 +16,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { firestore, storage } from '../../../config/Firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { addDoc, collection } from 'firebase/firestore';
+import { AntDesign } from '@expo/vector-icons';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../../storage/user/user.atom';
 
 export interface WorkerAddProps {
   navigation: NavigationProp<ParamListBase>;
@@ -31,11 +34,12 @@ export function WorkerAdd(props: WorkerAddProps) {
     setError,
     formState: { errors },
   } = useForm<Worker>();
+  const roles = ['Mesero', 'Cocinero', 'Cajero'];
 
   const [imageAsset, setImageAsset] =
     useState<ImagePicker.ImagePickerAsset | null>(null);
 
-  const roles = ['Mesero', 'Cocinero', 'Cajero'];
+  const userData = useRecoilValue(userState);
 
   const onLoadImagePress = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -67,7 +71,7 @@ export function WorkerAdd(props: WorkerAddProps) {
 
     const fetchResponse = await fetch(imageAsset?.uri ?? '');
     const imageBlob = await fetchResponse.blob();
-    const storageRef = ref(storage, `workers/${imageName}`);
+    const storageRef = ref(storage, `workers/${userData?.userId}/${imageName}`);
 
     const snapshot = await uploadBytesResumable(storageRef, imageBlob);
     const downloadURL = await getDownloadURL(snapshot.ref);
@@ -95,9 +99,11 @@ export function WorkerAdd(props: WorkerAddProps) {
       return;
     }
 
-    //TODO: Agregar id de admin
     addWorker({
       ...data,
+      names: data.names.trim(),
+      lastnames: data.lastnames.trim(),
+      adminId: userData?.userId ?? '',
       roles: selectedRoles,
     });
   };
@@ -125,23 +131,22 @@ export function WorkerAdd(props: WorkerAddProps) {
             style={{
               position: 'absolute',
               left: 0,
-              padding: 10,
               alignSelf: 'center',
               borderRadius: 100,
               backgroundColor: '#FFFFFF',
+              zIndex: 1,
+              flexDirection: 'row',
+              height: 40,
+              width: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             delayPressOut={100}
             onPress={() => {
               props.navigation.goBack();
             }}
           >
-            <Image
-              style={{
-                width: 20,
-                height: 20,
-              }}
-              source={require('../../../../../assets/arrow_back.png')}
-            />
+            <AntDesign name="arrowleft" size={20} color="black" />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
             Registrar Empleado
@@ -174,7 +179,7 @@ export function WorkerAdd(props: WorkerAddProps) {
                 },
                 pattern: {
                   message: 'Nombre inválido',
-                  value: /^[a-zA-Z ]+$/,
+                  value: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/,
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -185,7 +190,7 @@ export function WorkerAdd(props: WorkerAddProps) {
                     clearErrors('names');
                   }}
                   value={value}
-                  maxLength={50}
+                  maxLength={15}
                   style={{
                     backgroundColor: '#FFFFFF',
                     borderRadius: 5,
@@ -214,7 +219,7 @@ export function WorkerAdd(props: WorkerAddProps) {
                 },
                 pattern: {
                   message: 'Apellido inválido',
-                  value: /^[a-zA-Z ]+$/,
+                  value: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/,
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -225,7 +230,7 @@ export function WorkerAdd(props: WorkerAddProps) {
                     clearErrors('lastnames');
                   }}
                   value={value}
-                  maxLength={50}
+                  maxLength={15}
                   style={{
                     backgroundColor: '#FFFFFF',
                     borderRadius: 5,
@@ -313,7 +318,7 @@ export function WorkerAdd(props: WorkerAddProps) {
                   style={{
                     backgroundColor: imageAsset ? '#FFF' : '#00000026',
                     borderRadius: 10,
-                    borderWidth: 1,
+                    borderWidth: errors.image ? 1 : 0,
                     borderColor: errors.image ? '#CE3E21' : 'transparent',
                   }}
                 >
@@ -321,9 +326,9 @@ export function WorkerAdd(props: WorkerAddProps) {
                     source={
                       imageAsset
                         ? { uri: imageAsset.uri }
-                        : require('../../../../../assets/icono_plato.png')
+                        : require('../../../../../assets/usuario.png')
                     }
-                    style={{ width: 150, height: 150, borderRadius: 5 }}
+                    style={{ width: 150, height: 150, borderRadius: 10 }}
                   />
                 </View>
                 <Text style={{ fontSize: 8, marginTop: 4 }}>

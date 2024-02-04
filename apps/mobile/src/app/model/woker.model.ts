@@ -1,8 +1,8 @@
 export interface Worker {
   id: string;
+  adminId: string;
   names: string;
   lastnames: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   roles: string[];
   image: string;
 }

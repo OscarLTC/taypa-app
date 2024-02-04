@@ -12,9 +12,10 @@ import {
 } from 'react-native';
 import { RegisterData } from '../../../model/auth.model';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../config/Firebase';
+import { auth, firestore } from '../../../config/Firebase';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '../../../storage/user/user.atom';
+import { doc, setDoc } from 'firebase/firestore';
 
 /* eslint-disable-next-line */
 export interface RegisterScreenProps {
@@ -24,31 +25,45 @@ export interface RegisterScreenProps {
 export function SignUp(props: RegisterScreenProps) {
   const setUser = useSetRecoilState(userState);
 
-  const signUpUser = (email: string, password: string) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const token = await userCredential.user.getIdToken();
-        setUser({
-          accessToken: token,
-          email: userCredential.user.email,
-          userId: userCredential.user.uid,
-        });
-        props.navigation.navigate('home');
-      })
-      .catch((error) => {
-        if (error.code === 'auth/email-already-in-use') {
-          setError('email', {
-            type: 'manual',
-            message: 'El correo ya está en uso',
-          });
-        }
-        if (error.code === 'auth/invalid-email') {
-          setError('email', {
-            type: 'manual',
-            message: 'El correo es inválido',
-          });
-        }
+  const signUpUser = async (email: string, password: string) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const token = await userCredential.user.getIdToken();
+
+      const userDocRef = doc(firestore, 'admin', userCredential.user.uid);
+      await setDoc(userDocRef, {
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName,
+        photoURL: userCredential.user.photoURL,
       });
+
+      setUser({
+        accessToken: token,
+        email: userCredential.user.email,
+        userId: userCredential.user.uid,
+      });
+
+      props.navigation.navigate('home');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        setError('email', {
+          type: 'manual',
+          message: 'El correo ya está en uso',
+        });
+      }
+      if (error.code === 'auth/invalid-email') {
+        setError('email', {
+          type: 'manual',
+          message: 'El correo es inválido',
+        });
+      }
+    }
   };
 
   const {

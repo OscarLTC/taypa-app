@@ -21,7 +21,8 @@
     "react-hook-form": "*",
     "@react-native-async-storage/async-storage": "*",
     "expo-image-picker": "*",
-    "base-64": "*"
+    "base-64": "*",
+    "@expo/vector-icons": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobile && cp package-lock.json apps/mobile",

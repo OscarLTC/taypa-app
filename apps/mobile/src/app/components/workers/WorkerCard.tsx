@@ -66,7 +66,7 @@ export function WorkerCard(props: WorkerCardProps) {
             fontSize: 15,
           }}
         >
-          {props.worker.names}
+          {`${props.worker.names} ${props.worker.lastnames}`}
         </Text>
       </TouchableHighlight>
     </View>

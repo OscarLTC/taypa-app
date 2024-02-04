@@ -14,8 +14,9 @@ import {
   ScrollView,
 } from 'react-native';
 import { firestore } from '../../../config/Firebase';
-import WorkerCard from '../../../components/worker-card/WorkerCard';
+import WorkerCard from '../../../components/workers/WorkerCard';
 import { Worker } from '../../../model/woker.model';
+import { AntDesign } from '@expo/vector-icons';
 
 export interface WorkerListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -63,23 +64,22 @@ export function WorkerList(props: WorkerListProps) {
           style={{
             position: 'absolute',
             left: 0,
-            padding: 10,
             alignSelf: 'center',
             borderRadius: 100,
             backgroundColor: '#FFFFFF',
+            zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           delayPressOut={100}
           onPress={() => {
             props.navigation.goBack();
           }}
         >
-          <Image
-            style={{
-              width: 20,
-              height: 20,
-            }}
-            source={require('../../../../../assets/arrow_back.png')}
-          />
+          <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Empleados</Text>
         <TouchableHighlight
@@ -87,24 +87,22 @@ export function WorkerList(props: WorkerListProps) {
           style={{
             position: 'absolute',
             right: 0,
-            padding: 5,
             alignSelf: 'center',
             borderRadius: 100,
             backgroundColor: '#E74545',
-            zIndex: 100,
+            zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           delayPressOut={100}
           onPress={() => {
             props.navigation.navigate('worker-add');
           }}
         >
-          <Image
-            style={{
-              width: 25,
-              height: 25,
-            }}
-            source={require('../../../../../assets/plus.png')}
-          />
+          <AntDesign name="plus" size={25} color="white" />
         </TouchableHighlight>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image

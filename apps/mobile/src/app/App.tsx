@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil';
 import React from 'react';
 import { decode } from 'base-64';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Container } from './screens/container';
+import { Container } from './screens/Container';
 
 export const App = () => {
   if (typeof global.atob === 'undefined') {
