@@ -13,14 +13,13 @@ export function WorkerCard(props: WorkerCardProps) {
     <View
       style={{
         backgroundColor: '#FFFFFF',
-        borderRadius: 10,
-        height: 60,
+        borderRadius: 20,
+        height: 70,
         width: '100%',
-        elevation: 1,
         display: 'flex',
         flexDirection: 'row',
         marginTop: 10,
-        marginBottom: 10,
+        marginBottom: 20,
       }}
       key={props.worker.id}
     >
@@ -34,7 +33,7 @@ export function WorkerCard(props: WorkerCardProps) {
           width: 50,
           height: 50,
           alignSelf: 'center',
-          marginLeft: 5,
+          marginLeft: 10,
           position: 'absolute',
           objectFit: 'cover',
           borderRadius: 50,
@@ -62,7 +61,7 @@ export function WorkerCard(props: WorkerCardProps) {
       >
         <Text
           style={{
-            fontWeight: 'bold',
+            fontWeight: '500',
             fontSize: 15,
           }}
         >

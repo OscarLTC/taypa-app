@@ -17,6 +17,7 @@ import { firestore } from '../../../config/Firebase';
 import WorkerCard from '../../../components/workers/WorkerCard';
 import { Worker } from '../../../model/woker.model';
 import { AntDesign } from '@expo/vector-icons';
+import WorkerListSkeleton from '../../../components/workers/WorkerListSkeleton';
 
 export interface WorkerListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -111,46 +112,50 @@ export function WorkerList(props: WorkerListProps) {
           ></Image>
         </View>
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          marginTop: 60,
-          marginBottom: 30,
-          borderRadius: 20,
-          flexDirection: 'column',
-        }}
-      >
-        {workers && workers.length > 0 ? (
-          workers.map((worker) => (
-            <WorkerCard
-              key={worker.id}
-              worker={worker}
-              navigation={props.navigation}
-            />
-          ))
-        ) : (
-          <View
-            style={{
-              backgroundColor: '#FFFFFF',
-              borderRadius: 10,
-              padding: 20,
-              display: 'flex',
-              height: '100%',
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
+      {workers ? (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            marginTop: 60,
+            marginBottom: 30,
+            borderRadius: 20,
+            flexDirection: 'column',
+          }}
+        >
+          {workers.length > 0 ? (
+            workers.map((worker) => (
+              <WorkerCard
+                key={worker.id}
+                worker={worker}
+                navigation={props.navigation}
+              />
+            ))
+          ) : (
+            <View
               style={{
-                textAlign: 'center',
-                fontWeight: 'bold',
+                backgroundColor: '#FFFFFF',
+                borderRadius: 10,
+                padding: 20,
+                display: 'flex',
+                height: '100%',
+                flexDirection: 'column',
+                justifyContent: 'center',
               }}
             >
-              {'Aún no se han\nregistrado trabajadores 🙈'}
-            </Text>
-          </View>
-        )}
-      </ScrollView>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                {'Aún no se han\nregistrado trabajadores 🙈'}
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      ) : (
+        <WorkerListSkeleton />
+      )}
     </View>
   );
 }
