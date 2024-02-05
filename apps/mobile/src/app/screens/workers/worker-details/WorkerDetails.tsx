@@ -149,7 +149,7 @@ export function WorkerDetails(props: WorkerDetailsProps) {
               style={{
                 backgroundColor: '#FFC4BD',
                 paddingVertical: 10,
-                paddingHorizontal: 20,
+                paddingHorizontal: 15,
                 borderRadius: 20,
                 marginTop: 10,
                 alignSelf: 'flex-start',
@@ -189,7 +189,11 @@ export function WorkerDetails(props: WorkerDetailsProps) {
                 backgroundColor: '#941B0C',
               }}
               delayPressOut={100}
-              onPress={() => {}}
+              onPress={() => {
+                props.navigation.navigate('worker-edit', {
+                  workerId: workerId,
+                });
+              }}
             >
               <Text style={{ color: '#fff' }}>Actualizar</Text>
             </TouchableHighlight>

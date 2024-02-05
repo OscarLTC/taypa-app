@@ -20,7 +20,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../storage/user/user.atom';
 
-export interface WorkerAddProps {
+interface WorkerAddProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
