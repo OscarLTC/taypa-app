@@ -1,13 +1,18 @@
-import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  Route,
+  useFocusEffect,
+} from '@react-navigation/native';
 import { deleteDoc, doc, getDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { View, Text, Image, TouchableHighlight } from 'react-native';
-import { firestore } from '../../../config/Firebase';
+import { firestore, storage } from '../../../config/Firebase';
 import { Worker } from '../../../model/woker.model';
+import { deleteObject, ref } from 'firebase/storage';
 
-/* eslint-disable-next-line */
-export interface WorkerDetailsProps {
+interface WorkerDetailsProps {
   route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
 }
@@ -40,15 +45,24 @@ export function WorkerDetails(props: WorkerDetailsProps) {
     return formattedRoles;
   };
 
+  const deteleWorkerImage = async () => {
+    const imageRef = ref(
+      storage,
+      `workers/${worker?.adminId}/${worker?.image.name}`
+    );
+    await deleteObject(imageRef);
+  };
+
   const deleteWorker = async () => {
     const workerRef = doc(firestore, 'workers', workerId);
     await deleteDoc(workerRef);
     props.navigation.goBack();
+    await deteleWorkerImage();
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     getWorkerDoc();
-  }, []);
+  });
 
   return (
     <View
@@ -120,7 +134,7 @@ export function WorkerDetails(props: WorkerDetailsProps) {
             }}
           >
             <Image
-              source={{ uri: worker?.image }}
+              source={{ uri: worker?.image?.url }}
               style={{
                 width: '100%',
                 height: '70%',

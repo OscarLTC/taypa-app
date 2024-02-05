@@ -1,7 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
-import { addDoc, collection } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import React, { useState } from 'react';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+import React, { useEffect } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import {
   View,
@@ -17,11 +22,12 @@ import { firestore, storage } from '../../../config/Firebase';
 import { userState } from '../../../storage/user/user.atom';
 import * as ImagePicker from 'expo-image-picker';
 import { Worker } from '../../../model/woker.model';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 
 /* eslint-disable-next-line */
 
 interface WorkerEditProps {
+  route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
 }
 
@@ -33,15 +39,14 @@ export function WorkerEdit(props: WorkerEditProps) {
     getValues,
     setValue,
     setError,
+    watch,
     formState: { errors },
   } = useForm<Worker>();
   const roles = ['Mesero', 'Cocinero', 'Cajero'];
 
-  const [imageAsset, setImageAsset] =
-    useState<ImagePicker.ImagePickerAsset | null>(null);
+  const { workerId } = props.route.params as { workerId: string };
 
   const userData = useRecoilValue(userState);
-
   const onLoadImagePress = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -52,14 +57,29 @@ export function WorkerEdit(props: WorkerEditProps) {
     });
 
     if (!result.canceled) {
-      setImageAsset(result.assets[0]);
+      deteleWorkerImage();
+      setValue('image', {
+        name: result.assets[0].uri.split('/').pop() ?? '',
+        url: result.assets[0].uri,
+      });
       clearErrors('image');
     }
   };
 
-  const addWorker = async (worker: Worker) => {
-    const imageUrl = await uploadImageToFirebae();
-    addDoc(collection(firestore, 'workers'), {
+  const deteleWorkerImage = async () => {
+    const imageRef = ref(
+      storage,
+      `workers/${watch('adminId')}/${watch('image.name')}`
+    );
+    await deleteObject(imageRef);
+  };
+
+  const updateWorker = async (worker: Worker) => {
+    let imageUrl = worker.image;
+    if (worker.image.url.startsWith('file://')) {
+      imageUrl = await uploadImageToFirebae();
+    }
+    updateDoc(doc(firestore, 'workers', workerId), {
       ...worker,
       image: imageUrl,
     }).then(() => {
@@ -68,16 +88,19 @@ export function WorkerEdit(props: WorkerEditProps) {
   };
 
   const uploadImageToFirebae = async () => {
-    const imageName = imageAsset?.uri.split('/').pop();
+    const imageName = watch('image.name');
 
-    const fetchResponse = await fetch(imageAsset?.uri ?? '');
+    const fetchResponse = await fetch(watch('image.url'));
     const imageBlob = await fetchResponse.blob();
     const storageRef = ref(storage, `workers/${userData?.userId}/${imageName}`);
 
     const snapshot = await uploadBytesResumable(storageRef, imageBlob);
     const downloadURL = await getDownloadURL(snapshot.ref);
 
-    return downloadURL;
+    return {
+      url: downloadURL,
+      name: imageName,
+    };
   };
 
   const onSubmitPress: SubmitHandler<Worker> = (data) => {
@@ -95,12 +118,7 @@ export function WorkerEdit(props: WorkerEditProps) {
       return;
     }
 
-    if (!imageAsset) {
-      setError('image', { type: 'manual', message: 'Debe subir una imagen' });
-      return;
-    }
-
-    addWorker({
+    updateWorker({
       ...data,
       names: data.names.trim(),
       lastnames: data.lastnames.trim(),
@@ -108,6 +126,23 @@ export function WorkerEdit(props: WorkerEditProps) {
       roles: selectedRoles,
     });
   };
+
+  const getWorkerDoc = async () => {
+    const workerRef = doc(firestore, 'workers', workerId);
+    const workerDoc = await getDoc(workerRef);
+    if (workerDoc.exists()) {
+      const data = workerDoc.data();
+      for (const [key, value] of Object.entries(data)) {
+        setValue(key as keyof Worker, value);
+      }
+    } else {
+      props.navigation.goBack();
+    }
+  };
+
+  useEffect(() => {
+    getWorkerDoc();
+  }, []);
 
   return (
     <>
@@ -317,18 +352,14 @@ export function WorkerEdit(props: WorkerEditProps) {
               <View>
                 <View
                   style={{
-                    backgroundColor: imageAsset ? '#FFF' : '#00000026',
+                    backgroundColor: watch('image') ? '#FFF' : '#00000026',
                     borderRadius: 10,
                     borderWidth: errors.image ? 1 : 0,
                     borderColor: errors.image ? '#CE3E21' : 'transparent',
                   }}
                 >
                   <Image
-                    source={
-                      imageAsset
-                        ? { uri: imageAsset.uri }
-                        : require('../../../../../assets/usuario.png')
-                    }
+                    source={{ uri: watch('image.url') }}
                     style={{ width: 150, height: 150, borderRadius: 10 }}
                   />
                 </View>

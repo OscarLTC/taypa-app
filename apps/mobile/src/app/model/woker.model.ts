@@ -4,5 +4,8 @@ export interface Worker {
   names: string;
   lastnames: string;
   roles: string[];
-  image: string;
+  image: {
+    url: string;
+    name: string;
+  };
 }

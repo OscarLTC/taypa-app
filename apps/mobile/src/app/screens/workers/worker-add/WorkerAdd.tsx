@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -32,12 +32,10 @@ export function WorkerAdd(props: WorkerAddProps) {
     getValues,
     setValue,
     setError,
+    watch,
     formState: { errors },
   } = useForm<Worker>();
   const roles = ['Mesero', 'Cocinero', 'Cajero'];
-
-  const [imageAsset, setImageAsset] =
-    useState<ImagePicker.ImagePickerAsset | null>(null);
 
   const userData = useRecoilValue(userState);
 
@@ -51,7 +49,10 @@ export function WorkerAdd(props: WorkerAddProps) {
     });
 
     if (!result.canceled) {
-      setImageAsset(result.assets[0]);
+      setValue('image', {
+        name: result.assets[0].uri.split('/').pop() ?? '',
+        url: result.assets[0].uri,
+      });
       clearErrors('image');
     }
   };
@@ -67,16 +68,19 @@ export function WorkerAdd(props: WorkerAddProps) {
   };
 
   const uploadImageToFirebae = async () => {
-    const imageName = imageAsset?.uri.split('/').pop();
+    const imageName = watch('image.name');
 
-    const fetchResponse = await fetch(imageAsset?.uri ?? '');
+    const fetchResponse = await fetch(watch('image.url'));
     const imageBlob = await fetchResponse.blob();
     const storageRef = ref(storage, `workers/${userData?.userId}/${imageName}`);
 
     const snapshot = await uploadBytesResumable(storageRef, imageBlob);
     const downloadURL = await getDownloadURL(snapshot.ref);
 
-    return downloadURL;
+    return {
+      url: downloadURL,
+      name: imageName,
+    };
   };
 
   const onSubmitPress: SubmitHandler<Worker> = (data) => {
@@ -94,7 +98,7 @@ export function WorkerAdd(props: WorkerAddProps) {
       return;
     }
 
-    if (!imageAsset) {
+    if (!watch('image')) {
       setError('image', { type: 'manual', message: 'Debe subir una imagen' });
       return;
     }
@@ -316,7 +320,7 @@ export function WorkerAdd(props: WorkerAddProps) {
               <View>
                 <View
                   style={{
-                    backgroundColor: imageAsset ? '#FFF' : '#00000026',
+                    backgroundColor: watch('image') ? '#FFF' : '#00000026',
                     borderRadius: 10,
                     borderWidth: errors.image ? 1 : 0,
                     borderColor: errors.image ? '#CE3E21' : 'transparent',
@@ -324,8 +328,8 @@ export function WorkerAdd(props: WorkerAddProps) {
                 >
                   <Image
                     source={
-                      imageAsset
-                        ? { uri: imageAsset.uri }
+                      watch('image')
+                        ? { uri: watch('image.url') }
                         : require('../../../../../assets/usuario.png')
                     }
                     style={{ width: 150, height: 150, borderRadius: 10 }}

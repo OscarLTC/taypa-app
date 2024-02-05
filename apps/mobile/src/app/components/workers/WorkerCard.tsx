@@ -26,7 +26,7 @@ export function WorkerCard(props: WorkerCardProps) {
       <Image
         source={
           props.worker.image
-            ? { uri: props.worker.image }
+            ? { uri: props.worker.image.url }
             : require('../../../../assets/foto_default.webp')
         }
         style={{
