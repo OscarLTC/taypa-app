@@ -1,16 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { Suspense } from 'react';
-
+import React from 'react';
 import WorkerList from './worker-list/WorkerList';
 import WorkerAdd from './worker-add/WorkerAdd';
 import WorkerDetails from './worker-details/WorkerDetails';
 import WorkerEdit from './worker-edit/WorkerEdit';
-import { View } from 'react-native';
 
-/* eslint-disable-next-line */
-export interface WorkersProps {}
-
-export function Workers(props: WorkersProps) {
+export const Workers = () => {
   const Stack = createStackNavigator();
   return (
     <Stack.Navigator initialRouteName="worker-list">
@@ -36,6 +31,6 @@ export function Workers(props: WorkersProps) {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export default Workers;

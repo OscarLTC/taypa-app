@@ -53,8 +53,8 @@ export const TableList = () => {
         {tables
           .sort((a, b) => a.number - b.number)
           .map((table, index) => {
-            if (index == tables.length - 1) {
-              return <TableRemove table={table} />;
+            if (index === tables.length - 1) {
+              return <TableRemove key={table.id} table={table} />;
             }
             return (
               <View

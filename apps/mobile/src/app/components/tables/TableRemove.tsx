@@ -4,9 +4,12 @@ import { Table } from '../../model/table.model';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firestore } from '../../config/Firebase';
 
-export const TableRemove = ({ table }: { table: Table }) => {
+interface TableRemoveProps {
+  table: Table;
+}
+export const TableRemove = (props: TableRemoveProps) => {
   const removeTable = async () => {
-    const tableRef = doc(firestore, 'tables', table.id);
+    const tableRef = doc(firestore, 'tables', props.table.id);
     deleteDoc(tableRef);
   };
 
@@ -42,7 +45,9 @@ export const TableRemove = ({ table }: { table: Table }) => {
           size={20}
           color="white"
         />
-        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{table.number}</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+          {props.table.number}
+        </Text>
       </View>
     </TouchableHighlight>
   );

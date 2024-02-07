@@ -17,7 +17,7 @@ interface WorkerDetailsProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function WorkerDetails(props: WorkerDetailsProps) {
+export const WorkerDetails = (props: WorkerDetailsProps) => {
   const { workerId } = props.route.params as { workerId: string };
   const [worker, setWorker] = useState<Worker>();
 
@@ -216,6 +216,6 @@ export function WorkerDetails(props: WorkerDetailsProps) {
       </View>
     </View>
   );
-}
+};
 
 export default WorkerDetails;

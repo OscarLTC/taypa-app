@@ -10,12 +10,11 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MainManagementCard } from '../../components/home/MainManagementCard';
 
-/* eslint-disable-next-line */
-export interface HomeProps {
+interface HomeProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function HomeScreen(props: HomeProps) {
+export const HomeScreen = (props: HomeProps) => {
   const featuresData = [
     {
       title: 'Gestión de Mesas',
@@ -101,7 +100,7 @@ export function HomeScreen(props: HomeProps) {
           gap: 10,
         }}
       >
-        <MainManagementCard />
+        <MainManagementCard navigation={props.navigation} />
         <View
           style={{
             marginTop: 40,
@@ -168,6 +167,6 @@ export function HomeScreen(props: HomeProps) {
       </View>
     </View>
   );
-}
+};
 
 export default HomeScreen;

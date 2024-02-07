@@ -13,7 +13,7 @@ interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function Container(props: ContainerProps) {
+export const Container = (props: ContainerProps) => {
   const Stack = createStackNavigator();
   const isUserSignedIn = useRecoilValue(isUserSignedInSelector);
 
@@ -52,4 +52,4 @@ export function Container(props: ContainerProps) {
       />
     </Stack.Navigator>
   );
-}
+};

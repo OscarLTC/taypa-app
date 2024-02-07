@@ -19,7 +19,7 @@ interface SignInProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function SignIn(props: SignInProps) {
+export const SignIn = (props: SignInProps) => {
   const setUser = useSetRecoilState(userState);
 
   const {
@@ -251,6 +251,6 @@ export function SignIn(props: SignInProps) {
       </View>
     </View>
   );
-}
+};
 
 export default SignIn;

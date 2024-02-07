@@ -4,11 +4,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 /* eslint-disable-next-line */
-export interface EmailConfirmationScreenProps {
+interface EmailConfirmationScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function EmailConfirmation(props: EmailConfirmationScreenProps) {
+export const EmailConfirmation = (props: EmailConfirmationScreenProps) => {
   return (
     <View style={{ backgroundColor: '#941B0C' }}>
       <View style={{ backgroundColor: '#0B0A0A6B', height: '100%' }}>
@@ -89,6 +89,6 @@ export function EmailConfirmation(props: EmailConfirmationScreenProps) {
       </View>
     </View>
   );
-}
+};
 
 export default EmailConfirmation;

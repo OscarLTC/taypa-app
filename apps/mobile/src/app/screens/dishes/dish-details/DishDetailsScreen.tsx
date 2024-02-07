@@ -9,12 +9,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-/* eslint-disable-next-line */
-export interface DishDetailsProps {
+interface DishDetailsProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function DishDetails(props: DishDetailsProps) {
+export const DishDetails = (props: DishDetailsProps) => {
   return (
     <View
       style={{
@@ -155,6 +154,6 @@ export function DishDetails(props: DishDetailsProps) {
       </View>
     </View>
   );
-}
+};
 
 export default DishDetails;

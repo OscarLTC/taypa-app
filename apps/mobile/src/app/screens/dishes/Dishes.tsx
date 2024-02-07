@@ -1,25 +1,22 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import DishList from './dish-list/DishList';
-import DishApp from './dish-add/DishAdd';
-import DishDetails from './dish-details/DishDetails';
+import DishListScreen from './dish-list/DishListScreen';
+import DishAdd from './dish-add/DishAddScreen';
+import DishDetails from './dish-details/DishDetailsScreen';
 
-/* eslint-disable-next-line */
-export interface DishesProps {}
-
-export function Dishes(props: DishesProps) {
+export const Dishes = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="dish-details">
+    <Stack.Navigator initialRouteName="dish-list">
       <Stack.Screen
         name="dish-list"
         options={{ headerShown: false }}
-        component={DishList}
+        component={DishListScreen}
       />
       <Stack.Screen
-        name="dish-form"
+        name="dish-add"
         options={{ headerShown: false }}
-        component={DishApp}
+        component={DishAdd}
       />
       <Stack.Screen
         name="dish-details"
@@ -28,6 +25,6 @@ export function Dishes(props: DishesProps) {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export default Dishes;

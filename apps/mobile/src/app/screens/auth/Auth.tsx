@@ -5,10 +5,7 @@ import SignUp from './sign-up/SignUp';
 import RecoverPassword from './recover-password/RecoverPassword';
 import EmailConfirmation from './email-confirmation/EmailConfirmation';
 
-/* eslint-disable-next-line */
-export interface AuthProps {}
-
-export function Auth(props: AuthProps) {
+export const Auth = () => {
   const Stack = createStackNavigator();
 
   return (
@@ -35,6 +32,6 @@ export function Auth(props: AuthProps) {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export default Auth;

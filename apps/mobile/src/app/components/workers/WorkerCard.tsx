@@ -3,12 +3,12 @@ import React from 'react';
 import { View, Text, TouchableHighlight, Image } from 'react-native';
 import { Worker } from '../../model/woker.model';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-export interface WorkerCardProps {
+interface WorkerCardProps {
   worker: Worker;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function WorkerCard(props: WorkerCardProps) {
+export const WorkerCard = (props: WorkerCardProps) => {
   return (
     <View
       style={{
@@ -70,6 +70,6 @@ export function WorkerCard(props: WorkerCardProps) {
       </TouchableHighlight>
     </View>
   );
-}
+};
 
 export default WorkerCard;

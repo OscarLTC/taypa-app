@@ -26,7 +26,7 @@ interface WorkerListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function WorkerList(props: WorkerListProps) {
+export const WorkerList = (props: WorkerListProps) => {
   const [workers, setWorkers] = useState<Worker[]>();
   const userData = useRecoilValue(userState);
 
@@ -168,6 +168,6 @@ export function WorkerList(props: WorkerListProps) {
       )}
     </View>
   );
-}
+};
 
 export default WorkerList;

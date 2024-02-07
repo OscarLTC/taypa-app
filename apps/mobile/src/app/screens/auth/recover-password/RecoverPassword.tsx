@@ -9,7 +9,7 @@ interface RecoverScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function RecoverPassword(props: RecoverScreenProps) {
+export const RecoverPassword = (props: RecoverScreenProps) => {
   const {
     control,
     handleSubmit,
@@ -141,6 +141,6 @@ export function RecoverPassword(props: RecoverScreenProps) {
       </View>
     </View>
   );
-}
+};
 
 export default RecoverPassword;

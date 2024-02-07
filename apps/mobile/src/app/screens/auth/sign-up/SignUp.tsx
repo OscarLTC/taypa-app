@@ -17,12 +17,11 @@ import { userState } from '../../../storage/user/user.atom';
 import { doc, setDoc } from 'firebase/firestore';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-/* eslint-disable-next-line */
-export interface RegisterScreenProps {
+interface RegisterScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function SignUp(props: RegisterScreenProps) {
+export const SignUp = (props: RegisterScreenProps) => {
   const setUser = useSetRecoilState(userState);
 
   const signUpUser = async (email: string, password: string) => {
@@ -309,6 +308,6 @@ export function SignUp(props: RegisterScreenProps) {
       </View>
     </View>
   );
-}
+};
 
 export default SignUp;

@@ -8,10 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-/* eslint-disable-next-line */
-export interface RolesScreenProps {}
-
-export function RolesScreen(props: RolesScreenProps) {
+export const RolesScreen = () => {
   const roles = [
     {
       name: 'Mesero',
@@ -129,6 +126,6 @@ export function RolesScreen(props: RolesScreenProps) {
       </View>
     </View>
   );
-}
+};
 
 export default RolesScreen;

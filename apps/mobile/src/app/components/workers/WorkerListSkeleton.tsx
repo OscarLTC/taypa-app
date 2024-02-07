@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-export function WorkerListSkeleton() {
+export const WorkerListSkeleton = () => {
   return (
     <View
       style={{
@@ -44,6 +44,6 @@ export function WorkerListSkeleton() {
       ))}
     </View>
   );
-}
+};
 
 export default WorkerListSkeleton;

@@ -1,13 +1,15 @@
-import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
-import { TableList } from '../../components/tables/TableList';
+import React from 'react';
 
-interface TablesProps {
+import { View, Text, TouchableHighlight, Image } from 'react-native';
+import { DishList } from '../../../components/dishes/DishList';
+import { AntDesign } from '@expo/vector-icons';
+
+interface DishListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const Tables = (props: TablesProps) => {
+export const DishListScreen = (props: DishListProps) => {
   return (
     <View
       style={{
@@ -22,6 +24,7 @@ export const Tables = (props: TablesProps) => {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
+          position: 'relative',
         }}
       >
         <TouchableHighlight
@@ -46,17 +49,39 @@ export const Tables = (props: TablesProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Mesas</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Platos</Text>
+        <TouchableHighlight
+          underlayColor={'#941B0C'}
+          style={{
+            position: 'absolute',
+            right: 0,
+            alignSelf: 'center',
+            borderRadius: 100,
+            backgroundColor: '#E74545',
+            zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          delayPressOut={100}
+          onPress={() => {
+            props.navigation.navigate('dish-add');
+          }}
+        >
+          <AntDesign name="plus" size={25} color="white" />
+        </TouchableHighlight>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
-            source={require('../../../../assets/araña_cortada_titulo.png')}
+            source={require('../../../../../assets/araña_cortada_titulo.png')}
             style={{ width: 175, height: 190 }}
-          />
+          ></Image>
         </View>
       </View>
-      <TableList />
+      <DishList navigation={props.navigation} />
     </View>
   );
 };
 
-export default Tables;
+export default DishListScreen;

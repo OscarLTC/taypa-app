@@ -29,7 +29,7 @@ interface WorkerEditProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export function WorkerEdit(props: WorkerEditProps) {
+export const WorkerEdit = (props: WorkerEditProps) => {
   const {
     control,
     handleSubmit,
@@ -417,6 +417,6 @@ export function WorkerEdit(props: WorkerEditProps) {
       </TouchableHighlight>
     </>
   );
-}
+};
 
 export default WorkerEdit;

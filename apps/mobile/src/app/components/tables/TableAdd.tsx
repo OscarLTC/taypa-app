@@ -5,7 +5,11 @@ import { TouchableHighlight } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { firestore } from '../../config/Firebase';
 
-export const TableAdd = ({ lastNumber }: { lastNumber: number }) => {
+interface TableAddProps {
+  lastNumber: number;
+}
+
+export const TableAdd = (props: TableAddProps) => {
   const userData = useRecoilValue(userState);
 
   const addTable = async () => {
@@ -13,8 +17,8 @@ export const TableAdd = ({ lastNumber }: { lastNumber: number }) => {
     const tablesCollection = collection(firestore, 'tables');
     const newTable = {
       adminId,
-      number: lastNumber + 1,
-      name: `Mesa ${lastNumber + 1}`,
+      number: props.lastNumber + 1,
+      name: `Mesa ${props.lastNumber + 1}`,
     };
     await addDoc(tablesCollection, newTable);
   };
