@@ -1,15 +1,26 @@
 import { deleteDoc, doc } from 'firebase/firestore';
 import { View, TouchableHighlight, Image } from 'react-native';
-import { firestore } from '../../config/Firebase';
+import { firestore, storage } from '../../config/Firebase';
+import { ref, deleteObject } from 'firebase/storage';
+import { Dish } from '../../model/dish.model';
 
 interface DishRemoveButtonProps {
-  dishId: string;
+  dish: Dish;
 }
 
 export const DishRemoveButton = (props: DishRemoveButtonProps) => {
-  const removeDish = () => {
-    const dishRef = doc(firestore, 'dishes', props.dishId);
-    deleteDoc(dishRef);
+  const deteleDishImage = async () => {
+    const imageRef = ref(
+      storage,
+      `dishes/${props.dish?.adminId}/${props.dish?.image.name}`
+    );
+    await deleteObject(imageRef);
+  };
+
+  const deleteDish = async () => {
+    const dishRef = doc(firestore, 'dishes', props.dish.id);
+    await deleteDoc(dishRef);
+    await deteleDishImage();
   };
 
   return (
@@ -29,7 +40,7 @@ export const DishRemoveButton = (props: DishRemoveButtonProps) => {
           borderTopLeftRadius: 15,
         }}
         delayPressOut={100}
-        onPress={removeDish}
+        onPress={deleteDish}
       >
         <Image
           style={{

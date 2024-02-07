@@ -3,6 +3,7 @@ import React from 'react';
 import DishListScreen from './dish-list/DishListScreen';
 import DishAdd from './dish-add/DishAddScreen';
 import DishDetails from './dish-details/DishDetailsScreen';
+import { DishEdit } from './dish-edit/DishEdit';
 
 export const Dishes = () => {
   const Stack = createStackNavigator();
@@ -17,6 +18,11 @@ export const Dishes = () => {
         name="dish-add"
         options={{ headerShown: false }}
         component={DishAdd}
+      />
+      <Stack.Screen
+        name="dish-edit"
+        options={{ headerShown: false }}
+        component={DishEdit}
       />
       <Stack.Screen
         name="dish-details"

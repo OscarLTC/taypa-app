@@ -24,7 +24,7 @@ export const DishCard = (props: DishCardProps) => {
       }}
       onPress={() =>
         props.navigation.navigate('dish-details', {
-          dish: props.dish,
+          dishId: props.dish.id,
         })
       }
     >
@@ -69,7 +69,7 @@ export const DishCard = (props: DishCardProps) => {
           S/{Number(props.dish.price).toFixed(2)}
         </Text>
       </View>
-      <DishRemoveButton dishId={props.dish.id} />
+      <DishRemoveButton dish={props.dish} />
     </TouchableOpacity>
   );
 };

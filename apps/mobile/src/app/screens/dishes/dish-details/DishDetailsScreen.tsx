@@ -1,5 +1,11 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import React from 'react';
+import {
+  NavigationProp,
+  ParamListBase,
+  Route,
+  useIsFocused,
+} from '@react-navigation/native';
+import { deleteDoc, doc, getDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 
 import {
   View,
@@ -8,12 +14,50 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import { firestore, storage } from '../../../config/Firebase';
+import { Dish } from '../../../model/dish.model';
+import { deleteObject, ref } from 'firebase/storage';
 
 interface DishDetailsProps {
+  route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
 }
 
 export const DishDetails = (props: DishDetailsProps) => {
+  const { dishId } = props.route.params as { dishId: string };
+  const [dish, setDish] = useState<Dish>();
+  const isDishDetailsFocused = useIsFocused();
+
+  const getDishDoc = async () => {
+    const dishRef = doc(firestore, 'dishes', dishId || '');
+    await getDoc(dishRef).then((dishDoc) => {
+      setDish({
+        id: dishDoc.id,
+        ...dishDoc.data(),
+      } as Dish);
+    });
+  };
+
+  const deteleDishImage = async () => {
+    const imageRef = ref(
+      storage,
+      `dishes/${dish?.adminId}/${dish?.image.name}`
+    );
+    await deleteObject(imageRef);
+  };
+
+  const deleteDish = async () => {
+    const dishRef = doc(firestore, 'dishes', dishId);
+    await deleteDoc(dishRef);
+    props.navigation.goBack();
+    await deteleDishImage();
+  };
+
+  useEffect(() => {
+    if (isDishDetailsFocused) {
+      getDishDoc();
+    }
+  }, [isDishDetailsFocused]);
   return (
     <View
       style={{
@@ -73,25 +117,29 @@ export const DishDetails = (props: DishDetailsProps) => {
           style={{ backgroundColor: '#e2a0a0', height: '40%', padding: 30 }}
         >
           <Image
-            source={require('../../../../../assets/lomo_saltado.png')}
+            source={{
+              uri: dish?.image.url,
+            }}
             style={{
               objectFit: 'contain',
               alignSelf: 'center',
               width: 300,
+              height: 300,
             }}
           />
         </View>
         <View style={{ padding: 30, height: '50%' }}>
           <View style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-              Lomo Saltado
+              {dish?.name}
             </Text>
             <View
               style={{
-                padding: 10,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
                 backgroundColor: '#FBD8D8',
                 borderRadius: 20,
-                width: 100,
+                alignSelf: 'flex-start',
               }}
             >
               <Text
@@ -102,7 +150,7 @@ export const DishDetails = (props: DishDetailsProps) => {
                   color: '#941B0C',
                 }}
               >
-                S/ 15.00
+                S/ {Number(dish?.price).toFixed(2)}
               </Text>
             </View>
             <Text
@@ -112,10 +160,7 @@ export const DishDetails = (props: DishDetailsProps) => {
                 lineHeight: 20,
               }}
             >
-              Presenta tiernos trozos de lomo de res salteados a la perfección
-              con cebollas, tomates y pimientos, en una mezcla única de sabores
-              que incluye toques de ajo, soja y especias cuidadosamente
-              seleccionadas. Todo se sirve sobre una cama de arroz al vapor.
+              {dish?.description}
             </Text>
           </View>
           <View
@@ -136,6 +181,7 @@ export const DishDetails = (props: DishDetailsProps) => {
                 paddingVertical: 10,
                 borderRadius: 10,
               }}
+              onPress={deleteDish}
             >
               <Text style={{ color: '#FFFFFF' }}>Eliminar</Text>
             </TouchableOpacity>
@@ -145,6 +191,11 @@ export const DishDetails = (props: DishDetailsProps) => {
                 paddingHorizontal: 30,
                 paddingVertical: 10,
                 borderRadius: 10,
+              }}
+              onPress={() => {
+                props.navigation.navigate('dish-edit', {
+                  dishId: dishId,
+                });
               }}
             >
               <Text style={{ color: '#FFFFFF' }}>Actualizar</Text>
