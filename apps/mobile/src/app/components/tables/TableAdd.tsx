@@ -1,29 +1,29 @@
-import { useRecoilRefresher_UNSTABLE, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { userState } from '../../storage/user/user.atom';
 import { addDoc, collection } from 'firebase/firestore';
 import { TouchableHighlight } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { firestore } from '../../config/Firebase';
-import { tablesSelector } from '../../storage/tables/tables.selector';
 
-export const TableAdd = () => {
+export const TableAdd = ({ lastNumber }: { lastNumber: number }) => {
   const userData = useRecoilValue(userState);
-  const refreshTables = useRecoilRefresher_UNSTABLE(tablesSelector);
 
   const addTable = async () => {
     const adminId = userData?.userId;
     const tablesCollection = collection(firestore, 'tables');
     const newTable = {
       adminId,
-      number: 1,
+      number: lastNumber + 1,
+      name: `Mesa ${lastNumber + 1}`,
     };
     await addDoc(tablesCollection, newTable);
-    refreshTables();
   };
 
   return (
     <TouchableHighlight
       onPress={addTable}
+      delayPressOut={200}
+      underlayColor={'#B3B6B7'}
       style={{
         flexDirection: 'row',
         backgroundColor: '#D0CECE',

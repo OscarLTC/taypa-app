@@ -151,8 +151,9 @@ export function WorkerDetails(props: WorkerDetailsProps) {
                 gap: 10,
               }}
             >
-              {worker?.roles.sort().map((role, index) => (
+              {worker?.roles?.sort().map((role, index) => (
                 <View
+                  key={index}
                   style={{
                     backgroundColor: '#FFC4BD',
                     paddingVertical: 10,

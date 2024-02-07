@@ -1,11 +1,35 @@
-import { Ionicons } from '@expo/vector-icons';
-import { ScrollView, Text, TouchableHighlight, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { ScrollView, Text, View } from 'react-native';
 import { TableAdd } from './TableAdd';
-import { tablesSelector } from '../../storage/tables/tables.selector';
+import { userState } from '../../storage/user/user.atom';
+import { useRecoilValue } from 'recoil';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { firestore } from '../../config/Firebase';
+import { useEffect, useState } from 'react';
+import { Table } from '../../model/table.model';
+import { useIsFocused } from '@react-navigation/native';
+import { TableRemove } from './TableRemove';
 
 export const TableList = () => {
-  const tables = useRecoilValue(tablesSelector);
+  const userData = useRecoilValue(userState);
+  const [tables, setTables] = useState<Table[]>([]);
+  const isTableListFocused = useIsFocused();
+
+  const adminId = userData?.userId;
+  const tablesCollection = collection(firestore, 'tables');
+  const q = query(tablesCollection, where('adminId', '==', adminId));
+
+  useEffect(() => {
+    if (isTableListFocused) {
+      const unsubscribe = onSnapshot(q, (tableSnapshot) => {
+        const tables = tableSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setTables(tables as Table[]);
+      });
+      return () => unsubscribe();
+    }
+  }, [isTableListFocused]);
 
   return (
     <ScrollView
@@ -26,12 +50,16 @@ export const TableList = () => {
           marginBottom: 10,
         }}
       >
-        {tables.map((table, index) => {
-          if (index == tables.length - 1) {
+        {tables
+          .sort((a, b) => a.number - b.number)
+          .map((table, index) => {
+            if (index == tables.length - 1) {
+              return <TableRemove table={table} />;
+            }
             return (
-              <TouchableHighlight
+              <View
                 style={{
-                  backgroundColor: '#FEA1A1',
+                  backgroundColor: 'white',
                   borderRadius: 10,
                   elevation: 1,
                   height: 60,
@@ -42,52 +70,13 @@ export const TableList = () => {
                 }}
                 key={table.id}
               >
-                <View
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Ionicons
-                    style={{
-                      position: 'absolute',
-                      right: 2,
-                      bottom: 3,
-                    }}
-                    name="trash"
-                    size={20}
-                    color="white"
-                  />
-                  <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-                    {index + 1}
-                  </Text>
-                </View>
-              </TouchableHighlight>
+                <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+                  {table.number}
+                </Text>
+              </View>
             );
-          }
-          return (
-            <View
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 10,
-                elevation: 1,
-                height: 60,
-                width: '25%',
-                margin: 'auto',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              key={table.id}
-            >
-              <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-                {index + 1}
-              </Text>
-            </View>
-          );
-        })}
-        <TableAdd />
+          })}
+        <TableAdd lastNumber={tables.length} />
       </View>
     </ScrollView>
   );

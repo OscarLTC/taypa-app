@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -35,6 +35,7 @@ export function WorkerAdd(props: WorkerAddProps) {
     formState: { errors },
   } = useForm<Worker>();
   const roles = ['Cajero', 'Cocinero', 'Mesero'];
+  const [isLoading, setIsLoading] = useState(false);
 
   const userData = useRecoilValue(userState);
 
@@ -57,11 +58,13 @@ export function WorkerAdd(props: WorkerAddProps) {
   };
 
   const addWorker = async (worker: Worker) => {
+    setIsLoading(true);
     const imageUrl = await uploadImageToFirebae();
     addDoc(collection(firestore, 'workers'), {
       ...worker,
       image: imageUrl,
     }).then(() => {
+      setIsLoading(false);
       props.navigation.navigate('worker-list');
     });
   };
@@ -365,6 +368,7 @@ export function WorkerAdd(props: WorkerAddProps) {
         </View>
       </View>
       <TouchableHighlight
+        disabled={isLoading}
         style={{
           backgroundColor: '#941B0C',
           paddingVertical: 5,
@@ -375,6 +379,7 @@ export function WorkerAdd(props: WorkerAddProps) {
           height: 60,
           alignSelf: 'center',
           justifyContent: 'center',
+          opacity: isLoading ? 0.5 : 1,
         }}
         onPress={handleSubmit(onSubmitPress)}
       >
