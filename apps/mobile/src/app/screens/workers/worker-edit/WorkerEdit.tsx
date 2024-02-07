@@ -24,8 +24,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { Worker } from '../../../model/woker.model';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 
-/* eslint-disable-next-line */
-
 interface WorkerEditProps {
   route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
@@ -36,13 +34,12 @@ export function WorkerEdit(props: WorkerEditProps) {
     control,
     handleSubmit,
     clearErrors,
-    getValues,
     setValue,
     setError,
     watch,
     formState: { errors },
   } = useForm<Worker>();
-  const roles = ['Mesero', 'Cocinero', 'Cajero'];
+  const roles = ['Cajero', 'Cocinero', 'Mesero'];
 
   const { workerId } = props.route.params as { workerId: string };
 
@@ -308,13 +305,16 @@ export function WorkerEdit(props: WorkerEditProps) {
                     <TouchableOpacity
                       activeOpacity={0.8}
                       onPress={() => {
-                        const newRoles = getValues('roles');
-                        newRoles[index] = !newRoles[index] ? role : '';
-                        setValue('roles', newRoles);
-                        clearErrors('roles');
+                        if (value?.includes(role)) {
+                          onChange(value?.filter((item) => item !== role));
+                        } else {
+                          onChange([...(value ?? []), role]);
+                        }
                       }}
                       style={{
-                        backgroundColor: value ? '#F6AA1C' : '#FFFFFF',
+                        backgroundColor: value?.includes(role)
+                          ? '#F6AA1C'
+                          : '#FFF',
                         padding: 15,
                         borderRadius: 10,
                         elevation: 2,
@@ -323,14 +323,14 @@ export function WorkerEdit(props: WorkerEditProps) {
                       <Text
                         style={{
                           fontWeight: 'bold',
-                          color: value ? '#FFFFFF' : '#5C5C5C',
+                          color: value?.includes(role) ? '#FFFFFF' : '#5C5C5C',
                         }}
                       >
                         {role}
                       </Text>
                     </TouchableOpacity>
                   )}
-                  name={`roles.${index}`}
+                  name={`roles`}
                 />
               ))}
             </View>
@@ -412,7 +412,7 @@ export function WorkerEdit(props: WorkerEditProps) {
             textAlign: 'center',
           }}
         >
-          Registrar
+          Actualizar
         </Text>
       </TouchableHighlight>
     </>

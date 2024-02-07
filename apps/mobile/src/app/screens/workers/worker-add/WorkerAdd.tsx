@@ -29,13 +29,12 @@ export function WorkerAdd(props: WorkerAddProps) {
     control,
     handleSubmit,
     clearErrors,
-    getValues,
     setValue,
     setError,
     watch,
     formState: { errors },
   } = useForm<Worker>();
-  const roles = ['Mesero', 'Cocinero', 'Cajero'];
+  const roles = ['Cajero', 'Cocinero', 'Mesero'];
 
   const userData = useRecoilValue(userState);
 
@@ -63,7 +62,7 @@ export function WorkerAdd(props: WorkerAddProps) {
       ...worker,
       image: imageUrl,
     }).then(() => {
-      props.navigation.goBack();
+      props.navigation.navigate('worker-list');
     });
   };
 
@@ -276,13 +275,16 @@ export function WorkerAdd(props: WorkerAddProps) {
                     <TouchableOpacity
                       activeOpacity={0.8}
                       onPress={() => {
-                        const newRoles = getValues('roles');
-                        newRoles[index] = !newRoles[index] ? role : '';
-                        setValue('roles', newRoles);
-                        clearErrors('roles');
+                        if (value?.includes(role)) {
+                          onChange(value?.filter((item) => item !== role));
+                        } else {
+                          onChange([...(value ?? []), role]);
+                        }
                       }}
                       style={{
-                        backgroundColor: value ? '#F6AA1C' : '#FFFFFF',
+                        backgroundColor: value?.includes(role)
+                          ? '#F6AA1C'
+                          : '#FFFFFF',
                         padding: 15,
                         borderRadius: 10,
                         elevation: 2,
@@ -291,14 +293,14 @@ export function WorkerAdd(props: WorkerAddProps) {
                       <Text
                         style={{
                           fontWeight: 'bold',
-                          color: value ? '#FFFFFF' : '#5C5C5C',
+                          color: value?.includes(role) ? '#FFFFFF' : '#5C5C5C',
                         }}
                       >
                         {role}
                       </Text>
                     </TouchableOpacity>
                   )}
-                  name={`roles.${index}`}
+                  name={`roles`}
                 />
               ))}
             </View>

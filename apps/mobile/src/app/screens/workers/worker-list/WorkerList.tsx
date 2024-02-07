@@ -1,10 +1,11 @@
 import {
   NavigationProp,
   ParamListBase,
-  useFocusEffect,
+  useIsFocused,
+  useNavigationState,
 } from '@react-navigation/native';
-import { collection, getDocs } from 'firebase/firestore';
-import React, { useCallback, useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 
 import {
   View,
@@ -18,17 +19,24 @@ import WorkerCard from '../../../components/workers/WorkerCard';
 import { Worker } from '../../../model/woker.model';
 import { AntDesign } from '@expo/vector-icons';
 import WorkerListSkeleton from '../../../components/workers/WorkerListSkeleton';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../../storage/user/user.atom';
 
-export interface WorkerListProps {
+interface WorkerListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
 export function WorkerList(props: WorkerListProps) {
   const [workers, setWorkers] = useState<Worker[]>();
+  const userData = useRecoilValue(userState);
+
+  const navigationState = useNavigationState((state) => state.key);
 
   const getWorkers = async () => {
+    const adminId = userData?.userId;
     const workerCollection = collection(firestore, 'workers');
-    const workerSnapshot = await getDocs(workerCollection);
+    const q = query(workerCollection, where('adminId', '==', adminId));
+    const workerSnapshot = await getDocs(q);
     const workers = workerSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -36,13 +44,15 @@ export function WorkerList(props: WorkerListProps) {
     setWorkers(workers as Worker[]);
   };
 
-  //para que se actualice la lista de trabajadores cada vez que se entra a la pantalla
-  useFocusEffect(
-    useCallback(() => {
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
       getWorkers();
-      return;
-    }, [])
-  );
+    }
+  }, [isFocused]);
+
+  useEffect(() => {}, [navigationState]);
 
   return (
     <View

@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { isUserSignedInSelector } from '../storage/user/user.selector';
+import Tables from './tables/Tables';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -17,7 +18,6 @@ export function Container(props: ContainerProps) {
   const isUserSignedIn = useRecoilValue(isUserSignedInSelector);
 
   useEffect(() => {
-    //TODO: hacer lo redireccion en la SplashScreen
     if (isUserSignedIn) {
       props.navigation.navigate('container', { screen: 'home' });
     }
@@ -39,6 +39,11 @@ export function Container(props: ContainerProps) {
         name="workers"
         options={{ headerShown: false }}
         component={Workers}
+      />
+      <Stack.Screen
+        name="tables"
+        options={{ headerShown: false }}
+        component={Tables}
       />
       <Stack.Screen
         name="dishes"

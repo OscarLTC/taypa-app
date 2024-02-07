@@ -30,21 +30,6 @@ export function WorkerDetails(props: WorkerDetailsProps) {
     } as Worker);
   };
 
-  const formatRoles = (roles: string[]) => {
-    let formattedRoles = '';
-    roles.map((role, index) => {
-      if (index === 0) {
-        formattedRoles = role;
-      } else if (index === roles.length - 1) {
-        formattedRoles = `${formattedRoles} y ${role}`;
-      } else {
-        formattedRoles = `${formattedRoles}, ${role}`;
-      }
-      return formattedRoles;
-    });
-    return formattedRoles;
-  };
-
   const deteleWorkerImage = async () => {
     const imageRef = ref(
       storage,
@@ -159,21 +144,35 @@ export function WorkerDetails(props: WorkerDetailsProps) {
             <Text style={{ fontWeight: '500', color: '#777676', fontSize: 12 }}>
               Roles
             </Text>
+
             <View
               style={{
-                backgroundColor: '#FFC4BD',
-                paddingVertical: 10,
-                paddingHorizontal: 15,
-                borderRadius: 20,
-                marginTop: 10,
-                alignSelf: 'flex-start',
+                flexDirection: 'row',
+                gap: 10,
               }}
             >
-              <Text
-                style={{ color: '#890303', fontWeight: '500', fontSize: 14 }}
-              >
-                {formatRoles(worker?.roles ?? [])}
-              </Text>
+              {worker?.roles.sort().map((role, index) => (
+                <View
+                  style={{
+                    backgroundColor: '#FFC4BD',
+                    paddingVertical: 10,
+                    paddingHorizontal: 15,
+                    borderRadius: 20,
+                    marginTop: 10,
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#890303',
+                      fontWeight: '500',
+                      fontSize: 14,
+                    }}
+                  >
+                    {role}
+                  </Text>
+                </View>
+              ))}
             </View>
           </View>
           <View

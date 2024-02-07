@@ -1,6 +1,5 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import React from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   View,
@@ -16,6 +15,7 @@ import { auth, firestore } from '../../../config/Firebase';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '../../../storage/user/user.atom';
 import { doc, setDoc } from 'firebase/firestore';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 /* eslint-disable-next-line */
 export interface RegisterScreenProps {
