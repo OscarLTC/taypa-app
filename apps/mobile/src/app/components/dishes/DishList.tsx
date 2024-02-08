@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/native';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { firestore } from '../../config/Firebase';
 import { Dish } from '../../model/dish.model';
@@ -39,24 +39,45 @@ export const DishList = (props: DishListProps) => {
     }
   }, [isDishListFocused]);
   return dishes ? (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{ marginBottom: 10, marginTop: 30 }}
-      scrollEventThrottle={16}
-    >
+    dishes.length > 0 ? (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 10, marginTop: 30 }}
+        scrollEventThrottle={16}
+      >
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+          }}
+        >
+          {dishes.map((dish) => (
+            <DishCard key={dish.id} dish={dish} navigation={props.navigation} />
+          ))}
+        </View>
+      </ScrollView>
+    ) : (
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 40,
         }}
       >
-        {dishes.map((dish, index) => (
-          <DishCard key={dish.id} dish={dish} navigation={props.navigation} />
-        ))}
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#000000',
+          }}
+        >
+          No hay platillos
+        </Text>
       </View>
-    </ScrollView>
+    )
   ) : (
     <DishListSkeleton />
   );

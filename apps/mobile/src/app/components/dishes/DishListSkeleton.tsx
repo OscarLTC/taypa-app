@@ -9,6 +9,7 @@ export const DishListSkeleton = () => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}
+          key={index}
         >
           {Array.from({ length: 2 }).map((_, index) => (
             <View
