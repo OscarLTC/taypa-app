@@ -1,13 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
+import { View, TouchableHighlight, Image, Text } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
-import { TableList } from '../../components/tables/TableList';
+import { RolesTableList } from '../../../components/roles/RolesTableList';
 
-interface TablesProps {
+interface RolesTablesProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const Tables = (props: TablesProps) => {
+export const RolesTables = (props: RolesTablesProps) => {
   return (
     <View
       style={{
@@ -48,14 +48,12 @@ export const Tables = (props: TablesProps) => {
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Mesas</Text>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
-            source={require('../../../../assets/araña_cortada_titulo.png')}
+            source={require('../../../../../assets/araña_cortada_titulo.png')}
             style={{ width: 175, height: 190 }}
           />
         </View>
       </View>
-      <TableList />
+      <RolesTableList />
     </View>
   );
 };
-
-export default Tables;

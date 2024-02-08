@@ -118,7 +118,6 @@ export const WorkerAdd = (props: WorkerAddProps) => {
     <>
       <View
         style={{
-          marginTop: 30,
           padding: 30,
           height: '100%',
           backgroundColor: '#F5F5F5',

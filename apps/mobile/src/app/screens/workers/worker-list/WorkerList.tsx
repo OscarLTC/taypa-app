@@ -2,7 +2,6 @@ import {
   NavigationProp,
   ParamListBase,
   useIsFocused,
-  useNavigationState,
 } from '@react-navigation/native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
@@ -30,8 +29,6 @@ export const WorkerList = (props: WorkerListProps) => {
   const [workers, setWorkers] = useState<Worker[]>();
   const userData = useRecoilValue(userState);
 
-  const navigationState = useNavigationState((state) => state.key);
-
   const getWorkers = async () => {
     const adminId = userData?.userId;
     const workerCollection = collection(firestore, 'workers');
@@ -52,12 +49,9 @@ export const WorkerList = (props: WorkerListProps) => {
     }
   }, [isFocused]);
 
-  useEffect(() => {}, [navigationState]);
-
   return (
     <View
       style={{
-        marginTop: 30,
         padding: 30,
         height: '100%',
         backgroundColor: '#F5F5F5',

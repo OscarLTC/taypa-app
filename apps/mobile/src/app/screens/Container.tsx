@@ -8,7 +8,8 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { isUserSignedInSelector } from '../storage/user/user.selector';
 import Tables from './tables/Tables';
-import RolesScreen from './roles/RolesScreen';
+import { Roles } from './roles/Roles';
+import { StatusBar } from 'react-native';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -19,11 +20,16 @@ export const Container = (props: ContainerProps) => {
   const userSelector = useRecoilValue(isUserSignedInSelector);
 
   useEffect(() => {
+    StatusBar.setHidden(true);
+
     if (userSelector.isUserLocked) {
       props.navigation.navigate('roles');
     } else if (userSelector.isUserSignedIn) {
       props.navigation.navigate('home');
     }
+    return () => {
+      StatusBar.setHidden(false);
+    };
   }, [userSelector]);
 
   return (
@@ -56,7 +62,7 @@ export const Container = (props: ContainerProps) => {
       <Stack.Screen
         name="roles"
         options={{ headerShown: false }}
-        component={RolesScreen}
+        component={Roles}
       />
     </Stack.Navigator>
   );

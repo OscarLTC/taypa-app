@@ -1,13 +1,16 @@
 import { AntDesign } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
-import { TableList } from '../../components/tables/TableList';
+import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
+import { Image, Text, TouchableHighlight, View } from 'react-native';
+import { RolesWorkerList } from '../../../components/roles/RolesWorkerList';
 
-interface TablesProps {
+interface RolesWorkerListScreenProps {
+  route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const Tables = (props: TablesProps) => {
+export const RolesWorkerListScreen = (props: RolesWorkerListScreenProps) => {
+  const { role } = props.route.params as { role: string };
+
   return (
     <View
       style={{
@@ -45,17 +48,15 @@ export const Tables = (props: TablesProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Mesas</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{role}</Text>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
-            source={require('../../../../assets/araña_cortada_titulo.png')}
+            source={require('../../../../../assets/araña_cortada_titulo.png')}
             style={{ width: 175, height: 190 }}
-          />
+          ></Image>
         </View>
       </View>
-      <TableList />
+      <RolesWorkerList role={role} navigation={props.navigation} />
     </View>
   );
 };
-
-export default Tables;

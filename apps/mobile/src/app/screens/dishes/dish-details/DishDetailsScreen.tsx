@@ -79,7 +79,7 @@ export const DishDetails = (props: DishDetailsProps) => {
           style={{
             position: 'absolute',
             left: 30,
-            top: 60,
+            top: 30,
             padding: 10,
             alignSelf: 'center',
             borderRadius: 100,
@@ -98,7 +98,7 @@ export const DishDetails = (props: DishDetailsProps) => {
             source={require('../../../../../assets/arrow_back.png')}
           />
         </TouchableHighlight>
-        <View style={{ position: 'absolute', top: 30, right: 0 }}>
+        <View style={{ position: 'absolute', right: 0 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}
             style={{ width: 175, height: 190 }}
@@ -109,7 +109,6 @@ export const DishDetails = (props: DishDetailsProps) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          marginTop: 30,
           height: '100%',
         }}
       >

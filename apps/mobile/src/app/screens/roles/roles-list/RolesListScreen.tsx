@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   View,
@@ -7,34 +7,42 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
-import { UnlockViewModal } from '../../components/home/UnlockViewModal';
+import { UnlockViewModal } from '../../../components/home/UnlockViewModal';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { useRecoilRefresher_UNSTABLE, useRecoilState } from 'recoil';
+import { userLockedState } from '../../../storage/userLocked/userLocked';
 
 interface RolesScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const RolesScreen = (props: RolesScreenProps) => {
+export const RolesListScreen = (props: RolesScreenProps) => {
   const roles = [
     {
       name: 'Mesero',
-      image: require('../../../../assets/mesero_rol.png'),
+      image: require('../../../../../assets/mesero_rol.png'),
     },
     {
       name: 'Cocinero',
-      image: require('../../../../assets/cocinero_rol.png'),
+      image: require('../../../../../assets/cocinero_rol.png'),
     },
     {
       name: 'Cajero',
-      image: require('../../../../assets/cajero_rol.png'),
+      image: require('../../../../../assets/cajero_rol.png'),
     },
   ];
   const [modalVisible, setModalVisible] = useState(false);
 
+  const refreshUserLocked = useRecoilRefresher_UNSTABLE(userLockedState);
+  const [userLocked, setUserLocked] = useRecoilState(userLockedState);
+
+  useEffect(() => {
+    refreshUserLocked();
+  });
+
   return (
     <View
       style={{
-        marginTop: 30,
         padding: 30,
         height: '100%',
         backgroundColor: '#F5F5F5',
@@ -42,7 +50,7 @@ export const RolesScreen = (props: RolesScreenProps) => {
     >
       <View style={{ position: 'absolute', top: 0, right: 0 }}>
         <Image
-          source={require('../../../../assets/araña_cortada_titulo.png')}
+          source={require('../../../../../assets/araña_cortada_titulo.png')}
           style={{ width: 175, height: 190 }}
         ></Image>
       </View>
@@ -75,7 +83,15 @@ export const RolesScreen = (props: RolesScreenProps) => {
               key={index}
               underlayColor={'#F6AA1C'}
               delayPressOut={100}
-              onPress={() => console.log('click')}
+              onPress={() => {
+                setUserLocked({
+                  ...userLocked,
+                  role: role.name,
+                });
+                props.navigation.navigate('roles-worker-list', {
+                  role: role.name,
+                });
+              }}
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 10,
@@ -142,4 +158,4 @@ export const RolesScreen = (props: RolesScreenProps) => {
   );
 };
 
-export default RolesScreen;
+export default RolesListScreen;

@@ -19,6 +19,7 @@ export const TableAdd = (props: TableAddProps) => {
       adminId,
       number: props.lastNumber + 1,
       name: `Mesa ${props.lastNumber + 1}`,
+      usageStatus: 'disponible',
     };
     await addDoc(tablesCollection, newTable);
   };
