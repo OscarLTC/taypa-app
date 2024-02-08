@@ -5,6 +5,9 @@ export const isUserSignedInSelector = selector({
   key: 'IsUserSignedIn',
   get: ({ get }) => {
     const user = get(userState);
-    return user !== null;
+    return {
+      isUserSignedIn: user !== null,
+      isUserLocked: user?.isLocked ?? false,
+    };
   },
 });

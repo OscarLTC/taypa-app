@@ -40,6 +40,7 @@ export const SignIn = (props: SignInProps) => {
           email: userCredential.user.email,
           userId: userCredential.user.uid,
           accessToken: token,
+          isLocked: false,
         });
         props.navigation.navigate('home');
         setValue('email', '');

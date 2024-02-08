@@ -9,6 +9,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MainManagementCard } from '../../components/home/MainManagementCard';
+import { LockViewModal } from '../../components/home/LockViewModal';
+import { useState } from 'react';
 
 interface HomeProps {
   navigation: NavigationProp<ParamListBase>;
@@ -38,6 +40,8 @@ export const HomeScreen = (props: HomeProps) => {
     },
   ];
   const resetUser = useResetRecoilState(userState);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onSignOutPress = () => {
     props.navigation.navigate('sign-in');
@@ -142,7 +146,7 @@ export const HomeScreen = (props: HomeProps) => {
           <TouchableHighlight
             underlayColor={'#F6AA1C'}
             delayPressOut={100}
-            onPress={() => console.log('click')}
+            onPress={() => setModalVisible(true)}
             style={{
               backgroundColor: '#890303',
               paddingVertical: 20,
@@ -165,6 +169,11 @@ export const HomeScreen = (props: HomeProps) => {
           </TouchableHighlight>
         </View>
       </View>
+      <LockViewModal
+        navigation={props.navigation}
+        modalVisible={modalVisible}
+        setModalVisible={(modalVisible) => setModalVisible(modalVisible)}
+      />
     </View>
   );
 };

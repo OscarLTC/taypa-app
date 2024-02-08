@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   View,
@@ -7,8 +7,14 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
+import { UnlockViewModal } from '../../components/home/UnlockViewModal';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-export const RolesScreen = () => {
+interface RolesScreenProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const RolesScreen = (props: RolesScreenProps) => {
   const roles = [
     {
       name: 'Mesero',
@@ -23,6 +29,8 @@ export const RolesScreen = () => {
       image: require('../../../../assets/cajero_rol.png'),
     },
   ];
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View
       style={{
@@ -113,6 +121,7 @@ export const RolesScreen = () => {
             paddingVertical: 10,
             paddingHorizontal: 70,
           }}
+          onPress={() => setModalVisible(true)}
         >
           <Text
             style={{
@@ -124,6 +133,11 @@ export const RolesScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      <UnlockViewModal
+        modalVisible={modalVisible}
+        navigation={props.navigation}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 };

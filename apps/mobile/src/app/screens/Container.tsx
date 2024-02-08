@@ -8,6 +8,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { isUserSignedInSelector } from '../storage/user/user.selector';
 import Tables from './tables/Tables';
+import RolesScreen from './roles/RolesScreen';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -15,13 +16,15 @@ interface ContainerProps {
 
 export const Container = (props: ContainerProps) => {
   const Stack = createStackNavigator();
-  const isUserSignedIn = useRecoilValue(isUserSignedInSelector);
+  const userSelector = useRecoilValue(isUserSignedInSelector);
 
   useEffect(() => {
-    if (isUserSignedIn) {
-      props.navigation.navigate('container', { screen: 'home' });
+    if (!userSelector.isUserLocked) {
+      props.navigation.navigate('roles');
+    } else if (!userSelector.isUserSignedIn) {
+      props.navigation.navigate('home');
     }
-  }, [isUserSignedIn]);
+  }, [userSelector]);
 
   return (
     <Stack.Navigator initialRouteName="auth">
@@ -49,6 +52,11 @@ export const Container = (props: ContainerProps) => {
         name="dishes"
         options={{ headerShown: false }}
         component={Dishes}
+      />
+      <Stack.Screen
+        name="roles"
+        options={{ headerShown: false }}
+        component={RolesScreen}
       />
     </Stack.Navigator>
   );

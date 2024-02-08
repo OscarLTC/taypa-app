@@ -45,6 +45,7 @@ export const SignUp = (props: RegisterScreenProps) => {
         accessToken: token,
         email: userCredential.user.email,
         userId: userCredential.user.uid,
+        isLocked: false,
       });
 
       props.navigation.navigate('home');
