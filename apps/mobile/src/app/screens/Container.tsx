@@ -19,9 +19,9 @@ export const Container = (props: ContainerProps) => {
   const userSelector = useRecoilValue(isUserSignedInSelector);
 
   useEffect(() => {
-    if (!userSelector.isUserLocked) {
+    if (userSelector.isUserLocked) {
       props.navigation.navigate('roles');
-    } else if (!userSelector.isUserSignedIn) {
+    } else if (userSelector.isUserSignedIn) {
       props.navigation.navigate('home');
     }
   }, [userSelector]);

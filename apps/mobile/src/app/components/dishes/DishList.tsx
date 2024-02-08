@@ -11,6 +11,7 @@ import { firestore } from '../../config/Firebase';
 import { Dish } from '../../model/dish.model';
 import { userState } from '../../storage/user/user.atom';
 import { DishCard } from './DishCard';
+import { DishListSkeleton } from './DishListSkeleton';
 
 interface DishListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -19,7 +20,7 @@ interface DishListProps {
 export const DishList = (props: DishListProps) => {
   const userData = useRecoilValue(userState);
   const isDishListFocused = useIsFocused();
-  const [dishes, setDishes] = useState<Dish[]>([]);
+  const [dishes, setDishes] = useState<Dish[]>();
 
   const adminId = userData?.userId;
   const dishesCollection = collection(firestore, 'dishes');
@@ -37,7 +38,7 @@ export const DishList = (props: DishListProps) => {
       return () => unsubscribe();
     }
   }, [isDishListFocused]);
-  return (
+  return dishes ? (
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{ marginBottom: 10, marginTop: 30 }}
@@ -56,5 +57,7 @@ export const DishList = (props: DishListProps) => {
         ))}
       </View>
     </ScrollView>
+  ) : (
+    <DishListSkeleton />
   );
 };
