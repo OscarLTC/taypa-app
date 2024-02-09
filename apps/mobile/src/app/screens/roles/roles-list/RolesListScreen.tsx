@@ -10,7 +10,7 @@ import {
 import { UnlockViewModal } from '../../../components/home/UnlockViewModal';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilRefresher_UNSTABLE, useRecoilState } from 'recoil';
-import { userLockedState } from '../../../storage/userLocked/userLocked';
+import { userLockedState } from '../../../storage/userLocked/userLocked.atom';
 
 interface RolesScreenProps {
   navigation: NavigationProp<ParamListBase>;

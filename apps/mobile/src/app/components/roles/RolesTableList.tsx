@@ -1,5 +1,9 @@
-import { ScrollView, Text, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useIsFocused,
+} from '@react-navigation/native';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -7,7 +11,11 @@ import { firestore } from '../../config/Firebase';
 import { Table } from '../../model/table.model';
 import { userState } from '../../storage/user/user.atom';
 
-export const RolesTableList = () => {
+interface RolesTableListProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const RolesTableList = (props: RolesTableListProps) => {
   const userData = useRecoilValue(userState);
   const [tables, setTables] = useState<Table[]>([]);
   const isTableListFocused = useIsFocused();
@@ -51,7 +59,7 @@ export const RolesTableList = () => {
         {tables
           .sort((a, b) => a.number - b.number)
           .map((table, index) => (
-            <View
+            <TouchableOpacity
               style={{
                 backgroundColor:
                   table.usageStatus === 'disponible' ? '#AFE39C' : '#FB8C8C',
@@ -64,11 +72,19 @@ export const RolesTableList = () => {
                 alignItems: 'center',
               }}
               key={table.id}
+              onPress={() => {
+                props.navigation.navigate('orders', {
+                  screen: 'order-details',
+                  params: {
+                    table,
+                  },
+                });
+              }}
             >
               <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
                 {table.number}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
       </View>
     </ScrollView>

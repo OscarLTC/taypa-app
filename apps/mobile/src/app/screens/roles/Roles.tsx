@@ -15,9 +15,7 @@ export const Roles = () => {
       />
       <Stack.Screen
         name="roles-worker-list"
-        options={{
-          headerStatusBarHeight: 0,
-        }}
+        options={{ headerShown: false }}
         component={RolesWorkerListScreen}
       />
       <Stack.Screen

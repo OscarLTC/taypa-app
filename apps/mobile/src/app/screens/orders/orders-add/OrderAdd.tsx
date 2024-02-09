@@ -1,13 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
-import { View, TouchableHighlight, Image, Text } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { RolesTableList } from '../../../components/roles/RolesTableList';
+import { View, TouchableHighlight, Image, Text } from 'react-native';
 
-interface RolesTablesProps {
+interface OrderAddProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const RolesTables = (props: RolesTablesProps) => {
+export const OrderAdd = (props: OrderAddProps) => {
   return (
     <View
       style={{
@@ -21,6 +20,7 @@ export const RolesTables = (props: RolesTablesProps) => {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
+          position: 'relative',
         }}
       >
         <TouchableHighlight
@@ -45,7 +45,29 @@ export const RolesTables = (props: RolesTablesProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Mesas</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Platos</Text>
+        <TouchableHighlight
+          underlayColor={'#941B0C'}
+          style={{
+            position: 'absolute',
+            right: 0,
+            alignSelf: 'center',
+            borderRadius: 100,
+            backgroundColor: '#E74545',
+            zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          delayPressOut={100}
+          onPress={() => {
+            props.navigation.navigate('dish-add');
+          }}
+        >
+          <AntDesign name="plus" size={25} color="white" />
+        </TouchableHighlight>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}
@@ -53,7 +75,6 @@ export const RolesTables = (props: RolesTablesProps) => {
           />
         </View>
       </View>
-      <RolesTableList navigation={props.navigation} />
     </View>
   );
 };

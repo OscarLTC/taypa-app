@@ -2,7 +2,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 import { Worker } from '../../model/woker.model';
 import { useRecoilState } from 'recoil';
-import { userLockedState } from '../../storage/userLocked/userLocked';
+import { userLockedState } from '../../storage/userLocked/userLocked.atom';
 
 interface RolesWorkerCardProps {
   worker: Worker;

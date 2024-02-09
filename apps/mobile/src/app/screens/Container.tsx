@@ -10,6 +10,7 @@ import { isUserSignedInSelector } from '../storage/user/user.selector';
 import Tables from './tables/Tables';
 import { Roles } from './roles/Roles';
 import { StatusBar } from 'react-native';
+import { Orders } from './orders/Order';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -58,6 +59,11 @@ export const Container = (props: ContainerProps) => {
         name="dishes"
         options={{ headerShown: false }}
         component={Dishes}
+      />
+      <Stack.Screen
+        name="orders"
+        options={{ headerShown: false }}
+        component={Orders}
       />
       <Stack.Screen
         name="roles"
