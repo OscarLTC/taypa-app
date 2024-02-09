@@ -1,5 +1,5 @@
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
-import { DishOrder } from '../../model/dish.model';
+import { DishOrder } from '../../../model/dish.model';
 
 interface OrderModalDishEditProps {
   dish: DishOrder;

@@ -1,5 +1,5 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { DishOrder } from '../../model/dish.model';
+import { Image, Text, TouchableOpacity } from 'react-native';
+import { DishOrder } from '../../../model/dish.model';
 import { OrderModalDishEdit } from './OrderModalDishEdit';
 import { useState } from 'react';
 
@@ -20,44 +20,33 @@ export const OrderDishAddedCard = (props: OrderDishAddedCardProps) => {
         backgroundColor: '#fff',
         borderRadius: 15,
         height: 110,
+        width: 110,
+        padding: 5,
       }}
     >
       <Image
         style={{
-          width: 110,
+          width: '100%',
           height: 60,
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
+          objectFit: 'contain',
         }}
         source={{ uri: props.dish.image.url }}
       />
-      <View
+
+      <Text
+        numberOfLines={2}
         style={{
-          paddingVertical: 5,
-          paddingHorizontal: 10,
-          display: 'flex',
-          width: 100,
+          padding: 5,
+          overflow: 'hidden',
+          fontSize: 12,
+          fontWeight: 'bold',
+          color: '#941B0C',
         }}
       >
-        <Text
-          numberOfLines={1}
-          style={{
-            overflow: 'hidden',
-            fontSize: 12,
-          }}
-        >
-          {props.dish.name}
-        </Text>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            color: '#941B0C',
-            fontSize: 12,
-          }}
-        >
-          {`S/ ${props.dish.price.toFixed(2)}`}
-        </Text>
-      </View>
+        {props.dish.name}
+      </Text>
       <OrderModalDishEdit
         dish={props.dish}
         modalVisible={modalVisible}

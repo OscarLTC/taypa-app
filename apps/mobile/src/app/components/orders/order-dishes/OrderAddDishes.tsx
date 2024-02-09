@@ -3,7 +3,8 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { OrderDishAddedCard } from './OrderDishAddedCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
-import { orderDishesState } from '../../storage/order/orderDishes';
+import { subTotalDishesSelector } from '../../../storage/order/order-dishes/orderDishes.selector';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 
 interface OrderAddDishesProps {
   navigation: NavigationProp<ParamListBase>;
@@ -11,6 +12,7 @@ interface OrderAddDishesProps {
 
 export const OrderAddDishes = (props: OrderAddDishesProps) => {
   const dishes = useRecoilValue(orderDishesState);
+  const subTotalDishes = useRecoilValue(subTotalDishesSelector);
 
   return (
     <View
@@ -38,13 +40,18 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
         </Text>
         <View
           style={{
-            paddingVertical: 10,
-            paddingHorizontal: 20,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
             borderRadius: 10,
             backgroundColor: '#AFE39C',
           }}
         >
-          <Text>Total</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: '#105c34',
+            }}
+          >{`S/ ${subTotalDishes.toFixed(2)}`}</Text>
         </View>
       </View>
       <ScrollView

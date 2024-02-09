@@ -1,8 +1,10 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { View, TouchableHighlight, Image, Text } from 'react-native';
-import { OrderAddDishes } from '../../../components/orders/OrderAddDishes';
+import { OrderAddDishes } from '../../../components/orders/order-dishes/OrderAddDishes';
 import { Table } from '../../../model/table.model';
+import { useSetRecoilState } from 'recoil';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 
 interface OrderAddProps {
   route: Route<string>;
@@ -10,7 +12,10 @@ interface OrderAddProps {
 }
 
 export const OrderAdd = (props: OrderAddProps) => {
+  const setDishesState = useSetRecoilState(orderDishesState);
+
   const { table } = props.route.params as { table: Table };
+
   return (
     <View
       style={{
@@ -45,6 +50,7 @@ export const OrderAdd = (props: OrderAddProps) => {
           delayPressOut={100}
           onPress={() => {
             props.navigation.goBack();
+            setDishesState([]);
           }}
         >
           <AntDesign name="arrowleft" size={20} color="black" />

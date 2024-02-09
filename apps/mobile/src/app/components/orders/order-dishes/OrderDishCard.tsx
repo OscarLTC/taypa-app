@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dish } from '../../model/dish.model';
+import { Dish } from '../../../model/dish.model';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { OrderModalAddDish } from './OrderModalAddDish';
@@ -33,7 +33,7 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
         source={
           props.dish.image.url
             ? { uri: props.dish.image.url }
-            : require('../../../../assets/lomo_saltado.png')
+            : require('../../../../../assets/lomo_saltado.png')
         }
         style={{
           width: '100%',

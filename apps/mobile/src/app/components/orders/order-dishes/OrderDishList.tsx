@@ -1,11 +1,11 @@
 import { ScrollView, Text, View } from 'react-native';
-import { DishListSkeleton } from '../dishes/DishListSkeleton';
+import { DishListSkeleton } from '../../dishes/DishListSkeleton';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { firestore } from '../../config/Firebase';
-import { Dish } from '../../model/dish.model';
-import { userState } from '../../storage/user/user.atom';
+import { firestore } from '../../../config/Firebase';
+import { Dish } from '../../../model/dish.model';
+import { userState } from '../../../storage/user/user.atom';
 import { OrderDishCard } from './OrderDishCard';
 
 export const OrderDishList = () => {
