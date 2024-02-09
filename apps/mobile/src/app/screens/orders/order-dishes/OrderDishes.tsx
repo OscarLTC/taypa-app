@@ -1,16 +1,13 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { OrderDishList } from '../../../components/orders/OrderDishList';
 import { AntDesign } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
-import { View, TouchableHighlight, Image, Text } from 'react-native';
-import { OrderAddDishes } from '../../../components/orders/OrderAddDishes';
-import { Table } from '../../../model/table.model';
+import { Image, Text, TouchableHighlight, View } from 'react-native';
 
-interface OrderAddProps {
-  route: Route<string>;
+interface OrderDishesProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderAdd = (props: OrderAddProps) => {
-  const { table } = props.route.params as { table: Table };
+export const OrderDishes = (props: OrderDishesProps) => {
   return (
     <View
       style={{
@@ -49,7 +46,16 @@ export const OrderAdd = (props: OrderAddProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{table?.name}</Text>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            alignSelf: 'center',
+            color: 'black',
+          }}
+        >
+          Platos
+        </Text>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}
@@ -57,14 +63,7 @@ export const OrderAdd = (props: OrderAddProps) => {
           />
         </View>
       </View>
-      <View
-        style={{
-          marginTop: 30,
-          paddingHorizontal: 10,
-        }}
-      >
-        <OrderAddDishes navigation={props.navigation} />
-      </View>
+      <OrderDishList />
     </View>
   );
 };

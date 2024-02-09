@@ -72,28 +72,40 @@ export const OrderDetails = (props: OrderDetailsProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <View
+        <Text
           style={{
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            borderRadius: 10,
+            fontSize: 20,
+            fontWeight: 'bold',
             alignSelf: 'center',
-            backgroundColor:
-              table.usageStatus == 'disponible' ? '#AFE39C' : '#FB8C8C',
-            zIndex: 1,
+            color: 'black',
           }}
         >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              alignSelf: 'center',
-              color: 'white',
-            }}
-          >
-            {table.name}
-          </Text>
-        </View>
+          {table.name}
+        </Text>
+        <TouchableHighlight
+          underlayColor={'#941B0C'}
+          style={{
+            position: 'absolute',
+            right: 0,
+            alignSelf: 'center',
+            borderRadius: 100,
+            backgroundColor: '#E74545',
+            zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          delayPressOut={100}
+          onPress={() => {
+            props.navigation.navigate('order-add', {
+              table: table,
+            });
+          }}
+        >
+          <AntDesign name="plus" size={25} color="white" />
+        </TouchableHighlight>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}

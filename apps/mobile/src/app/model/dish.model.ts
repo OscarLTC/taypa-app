@@ -9,3 +9,14 @@ export interface Dish {
   price: number;
   description: string;
 }
+
+export interface DishOrder {
+  id: string;
+  name: string;
+  price: number;
+  image: {
+    url: string;
+  };
+  quantity: number;
+  subTotal: number;
+}
