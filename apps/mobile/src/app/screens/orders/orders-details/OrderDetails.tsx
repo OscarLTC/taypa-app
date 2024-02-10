@@ -1,13 +1,18 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
-import { View, TouchableHighlight, Image, Text } from 'react-native';
+import {
+  View,
+  TouchableHighlight,
+  Image,
+  Text,
+  ScrollView,
+} from 'react-native';
 import { Table } from '../../../model/table.model';
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { orderIdState } from '../../../storage/order/orderId.atom';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { Order } from '../../../model/order.model';
-import { useRecoilValue } from 'recoil';
+import { OrderDishAddedCard } from '../../../components/orders/order-dishes/OrderDishAddedCard';
 
 interface OrderDetailsProps {
   route: Route<string>;
@@ -17,21 +22,21 @@ interface OrderDetailsProps {
 export const OrderDetails = (props: OrderDetailsProps) => {
   const { table } = props.route.params as { table: Table };
   const [order, setOrder] = useState<Order>();
-  const orderId = useRecoilValue(orderIdState);
 
   const getOrder = async () => {
-    const orderRef = doc(firestore, 'orders', orderId);
-    const orderDoc = await getDoc(orderRef);
-    setOrder({
-      id: orderDoc.id,
-      ...orderDoc.data(),
-    } as Order);
+    const orderRef = collection(firestore, 'orders');
+    const q = query(orderRef, where('table.id', '==', table.id));
+
+    const orderDoc = await getDocs(q);
+    const order = orderDoc.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setOrder(order[0] as Order);
   };
 
   useEffect(() => {
-    if (orderId) {
-      getOrder();
-    }
+    getOrder();
   });
 
   return (
@@ -114,7 +119,63 @@ export const OrderDetails = (props: OrderDetailsProps) => {
         </View>
       </View>
       {order ? (
-        ''
+        <View>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              marginTop: 30,
+            }}
+          >
+            {'Orden'}
+          </Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: '#F5F5F5',
+              borderRadius: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}
+            >
+              Platos
+            </Text>
+            <View
+              style={{
+                paddingVertical: 5,
+                paddingHorizontal: 10,
+                borderRadius: 10,
+                backgroundColor: '#E3E3E3',
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: '#626262',
+                  fontSize: 12,
+                }}
+              >{`S/ ${order.total.toFixed(2)}`}</Text>
+            </View>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{
+              display: 'flex',
+            }}
+          >
+            {order.dishes?.map((dish, index) => {
+              return <OrderDishAddedCard key={index} dish={dish} />;
+            })}
+          </ScrollView>
+        </View>
       ) : (
         <View
           style={{

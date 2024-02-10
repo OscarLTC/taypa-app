@@ -1,9 +1,12 @@
 export interface Order {
   id: string;
-  table: string;
-  dishes: itemOrder[];
-  drinks: itemOrder[];
-  aditional: itemOrder[];
+  table: {
+    id: string;
+    name: string;
+  };
+  dishes?: itemOrder[];
+  drinks?: itemOrder[];
+  aditional?: itemOrder[];
   total: number;
   status:
     | 'nueva'

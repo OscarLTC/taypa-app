@@ -28,6 +28,7 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           backgroundColor: '#F5F5F5',
+          borderRadius: 10,
         }}
       >
         <Text
@@ -43,13 +44,14 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
             paddingVertical: 5,
             paddingHorizontal: 10,
             borderRadius: 10,
-            backgroundColor: '#AFE39C',
+            backgroundColor: '#E3E3E3',
           }}
         >
           <Text
             style={{
               fontWeight: 'bold',
-              color: '#105c34',
+              color: '#626262',
+              fontSize: 12,
             }}
           >{`S/ ${subTotalDishes.toFixed(2)}`}</Text>
         </View>
