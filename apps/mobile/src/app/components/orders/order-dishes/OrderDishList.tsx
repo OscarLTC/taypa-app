@@ -7,8 +7,13 @@ import { firestore } from '../../../config/Firebase';
 import { Dish } from '../../../model/dish.model';
 import { userState } from '../../../storage/user/user.atom';
 import { OrderDishCard } from './OrderDishCard';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-export const OrderDishList = () => {
+interface OrderDishListProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const OrderDishList = (props: OrderDishListProps) => {
   const userData = useRecoilValue(userState);
   const [dishes, setDishes] = useState<Dish[]>();
 
@@ -44,7 +49,11 @@ export const OrderDishList = () => {
           }}
         >
           {dishes.map((dish) => (
-            <OrderDishCard key={dish.id} dish={dish} />
+            <OrderDishCard
+              key={dish.id}
+              dish={dish}
+              navigation={props.navigation}
+            />
           ))}
         </View>
       </ScrollView>

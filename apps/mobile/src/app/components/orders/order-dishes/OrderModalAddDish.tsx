@@ -3,11 +3,13 @@ import { Dish, DishOrder } from '../../../model/dish.model';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderModalAddDishProps {
   dish: Dish;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export const OrderModalAddDish = (props: OrderModalAddDishProps) => {
@@ -28,6 +30,7 @@ export const OrderModalAddDish = (props: OrderModalAddDishProps) => {
     };
     setDishes([...dishes, dishOrder]);
     props.setModalVisible(!props.modalVisible);
+    props.navigation.goBack();
   };
 
   return (

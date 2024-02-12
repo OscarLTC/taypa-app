@@ -58,7 +58,9 @@ export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
           });
           userLocked?.role === 'Mesero' || userLocked?.role === 'Cajero'
             ? props.navigation.navigate('roles-tables')
-            : props.navigation.goBack();
+            : props.navigation.navigate('orders', {
+                screen: 'order-list',
+              });
         }}
         style={{
           paddingLeft: 70,

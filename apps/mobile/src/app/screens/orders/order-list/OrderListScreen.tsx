@@ -1,13 +1,13 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { OrderDishList } from '../../../components/orders/order-dishes/OrderDishList';
 import { AntDesign } from '@expo/vector-icons';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
+import { OrderList } from '../../../components/orders/OrderList';
 
-interface OrderDishesProps {
+interface OrderListScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderDishes = (props: OrderDishesProps) => {
+export const OrderListScreen = (props: OrderListScreenProps) => {
   return (
     <View
       style={{
@@ -46,16 +46,7 @@ export const OrderDishes = (props: OrderDishesProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            alignSelf: 'center',
-            color: 'black',
-          }}
-        >
-          Platos
-        </Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Ordenes</Text>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}
@@ -63,7 +54,7 @@ export const OrderDishes = (props: OrderDishesProps) => {
           />
         </View>
       </View>
-      <OrderDishList navigation={props.navigation} />
+      <OrderList />
     </View>
   );
 };

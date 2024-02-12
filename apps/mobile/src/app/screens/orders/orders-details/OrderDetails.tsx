@@ -25,7 +25,11 @@ export const OrderDetails = (props: OrderDetailsProps) => {
 
   const getOrder = async () => {
     const orderRef = collection(firestore, 'orders');
-    const q = query(orderRef, where('table.id', '==', table.id));
+    const q = query(
+      orderRef,
+      where('table.id', '==', table.id),
+      where('status', 'not-in', ['completado', 'cancelado'])
+    );
 
     const orderDoc = await getDocs(q);
     const order = orderDoc.docs.map((doc) => ({

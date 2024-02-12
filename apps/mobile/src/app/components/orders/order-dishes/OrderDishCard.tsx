@@ -3,9 +3,11 @@ import { Dish } from '../../../model/dish.model';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { OrderModalAddDish } from './OrderModalAddDish';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderDishCardProps {
   dish: Dish;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export const OrderDishCard = (props: OrderDishCardProps) => {
@@ -92,6 +94,7 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
         dish={props.dish}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        navigation={props.navigation}
       />
     </TouchableOpacity>
   );

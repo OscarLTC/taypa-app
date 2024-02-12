@@ -143,6 +143,7 @@ export const RolesListScreen = (props: RolesScreenProps) => {
             style={{
               fontSize: 15,
               color: '#FFFFFF',
+              fontWeight: 'bold',
             }}
           >
             Debloquear

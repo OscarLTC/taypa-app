@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { OrderAdd } from './orders-add/OrderAdd';
 import { OrderDetails } from './orders-details/OrderDetails';
 import { OrderDishes } from './order-dishes/OrderDishes';
+import { OrderListScreen } from './order-list/OrderListScreen';
 
 export const Orders = () => {
   const Stack = createStackNavigator();
@@ -17,6 +18,11 @@ export const Orders = () => {
         name="order-add"
         options={{ headerShown: false }}
         component={OrderAdd}
+      />
+      <Stack.Screen
+        name="order-list"
+        options={{ headerShown: false }}
+        component={OrderListScreen}
       />
       <Stack.Screen
         name="order-dish-list"

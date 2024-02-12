@@ -4,17 +4,19 @@ import { Text, TouchableOpacity } from 'react-native';
 import { firestore } from '../../config/Firebase';
 import { Table } from '../../model/table.model';
 import { orderDishesState } from '../../storage/order/order-dishes/orderDishes.atom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { subTotalDishesSelector } from '../../storage/order/order-dishes/orderDishes.selector';
 import { userState } from '../../storage/user/user.atom';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderRegisterButtonProps {
   table: Table;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
   const userData = useRecoilValue(userState);
-  const dishes = useRecoilValue(orderDishesState);
+  const [dishes, setDishes] = useRecoilState(orderDishesState);
   const dishesTotal = useRecoilValue(subTotalDishesSelector);
 
   const onRegisterOrderPress = () => {
@@ -42,6 +44,8 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
         console.error('Error updating document: ', error);
       });
       setIsLoading(false);
+      setDishes([]);
+      props.navigation.navigate('roles-tables');
     });
   };
 

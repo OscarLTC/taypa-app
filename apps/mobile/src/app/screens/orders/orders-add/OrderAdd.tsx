@@ -76,7 +76,7 @@ export const OrderAdd = (props: OrderAddProps) => {
           <OrderAddDishes navigation={props.navigation} />
         </View>
       </View>
-      <OrderRegisterButton table={table} />
+      <OrderRegisterButton table={table} navigation={props.navigation} />
     </>
   );
 };
