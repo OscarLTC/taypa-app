@@ -2,13 +2,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { firestore } from '../../config/Firebase';
+import { firestore } from '../../../config/Firebase';
 import { useRecoilValue } from 'recoil';
-import { userState } from '../../storage/user/user.atom';
-import { Order } from '../../model/order.model';
-import { OrderCard } from './OrdeerCard';
+import { userState } from '../../../storage/user/user.atom';
+import { Order } from '../../../model/order.model';
+import { OrderCard } from '../OrderCard';
 
-export const OrderList = () => {
+export const OrderListCook = () => {
   const userData = useRecoilValue(userState);
   const isOrderListFocused = useIsFocused();
   const [orders, setOrders] = useState<Order[]>();
@@ -17,7 +17,7 @@ export const OrderList = () => {
   const orderRef = collection(firestore, 'orders');
   const q = query(
     orderRef,
-    where('status', 'not-in', ['completado', 'cancelado']),
+    where('status', 'not-in', ['servido', 'completado', 'cancelado']),
     where('adminId', '==', adminId)
   );
 

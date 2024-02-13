@@ -1,13 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
+import { View, TouchableHighlight, Text, Image } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { Image, Text, TouchableHighlight, View } from 'react-native';
-import { OrderList } from '../../../components/orders/OrderList';
+import { OrderListCashier } from '../../../components/orders/order-list/OrderListCashier';
 
 interface OrderListScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderListScreen = (props: OrderListScreenProps) => {
+export const OrderListCashierScreen = (props: OrderListScreenProps) => {
   return (
     <View
       style={{
@@ -54,7 +54,7 @@ export const OrderListScreen = (props: OrderListScreenProps) => {
           />
         </View>
       </View>
-      <OrderList />
+      <OrderListCashier />
     </View>
   );
 };

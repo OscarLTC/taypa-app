@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import RolesListScreen from './roles-list/RolesListScreen';
 import { RolesWorkerListScreen } from './roles-worker-list/RolesWorkerListScreen';
-import { RolesTables } from './roles-tables/RolesTables';
+import { TablesWaiters } from './roles-tables/TablesWaiter';
 
 export const Roles = () => {
   const Stack = createStackNavigator();
@@ -19,9 +19,9 @@ export const Roles = () => {
         component={RolesWorkerListScreen}
       />
       <Stack.Screen
-        name="roles-tables"
+        name="roles-tables-waiter"
         options={{ headerShown: false }}
-        component={RolesTables}
+        component={TablesWaiters}
       />
     </Stack.Navigator>
   );

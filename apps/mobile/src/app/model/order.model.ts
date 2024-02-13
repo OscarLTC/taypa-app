@@ -24,5 +24,8 @@ interface itemOrder {
   name: string;
   price: number;
   quantity: number;
-  image: string;
+  image: {
+    url: string;
+  };
+  subTotal: number;
 }

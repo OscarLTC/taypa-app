@@ -2,7 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { OrderAdd } from './orders-add/OrderAdd';
 import { OrderDetails } from './orders-details/OrderDetails';
 import { OrderDishes } from './order-dishes/OrderDishes';
-import { OrderListScreen } from './order-list/OrderListScreen';
+import { OrderDetailsCook } from './orders-details/OrderDetailsCook';
+import { OrderListCookScreen } from './order-list/OrderListCookScreen';
+import { OrderListCashierScreen } from './order-list/OrderListCashierScreen';
 
 export const Orders = () => {
   const Stack = createStackNavigator();
@@ -20,14 +22,24 @@ export const Orders = () => {
         component={OrderAdd}
       />
       <Stack.Screen
-        name="order-list"
+        name="order-list-cook"
         options={{ headerShown: false }}
-        component={OrderListScreen}
+        component={OrderListCookScreen}
+      />
+      <Stack.Screen
+        name="order-list-cashier"
+        options={{ headerShown: false }}
+        component={OrderListCashierScreen}
       />
       <Stack.Screen
         name="order-dish-list"
         options={{ headerShown: false }}
         component={OrderDishes}
+      />
+      <Stack.Screen
+        name="order-details-cook"
+        options={{ headerShown: false }}
+        component={OrderDetailsCook}
       />
     </Stack.Navigator>
   );

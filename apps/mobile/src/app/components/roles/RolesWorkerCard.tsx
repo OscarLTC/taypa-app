@@ -13,6 +13,27 @@ interface RolesWorkerCardProps {
 export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
   const [userLocked, setUserLocked] = useRecoilState(userLockedState);
 
+  const onWorkerPress = () => {
+    setUserLocked({
+      ...userLocked,
+      user: {
+        id: props.worker.id,
+        completeName: props.worker.names + ' ' + props.worker.lastnames,
+      },
+    });
+    if (props.role === 'Mesero') {
+      props.navigation.navigate('roles-tables-waiter');
+    } else if (props.role === 'Cajero') {
+      props.navigation.navigate('orders', {
+        screen: 'order-list-cashier',
+      });
+    } else {
+      props.navigation.navigate('orders', {
+        screen: 'order-list-cook',
+      });
+    }
+  };
+
   return (
     <View
       style={{
@@ -48,20 +69,7 @@ export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
         underlayColor={'#F6AA1C'}
         delayPressOut={200}
         delayPressIn={100}
-        onPress={() => {
-          setUserLocked({
-            ...userLocked,
-            user: {
-              id: props.worker.id,
-              completeName: props.worker.names + ' ' + props.worker.lastnames,
-            },
-          });
-          userLocked?.role === 'Mesero' || userLocked?.role === 'Cajero'
-            ? props.navigation.navigate('roles-tables')
-            : props.navigation.navigate('orders', {
-                screen: 'order-list',
-              });
-        }}
+        onPress={onWorkerPress}
         style={{
           paddingLeft: 70,
           paddingHorizontal: 10,

@@ -30,7 +30,7 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
       },
       dishes: dishes.map((dish) => ({
         ...dish,
-        image: dish.image.url,
+        image: dish.image,
       })),
       status: 'nueva',
       total: dishesTotal,
@@ -38,14 +38,13 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
       updatedAt: new Date(),
     }).then(() => {
       updateDoc(doc(firestore, 'tables', props.table.id), {
-        ...props.table,
         usageStatus: 'ocupada',
       }).catch((error) => {
         console.error('Error updating document: ', error);
       });
       setIsLoading(false);
       setDishes([]);
-      props.navigation.navigate('roles-tables');
+      props.navigation.navigate('roles-tables-waiter');
     });
   };
 

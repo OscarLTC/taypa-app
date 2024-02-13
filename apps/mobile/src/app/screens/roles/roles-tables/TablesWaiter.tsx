@@ -7,7 +7,7 @@ interface RolesTablesProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const RolesTables = (props: RolesTablesProps) => {
+export const TablesWaiters = (props: RolesTablesProps) => {
   return (
     <View
       style={{

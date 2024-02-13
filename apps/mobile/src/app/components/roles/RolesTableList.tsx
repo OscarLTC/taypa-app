@@ -13,6 +13,7 @@ import { userState } from '../../storage/user/user.atom';
 
 interface RolesTableListProps {
   navigation: NavigationProp<ParamListBase>;
+  isCashier?: boolean;
 }
 
 export const RolesTableList = (props: RolesTableListProps) => {

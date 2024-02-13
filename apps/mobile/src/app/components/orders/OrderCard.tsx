@@ -3,24 +3,27 @@ import { Order } from '../../model/order.model';
 import { FontAwesome } from '@expo/vector-icons';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../config/Firebase';
+import { useNavigation } from '@react-navigation/native';
 
 interface OrderCardProps {
   order: Order;
 }
 
 export const OrderCard = (props: OrderCardProps) => {
+  const navigation = useNavigation();
+
   const updateOrderStatus = async () => {
     const orderId = props.order.id;
     const orderRef = doc(firestore, 'orders', orderId);
     await updateDoc(orderRef, {
       ...props.order,
-      status: 'completado',
+      status: 'servido',
     }).then(() => {
-      const tableRef = doc(firestore, 'tables', props.order.table.id);
-      updateDoc(tableRef, {
-        ...props.order.table,
-        usageStatus: 'disponible',
-      });
+      //TODO: Las siguientes lineas son para temas de prueba, se deben eliminar en la version final
+      // const tableRef = doc(firestore, 'tables', props.order.table.id);
+      // updateDoc(tableRef, {
+      //   usageStatus: 'disponible',
+      // });
     });
   };
 
@@ -38,6 +41,9 @@ export const OrderCard = (props: OrderCardProps) => {
         borderRadius: 20,
         marginBottom: 20,
         flexDirection: 'row',
+      }}
+      onPress={() => {
+        navigation.navigate('order-details-cook', { order: props.order });
       }}
     >
       <View
@@ -62,6 +68,7 @@ export const OrderCard = (props: OrderCardProps) => {
           </Text>
         </View>
       </View>
+      {/* TODO: Cambiar aun indicador de estado y quitar funcionalidad */}
       <TouchableHighlight
         onPress={updateOrderStatus}
         underlayColor={'#F6AA1C'}
