@@ -3,5 +3,5 @@ export interface Table {
   adminId: string;
   name: string;
   number: number;
-  usageStatus: 'disponible' | 'ocupada';
+  isAvailable: boolean;
 }

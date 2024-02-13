@@ -1,17 +1,16 @@
 import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
-import { Order } from '../../model/order.model';
+import { Order } from '../../../model/order.model';
 import { FontAwesome } from '@expo/vector-icons';
 import { doc, updateDoc } from 'firebase/firestore';
-import { firestore } from '../../config/Firebase';
-import { useNavigation } from '@react-navigation/native';
+import { firestore } from '../../../config/Firebase';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface OrderCardProps {
+interface OrderCardCookProps {
+  navigation: NavigationProp<ParamListBase>;
   order: Order;
 }
 
-export const OrderCard = (props: OrderCardProps) => {
-  const navigation = useNavigation();
-
+export const OrderCardCook = (props: OrderCardCookProps) => {
   const updateOrderStatus = async () => {
     const orderId = props.order.id;
     const orderRef = doc(firestore, 'orders', orderId);
@@ -43,7 +42,7 @@ export const OrderCard = (props: OrderCardProps) => {
         flexDirection: 'row',
       }}
       onPress={() => {
-        navigation.navigate('order-details-cook', { order: props.order });
+        props.navigation.navigate('order-details-cook', { order: props.order });
       }}
     >
       <View

@@ -1,4 +1,8 @@
-import { useIsFocused } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useIsFocused,
+} from '@react-navigation/native';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -6,9 +10,13 @@ import { firestore } from '../../../config/Firebase';
 import { Order } from '../../../model/order.model';
 import { userState } from '../../../storage/user/user.atom';
 import { View, ScrollView, Text } from 'react-native';
-import { OrderCard } from '../OrderCard';
+import { OrderCardCashier } from '../order-cards/OrderCardCashier';
 
-export const OrderListCashier = () => {
+interface OrderListCashierProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const OrderListCashier = (props: OrderListCashierProps) => {
   const userData = useRecoilValue(userState);
   const isOrderListFocused = useIsFocused();
   const [orders, setOrders] = useState<Order[]>();
@@ -47,12 +55,16 @@ export const OrderListCashier = () => {
           {orders
             .sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
             .map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCardCashier
+                key={order.id}
+                order={order}
+                navigation={props.navigation}
+              />
             ))}
         </ScrollView>
       ) : (
         <View>
-          <Text>No hay Ordenes</Text>
+          <Text>Aun no hay ordenes servidas </Text>
         </View>
       )}
     </View>

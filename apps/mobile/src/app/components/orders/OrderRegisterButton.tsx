@@ -38,7 +38,7 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
       updatedAt: new Date(),
     }).then(() => {
       updateDoc(doc(firestore, 'tables', props.table.id), {
-        usageStatus: 'ocupada',
+        isAvailable: false,
       }).catch((error) => {
         console.error('Error updating document: ', error);
       });

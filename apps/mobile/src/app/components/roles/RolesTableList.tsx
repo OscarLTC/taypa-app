@@ -62,8 +62,7 @@ export const RolesTableList = (props: RolesTableListProps) => {
           .map((table, index) => (
             <TouchableOpacity
               style={{
-                backgroundColor:
-                  table.usageStatus === 'disponible' ? '#AFE39C' : '#FB8C8C',
+                backgroundColor: table.isAvailable ? '#AFE39C' : '#FB8C8C',
                 borderRadius: 10,
                 elevation: 1,
                 height: 60,
@@ -75,7 +74,7 @@ export const RolesTableList = (props: RolesTableListProps) => {
               key={table.id}
               onPress={() => {
                 props.navigation.navigate('orders', {
-                  screen: 'order-details',
+                  screen: 'order-details-waiter',
                   params: {
                     table,
                   },

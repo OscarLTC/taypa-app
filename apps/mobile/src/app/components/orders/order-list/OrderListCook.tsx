@@ -1,4 +1,8 @@
-import { useIsFocused } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useIsFocused,
+} from '@react-navigation/native';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -6,9 +10,13 @@ import { firestore } from '../../../config/Firebase';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../storage/user/user.atom';
 import { Order } from '../../../model/order.model';
-import { OrderCard } from '../OrderCard';
+import { OrderCardCook } from '../order-cards/OrderCardCook';
 
-export const OrderListCook = () => {
+interface OrderListCookProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const OrderListCook = (props: OrderListCookProps) => {
   const userData = useRecoilValue(userState);
   const isOrderListFocused = useIsFocused();
   const [orders, setOrders] = useState<Order[]>();
@@ -48,7 +56,11 @@ export const OrderListCook = () => {
           {orders
             .sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
             .map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCardCook
+                key={order.id}
+                order={order}
+                navigation={props.navigation}
+              />
             ))}
         </ScrollView>
       ) : (

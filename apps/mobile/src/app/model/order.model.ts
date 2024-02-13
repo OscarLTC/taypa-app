@@ -19,7 +19,7 @@ export interface Order {
   updatedAt: Date;
 }
 
-interface itemOrder {
+export interface itemOrder {
   id: string;
   name: string;
   price: number;

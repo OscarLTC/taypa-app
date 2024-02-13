@@ -46,7 +46,9 @@ export const OrderListCashierScreen = (props: OrderListScreenProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Ordenes</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+          Ordenes Servidas
+        </Text>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}
@@ -54,7 +56,7 @@ export const OrderListCashierScreen = (props: OrderListScreenProps) => {
           />
         </View>
       </View>
-      <OrderListCashier />
+      <OrderListCashier navigation={props.navigation} />
     </View>
   );
 };

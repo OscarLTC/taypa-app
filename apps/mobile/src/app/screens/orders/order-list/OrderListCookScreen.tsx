@@ -54,7 +54,7 @@ export const OrderListCookScreen = (props: OrderListScreenProps) => {
           />
         </View>
       </View>
-      <OrderListCook />
+      <OrderListCook navigation={props.navigation} />
     </View>
   );
 };

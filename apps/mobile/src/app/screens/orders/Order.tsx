@@ -1,10 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { OrderAdd } from './orders-add/OrderAdd';
-import { OrderDetails } from './orders-details/OrderDetails';
+import { OrderDetailsWaiter } from './orders-details/OrderDetailsWaiter';
 import { OrderDishes } from './order-dishes/OrderDishes';
 import { OrderDetailsCook } from './orders-details/OrderDetailsCook';
 import { OrderListCookScreen } from './order-list/OrderListCookScreen';
 import { OrderListCashierScreen } from './order-list/OrderListCashierScreen';
+import { OrderDetailsCashier } from './orders-details/OrderDetailsCashier';
 
 export const Orders = () => {
   const Stack = createStackNavigator();
@@ -12,9 +13,19 @@ export const Orders = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="order-details"
+        name="order-details-waiter"
         options={{ headerShown: false }}
-        component={OrderDetails}
+        component={OrderDetailsWaiter}
+      />
+      <Stack.Screen
+        name="order-details-cook"
+        options={{ headerShown: false }}
+        component={OrderDetailsCook}
+      />
+      <Stack.Screen
+        name="order-details-cashier"
+        options={{ headerShown: false }}
+        component={OrderDetailsCashier}
       />
       <Stack.Screen
         name="order-add"
@@ -35,11 +46,6 @@ export const Orders = () => {
         name="order-dish-list"
         options={{ headerShown: false }}
         component={OrderDishes}
-      />
-      <Stack.Screen
-        name="order-details-cook"
-        options={{ headerShown: false }}
-        component={OrderDetailsCook}
       />
     </Stack.Navigator>
   );

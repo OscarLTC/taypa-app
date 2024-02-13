@@ -19,7 +19,7 @@ interface OrderDetailsProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderDetails = (props: OrderDetailsProps) => {
+export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
   const { table } = props.route.params as { table: Table };
   const [order, setOrder] = useState<Order>();
 
