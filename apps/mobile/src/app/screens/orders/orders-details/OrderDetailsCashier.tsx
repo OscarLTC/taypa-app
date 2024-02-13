@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Order, itemOrder } from '../../../model/order.model';
-import { ItemsCardCashier } from '../../../components/orders/order-card-items/ItemsCardCashier';
+import { ItemsCardCashier } from '../../../components/orders/order-card-items-details/ItemsCardCashier';
 import { AntDesign } from '@expo/vector-icons';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';

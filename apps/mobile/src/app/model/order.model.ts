@@ -24,6 +24,7 @@ export interface itemOrder {
   name: string;
   price: number;
   quantity: number;
+  isPreparing: boolean;
   image: {
     url: string;
   };

@@ -23,8 +23,8 @@ export const OrderStatusButton = (props: OrderStatusButtonProps) => {
 
   const navigation = useNavigation();
 
-  const handleButtonClick = async () => {
-    if (nextStatus[status] !== 'listo') {
+  const onStatusChangePress = async () => {
+    if (nextStatus[status] !== 'servido') {
       const orderId = props.order?.id;
       const orderRef = doc(firestore, 'orders', orderId);
       await updateDoc(orderRef, {
@@ -37,30 +37,32 @@ export const OrderStatusButton = (props: OrderStatusButtonProps) => {
   };
 
   return (
-    <TouchableHighlight
-      underlayColor={'#F6AA1C'}
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        backgroundColor: '#941B0C',
-        padding: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      delayPressOut={100}
-      onPress={handleButtonClick}
-    >
-      <Text
+    props.order.status !== 'listo' && (
+      <TouchableHighlight
+        underlayColor={'#F6AA1C'}
         style={{
-          color: 'white',
-          fontSize: 20,
-          fontWeight: 'bold',
-          textTransform: 'capitalize',
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          backgroundColor: '#941B0C',
+          padding: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
+        delayPressOut={100}
+        onPress={onStatusChangePress}
       >
-        {nextStatus[status]}
-      </Text>
-    </TouchableHighlight>
+        <Text
+          style={{
+            color: 'white',
+            fontSize: 20,
+            fontWeight: 'bold',
+            textTransform: 'capitalize',
+          }}
+        >
+          {nextStatus[status]}
+        </Text>
+      </TouchableHighlight>
+    )
   );
 };

@@ -1,8 +1,6 @@
-import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Order } from '../../../model/order.model';
 import { FontAwesome } from '@expo/vector-icons';
-import { doc, updateDoc } from 'firebase/firestore';
-import { firestore } from '../../../config/Firebase';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderCardCookProps {
@@ -11,25 +9,24 @@ interface OrderCardCookProps {
 }
 
 export const OrderCardCook = (props: OrderCardCookProps) => {
-  const updateOrderStatus = async () => {
-    const orderId = props.order.id;
-    const orderRef = doc(firestore, 'orders', orderId);
-    await updateDoc(orderRef, {
-      ...props.order,
-      status: 'servido',
-    }).then(() => {
-      //TODO: Las siguientes lineas son para temas de prueba, se deben eliminar en la version final
-      // const tableRef = doc(firestore, 'tables', props.order.table.id);
-      // updateDoc(tableRef, {
-      //   usageStatus: 'disponible',
-      // });
-    });
-  };
-
   const orderDishesQuantity = props.order.dishes?.reduce(
     (acc, dish) => acc + dish.quantity,
     0
   );
+
+  const status = props.order.status;
+
+  const statusColor = {
+    nueva: '#FB8C8C',
+    preparacion: '#F6AA1C',
+    listo: '#AFE39C',
+  };
+
+  const statusIcon = {
+    nueva: <FontAwesome name="bell" size={40} color="white" />,
+    preparacion: <FontAwesome name="fire" size={40} color="white" />,
+    listo: <FontAwesome name="check" size={40} color="white" />,
+  };
 
   return (
     <TouchableOpacity
@@ -67,22 +64,18 @@ export const OrderCardCook = (props: OrderCardCookProps) => {
           </Text>
         </View>
       </View>
-      {/* TODO: Cambiar aun indicador de estado y quitar funcionalidad */}
-      <TouchableHighlight
-        onPress={updateOrderStatus}
-        underlayColor={'#F6AA1C'}
-        delayPressOut={100}
+      <View
         style={{
           width: '25%',
-          backgroundColor: '#941B0C',
+          backgroundColor: statusColor[status as keyof typeof statusColor],
           borderTopEndRadius: 20,
           borderBottomRightRadius: 20,
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <FontAwesome name="check" size={30} color="white" />
-      </TouchableHighlight>
+        {statusIcon[status as keyof typeof statusIcon]}
+      </View>
     </TouchableOpacity>
   );
 };
