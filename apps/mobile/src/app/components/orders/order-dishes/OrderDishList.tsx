@@ -4,9 +4,9 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { firestore } from '../../../config/Firebase';
-import { Dish } from '../../../model/dish.model';
+import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
-import { OrderDishCard } from './OrderDishCard';
+import { OrderItemCard } from './OrderDishCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderDishListProps {
@@ -15,7 +15,7 @@ interface OrderDishListProps {
 
 export const OrderDishList = (props: OrderDishListProps) => {
   const userData = useRecoilValue(userState);
-  const [dishes, setDishes] = useState<Dish[]>();
+  const [dishes, setDishes] = useState<Item[]>();
 
   const getDishes = async () => {
     const adminId = userData?.userId;
@@ -26,7 +26,7 @@ export const OrderDishList = (props: OrderDishListProps) => {
       id: doc.id,
       ...doc.data(),
     }));
-    setDishes(dishes as Dish[]);
+    setDishes(dishes as Item[]);
   };
 
   useEffect(() => {
@@ -49,9 +49,9 @@ export const OrderDishList = (props: OrderDishListProps) => {
           }}
         >
           {dishes.map((dish) => (
-            <OrderDishCard
+            <OrderItemCard
               key={dish.id}
-              dish={dish}
+              item={dish}
               navigation={props.navigation}
             />
           ))}

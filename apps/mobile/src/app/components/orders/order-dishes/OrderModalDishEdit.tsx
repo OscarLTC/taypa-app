@@ -1,13 +1,41 @@
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
-import { DishOrder } from '../../../model/dish.model';
+import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
+import { itemOrder } from '../../../model/order.model';
+import { useRecoilState } from 'recoil';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
+import { useState } from 'react';
 
 interface OrderModalDishEditProps {
-  dish: DishOrder;
+  dish: itemOrder;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
 
 export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
+  const [dishes, setDishes] = useRecoilState(orderDishesState);
+  const [quantity, setQuantity] = useState<number>(props.dish.quantity);
+
+  const onRemovePress = () => {
+    const newDishes = dishes.filter((dish) => dish.id !== props.dish.id);
+    setDishes(newDishes);
+    props.setModalVisible(!props.modalVisible);
+  };
+
+  const onEditPress = () => {
+    const newDishes = dishes.map((dish) => {
+      if (dish.id === props.dish.id) {
+        const newDish = {
+          ...dish,
+          quantity: quantity,
+          subTotal: Number(dish.price) * quantity,
+        };
+        return newDish;
+      }
+      return dish;
+    });
+    setDishes(newDishes);
+    props.setModalVisible(!props.modalVisible);
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -44,6 +72,25 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
             gap: 20,
           }}
         >
+          <View
+            style={{
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          >
+            <Image
+              source={
+                props.dish.image.url
+                  ? { uri: props.dish.image.url }
+                  : require('../../../../../assets/lomo_saltado.png')
+              }
+              style={{
+                width: 200,
+                height: 100,
+                objectFit: 'contain',
+              }}
+            />
+          </View>
           <Text
             style={{
               textAlign: 'center',
@@ -53,15 +100,67 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
           >
             {props.dish.name}
           </Text>
-          <Text
+          <View
             style={{
-              marginBottom: 15,
-              textAlign: 'center',
-              fontSize: 10,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 20,
             }}
           >
-            {'Confirme su contraseña para\nbloquear.'}
-          </Text>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              disabled={quantity <= 1}
+              style={{
+                borderRadius: 10,
+                width: 30,
+                height: 30,
+                elevation: 2,
+                backgroundColor: quantity <= 1 ? '#E8E7E7' : '#941B0C',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => setQuantity(quantity - 1)}
+            >
+              <Text
+                style={{
+                  color: quantity <= 1 ? 'black' : 'white',
+                  fontWeight: 'bold',
+                }}
+              >
+                -
+              </Text>
+            </TouchableOpacity>
+            <Text
+              style={{
+                alignSelf: 'center',
+              }}
+            >
+              {quantity}
+            </Text>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              style={{
+                borderRadius: 10,
+                width: 30,
+                height: 30,
+                elevation: 2,
+                backgroundColor: '#941B0C',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => setQuantity(quantity + 1)}
+            >
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}
+              >
+                +
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View
             style={{
               display: 'flex',
@@ -95,12 +194,15 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
               style={[
                 {
                   borderRadius: 10,
-                  padding: 10,
+                  paddingVertical: 10,
+                  paddingHorizontal: quantity !== props.dish.quantity ? 20 : 15,
                   elevation: 2,
                   backgroundColor: '#941B0C',
                 },
               ]}
-              //   onPress={handleSubmit(onSubmitPress)}
+              onPress={
+                quantity !== props.dish.quantity ? onEditPress : onRemovePress
+              }
             >
               <Text
                 style={{
@@ -109,7 +211,7 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                   textAlign: 'center',
                 }}
               >
-                Confirmar
+                {quantity !== props.dish.quantity ? 'Editar' : 'Eliminar'}
               </Text>
             </TouchableOpacity>
           </View>

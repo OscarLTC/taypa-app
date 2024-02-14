@@ -1,13 +1,13 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { DishOrder } from '../../../model/dish.model';
-import { OrderModalDishEdit } from './OrderModalDishEdit';
+import { OrderModalDishEdit } from '../order-dishes/OrderModalDishEdit';
 import { useState } from 'react';
+import { itemOrder } from '../../../model/order.model';
 
-interface OrderDishAddedCardProps {
-  dish: DishOrder;
+interface ItemsCardCookProps {
+  item: itemOrder;
 }
 
-export const OrderDishAddedCard = (props: OrderDishAddedCardProps) => {
+export const ItemsCardCook = (props: ItemsCardCookProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -38,7 +38,7 @@ export const OrderDishAddedCard = (props: OrderDishAddedCardProps) => {
             borderTopRightRadius: 15,
             objectFit: 'contain',
           }}
-          source={{ uri: props.dish.image.url }}
+          source={{ uri: props.item.image.url }}
         />
       </View>
 
@@ -64,7 +64,7 @@ export const OrderDishAddedCard = (props: OrderDishAddedCardProps) => {
             borderRightWidth: 1,
           }}
         >
-          {props.dish.quantity}
+          {props.item.quantity}
         </Text>
         <Text
           numberOfLines={2}
@@ -76,11 +76,11 @@ export const OrderDishAddedCard = (props: OrderDishAddedCardProps) => {
             color: '#941B0C',
           }}
         >
-          {props.dish.name}
+          {props.item.name}
         </Text>
       </View>
       <OrderModalDishEdit
-        dish={props.dish}
+        dish={props.item}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

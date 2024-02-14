@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
-import { Dish } from '../../../model/dish.model';
+import { Item } from '../../../model/item.model';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
-import { OrderModalAddDish } from './OrderModalAddDish';
+import { OrderModalAddItem } from './OrderModalAddDish';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { useRecoilValue } from 'recoil';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 
-interface OrderDishCardProps {
-  dish: Dish;
+interface OrderItemCardProps {
+  item: Item;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderDishCard = (props: OrderDishCardProps) => {
+export const OrderItemCard = (props: OrderItemCardProps) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const dishes = useRecoilValue(orderDishesState);
+
+  const isDishInOrder = (dish: Item) => {
+    return dishes.some((item) => item.id === dish.id);
+  };
 
   return (
     <TouchableOpacity
       delayPressIn={100}
       delayPressOut={100}
+      disabled={isDishInOrder(props.item)}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -26,6 +34,7 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
         borderRadius: 15,
         marginBottom: 20,
         padding: 10,
+        opacity: isDishInOrder(props.item) ? 0.5 : 1,
       }}
       onPress={() => {
         setModalVisible(true);
@@ -33,8 +42,8 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
     >
       <Image
         source={
-          props.dish.image.url
-            ? { uri: props.dish.image.url }
+          props.item.image.url
+            ? { uri: props.item.image.url }
             : require('../../../../../assets/lomo_saltado.png')
         }
         style={{
@@ -59,7 +68,7 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
             fontSize: 12,
           }}
         >
-          {props.dish.name}
+          {props.item.name}
         </Text>
         <Text
           style={{
@@ -69,7 +78,7 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
             color: '#941B0C',
           }}
         >
-          S/{Number(props.dish.price).toFixed(2)}
+          S/{Number(props.item.price).toFixed(2)}
         </Text>
       </View>
       <View
@@ -90,8 +99,8 @@ export const OrderDishCard = (props: OrderDishCardProps) => {
           <Octicons name="plus" size={15} color="white" />
         </View>
       </View>
-      <OrderModalAddDish
-        dish={props.dish}
+      <OrderModalAddItem
+        item={props.item}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         navigation={props.navigation}

@@ -2,10 +2,10 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { View, TouchableHighlight, Image } from 'react-native';
 import { firestore, storage } from '../../config/Firebase';
 import { ref, deleteObject } from 'firebase/storage';
-import { Dish } from '../../model/dish.model';
+import { Item } from '../../model/item.model';
 
 interface DishRemoveButtonProps {
-  dish: Dish;
+  dish: Item;
 }
 
 export const DishRemoveButton = (props: DishRemoveButtonProps) => {

@@ -81,7 +81,7 @@ export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
         underlayColor={'#F6AA1C'}
         delayPressOut={200}
         delayPressIn={100}
-        disabled={!props.worker.isAvailable}
+        // disabled={!props.worker.isAvailable}
         onPress={onWorkerPress}
         style={{
           paddingLeft: 70,

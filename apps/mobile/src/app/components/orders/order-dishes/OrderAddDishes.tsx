@@ -1,6 +1,6 @@
 import { Octicons } from '@expo/vector-icons';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { OrderDishAddedCard } from './OrderDishAddedCard';
+import { ItemsCardCook } from '../order-card-items-details/itemsCardCook';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { subTotalDishesSelector } from '../../../storage/order/order-dishes/orderDishes.selector';
@@ -64,7 +64,7 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
         }}
       >
         {dishes?.map((dish, index) => {
-          return <OrderDishAddedCard key={index} dish={dish} />;
+          return <ItemsCardCook key={index} item={dish} />;
         })}
         <TouchableOpacity
           onPress={() => {

@@ -1,32 +1,34 @@
 import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
-import { Dish, DishOrder } from '../../../model/dish.model';
+import { Item } from '../../../model/item.model';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { itemOrder } from '../../../model/order.model';
 
-interface OrderModalAddDishProps {
-  dish: Dish;
+interface OrderModalAddItemProps {
+  item: Item;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderModalAddDish = (props: OrderModalAddDishProps) => {
+export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
   const [quantity, setQuantity] = useState<number>(1);
 
   const [dishes, setDishes] = useRecoilState(orderDishesState);
 
   const onAddPress = () => {
-    const dishOrder: DishOrder = {
-      id: props.dish.id,
-      name: props.dish.name,
-      price: props.dish.price,
+    const dishOrder: itemOrder = {
+      id: props.item.id,
+      name: props.item.name,
+      price: props.item.price,
       image: {
-        url: props.dish.image.url,
+        url: props.item.image.url,
       },
-      subTotal: Number(props.dish.price) * quantity,
+      subTotal: Number(props.item.price) * quantity,
       quantity: quantity,
+      isPreparing: false,
     };
     setDishes([...dishes, dishOrder]);
     props.setModalVisible(!props.modalVisible);
@@ -78,8 +80,8 @@ export const OrderModalAddDish = (props: OrderModalAddDishProps) => {
           >
             <Image
               source={
-                props.dish.image.url
-                  ? { uri: props.dish.image.url }
+                props.item.image.url
+                  ? { uri: props.item.image.url }
                   : require('../../../../../assets/lomo_saltado.png')
               }
               style={{
@@ -109,7 +111,7 @@ export const OrderModalAddDish = (props: OrderModalAddDishProps) => {
                   fontWeight: 'bold',
                 }}
               >
-                {props.dish.name}
+                {props.item.name}
               </Text>
               <View
                 style={{
@@ -128,7 +130,7 @@ export const OrderModalAddDish = (props: OrderModalAddDishProps) => {
                     color: '#941B0C',
                   }}
                 >
-                  S/ {Number(props.dish?.price).toFixed(2)}
+                  S/ {Number(props.item?.price).toFixed(2)}
                 </Text>
               </View>
             </View>

@@ -1,10 +1,10 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { Dish } from '../../model/dish.model';
+import { Item } from '../../model/item.model';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { DishRemoveButton } from './DishRemoveButton';
 
 interface DishCardProps {
-  dish: Dish;
+  dish: Item;
   navigation: NavigationProp<ParamListBase>;
 }
 export const DishCard = (props: DishCardProps) => {

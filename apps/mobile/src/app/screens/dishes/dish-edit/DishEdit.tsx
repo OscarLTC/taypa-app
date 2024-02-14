@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { firestore, storage } from '../../../config/Firebase';
-import { Dish } from '../../../model/dish.model';
+import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 
@@ -36,7 +36,7 @@ export const DishEdit = (props: DishEditProps) => {
     setError,
     watch,
     formState: { errors },
-  } = useForm<Dish>();
+  } = useForm<Item>();
   const [isLoading, setIsLoading] = useState(false);
   const { dishId } = props.route.params as { dishId: string };
   const userData = useRecoilValue(userState);
@@ -67,7 +67,7 @@ export const DishEdit = (props: DishEditProps) => {
     await deleteObject(imageRef);
   };
 
-  const updateDish = async (dish: Dish) => {
+  const updateDish = async (dish: Item) => {
     setIsLoading(true);
     let imageUrl = dish.image;
     if (dish.image.url.startsWith('file://')) {
@@ -98,7 +98,7 @@ export const DishEdit = (props: DishEditProps) => {
     };
   };
 
-  const onSubmitPress: SubmitHandler<Dish> = (data) => {
+  const onSubmitPress: SubmitHandler<Item> = (data) => {
     Keyboard.dismiss();
 
     if (!watch('image')) {
@@ -128,7 +128,7 @@ export const DishEdit = (props: DishEditProps) => {
     if (dishDoc.exists()) {
       const data = dishDoc.data();
       for (const [key, value] of Object.entries(data)) {
-        setValue(key as keyof Dish, value);
+        setValue(key as keyof Item, value);
       }
     } else {
       props.navigation.goBack();

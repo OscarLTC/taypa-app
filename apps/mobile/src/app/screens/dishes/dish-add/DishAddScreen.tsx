@@ -10,7 +10,7 @@ import {
   TextInput,
   Keyboard,
 } from 'react-native';
-import { Dish } from '../../../model/dish.model';
+import { Item } from '../../../model/item.model';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../storage/user/user.atom';
 import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker';
@@ -31,7 +31,7 @@ export const DishAdd = (props: DishAddProps) => {
     setError,
     watch,
     formState: { errors },
-  } = useForm<Dish>();
+  } = useForm<Item>();
   const [isLoading, setIsLoading] = useState(false);
 
   const userData = useRecoilValue(userState);
@@ -53,7 +53,7 @@ export const DishAdd = (props: DishAddProps) => {
     }
   };
 
-  const addDish = async (dish: Dish) => {
+  const addDish = async (dish: Item) => {
     setIsLoading(true);
     const imageUrl = await uploadImageToFirebae();
     addDoc(collection(firestore, 'dishes'), {
@@ -81,7 +81,7 @@ export const DishAdd = (props: DishAddProps) => {
     };
   };
 
-  const onSubmitPress: SubmitHandler<Dish> = (data) => {
+  const onSubmitPress: SubmitHandler<Item> = (data) => {
     Keyboard.dismiss();
 
     if (!watch('image')) {

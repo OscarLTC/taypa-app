@@ -6,7 +6,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import { OrderDishAddedCard } from '../../../components/orders/order-dishes/OrderDishAddedCard';
+import { ItemsCardCook } from '../../../components/orders/order-card-items-details/itemsCardCook';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { OrderStatusButton } from '../../../components/orders/OrderStatusButton';
@@ -99,7 +99,7 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
                 }}
               >
                 {order.dishes?.map((dish, index) => {
-                  return <OrderDishAddedCard key={index} dish={dish} />;
+                  return <ItemsCardCook key={index} item={dish} />;
                 })}
               </ScrollView>
             </View>

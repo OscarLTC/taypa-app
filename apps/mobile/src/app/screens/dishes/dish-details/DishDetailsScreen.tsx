@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { firestore, storage } from '../../../config/Firebase';
-import { Dish } from '../../../model/dish.model';
+import { Item } from '../../../model/item.model';
 import { deleteObject, ref } from 'firebase/storage';
 
 interface DishDetailsProps {
@@ -25,7 +25,7 @@ interface DishDetailsProps {
 
 export const DishDetails = (props: DishDetailsProps) => {
   const { dishId } = props.route.params as { dishId: string };
-  const [dish, setDish] = useState<Dish>();
+  const [dish, setDish] = useState<Item>();
   const isDishDetailsFocused = useIsFocused();
 
   const getDishDoc = async () => {
@@ -34,7 +34,7 @@ export const DishDetails = (props: DishDetailsProps) => {
       setDish({
         id: dishDoc.id,
         ...dishDoc.data(),
-      } as Dish);
+      } as Item);
     });
   };
 
