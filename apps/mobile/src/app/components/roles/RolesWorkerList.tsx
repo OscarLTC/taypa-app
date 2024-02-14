@@ -5,13 +5,21 @@ import {
   ParamListBase,
   useIsFocused,
 } from '@react-navigation/native';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  doc,
+  updateDoc,
+  onSnapshot,
+} from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { firestore } from '../../config/Firebase';
 import { userState } from '../../storage/user/user.atom';
 import { Worker } from '../../model/woker.model';
 import { RolesWorkerCard } from './RolesWorkerCard';
+import { userLockedState } from '../../storage/userLocked/userLocked.atom';
 
 interface RolesWorkerListProps {
   role: string;
@@ -21,30 +29,45 @@ interface RolesWorkerListProps {
 export const RolesWorkerList = (props: RolesWorkerListProps) => {
   const [workers, setWorkers] = useState<Worker[]>();
   const userData = useRecoilValue(userState);
+  const [userLocked, setUserLocked] = useRecoilState(userLockedState);
 
-  const getWorkers = async () => {
-    const adminId = userData?.userId;
-    const workerCollection = collection(firestore, 'workers');
-    const q = query(
-      workerCollection,
-      where('adminId', '==', adminId),
-      where('roles', 'array-contains', props.role)
-    );
-    const workerSnapshot = await getDocs(q);
-    const workers = workerSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setWorkers(workers as Worker[]);
+  const adminId = userData?.userId;
+  const workerCollection = collection(firestore, 'workers');
+  const q = query(
+    workerCollection,
+    where('adminId', '==', adminId),
+    where('roles', 'array-contains', props.role)
+  );
+
+  const updateAvailability = async () => {
+    const workerId = userLocked?.user?.id;
+    if (workerId) {
+      const workerRef = doc(firestore, 'workers', workerId);
+      await updateDoc(workerRef, {
+        isAvailable: true,
+      });
+      setUserLocked({
+        ...userLocked,
+        user: undefined,
+      });
+    }
   };
 
-  const isFocused = useIsFocused();
+  const isRolesWorkerFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused) {
-      getWorkers();
+    if (isRolesWorkerFocused) {
+      updateAvailability();
+      const unsubscribe = onSnapshot(q, (workerSnapshot) => {
+        const workers = workerSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setWorkers(workers as Worker[]);
+      });
+      return () => unsubscribe();
     }
-  }, [isFocused]);
+  }, [isRolesWorkerFocused]);
   return workers ? (
     <ScrollView
       showsVerticalScrollIndicator={false}

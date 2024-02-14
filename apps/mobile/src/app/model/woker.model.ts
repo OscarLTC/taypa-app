@@ -8,4 +8,5 @@ export interface Worker {
     url: string;
     name: string;
   };
+  isAvailable: boolean;
 }

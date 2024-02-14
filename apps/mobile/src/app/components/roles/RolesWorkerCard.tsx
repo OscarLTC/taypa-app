@@ -3,6 +3,8 @@ import { Image, Text, TouchableHighlight, View } from 'react-native';
 import { Worker } from '../../model/woker.model';
 import { useRecoilState } from 'recoil';
 import { userLockedState } from '../../storage/userLocked/userLocked.atom';
+import { firestore } from '../../config/Firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 interface RolesWorkerCardProps {
   worker: Worker;
@@ -13,7 +15,15 @@ interface RolesWorkerCardProps {
 export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
   const [userLocked, setUserLocked] = useRecoilState(userLockedState);
 
+  const updateAvailability = async () => {
+    const workerRef = doc(firestore, 'workers', props.worker.id);
+    await updateDoc(workerRef, {
+      isAvailable: false,
+    });
+  };
+
   const onWorkerPress = () => {
+    updateAvailability();
     setUserLocked({
       ...userLocked,
       user: {
@@ -45,6 +55,7 @@ export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
         flexDirection: 'row',
         marginTop: 10,
         marginBottom: 20,
+        opacity: props.worker.isAvailable ? 1 : 0.5,
       }}
       key={props.worker.id}
     >
@@ -63,12 +74,14 @@ export const RolesWorkerCard = (props: RolesWorkerCardProps) => {
           objectFit: 'cover',
           borderRadius: 50,
           zIndex: 1,
+          tintColor: props.worker.isAvailable ? undefined : 'black',
         }}
       />
       <TouchableHighlight
         underlayColor={'#F6AA1C'}
         delayPressOut={200}
         delayPressIn={100}
+        disabled={!props.worker.isAvailable}
         onPress={onWorkerPress}
         style={{
           paddingLeft: 70,
