@@ -28,7 +28,7 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
       },
       subTotal: Number(props.item.price) * quantity,
       quantity: quantity,
-      isPreparing: false,
+      wasTaken: false,
     };
     setDishes([...dishes, dishOrder]);
     props.setModalVisible(!props.modalVisible);

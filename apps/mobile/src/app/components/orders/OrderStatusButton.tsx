@@ -24,6 +24,9 @@ export const OrderStatusButton = (props: OrderStatusButtonProps) => {
   const navigation = useNavigation();
 
   const onStatusChangePress = async () => {
+    /*TODO: Que cuando el estado se tenga que cambiar a preparacion, a la vez
+    se cambie la propuiedad 'wasTaken' de los items(dishes, drinks, additional) a true
+    */
     if (nextStatus[status] !== 'servido') {
       const orderId = props.order?.id;
       const orderRef = doc(firestore, 'orders', orderId);

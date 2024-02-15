@@ -13,6 +13,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { useState } from 'react';
+import { OrderStatusBar } from '../order-status/OrderStatusBar';
 
 interface OrderDetailsCashierProps {
   route: Route<string>;
@@ -101,51 +102,53 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
             />
           </View>
         </View>
-
-        {order.dishes && (
-          <View style={{ marginTop: 30 }}>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: '#F5F5F5',
-                borderRadius: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: 'bold',
-                }}
-              >
-                Platos
-              </Text>
+        <View>
+          <OrderStatusBar status={order.status} />
+          {order.dishes && (
+            <>
               <View
                 style={{
-                  paddingVertical: 5,
-                  paddingHorizontal: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  backgroundColor: '#F5F5F5',
                   borderRadius: 10,
-                  backgroundColor: '#E3E3E3',
                 }}
               >
                 <Text
                   style={{
+                    fontSize: 15,
                     fontWeight: 'bold',
-                    color: '#626262',
-                    fontSize: 12,
                   }}
-                >{`S/ ${getSubTotalItems(order.dishes).toFixed(2)}`}</Text>
+                >
+                  Platos
+                </Text>
+                <View
+                  style={{
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                    backgroundColor: '#E3E3E3',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color: '#626262',
+                      fontSize: 12,
+                    }}
+                  >{`S/ ${getSubTotalItems(order.dishes).toFixed(2)}`}</Text>
+                </View>
               </View>
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {order.dishes?.map((dish, index) => {
-                return <ItemsCardCashier key={index} item={dish} />;
-              })}
-            </ScrollView>
-          </View>
-        )}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {order.dishes?.map((dish, index) => {
+                  return <ItemsCardCashier key={index} item={dish} />;
+                })}
+              </ScrollView>
+            </>
+          )}
+        </View>
 
         <View
           style={{

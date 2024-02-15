@@ -10,6 +10,7 @@ import { ItemsCardCook } from '../../../components/orders/order-card-items-detai
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { OrderStatusButton } from '../../../components/orders/OrderStatusButton';
+import { OrderStatusBar } from '../order-status/OrderStatusBar';
 
 interface OrderDetailsCookProps {
   route: Route<string>;
@@ -75,34 +76,33 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
             />
           </View>
         </View>
-        <View
-          style={{
-            marginTop: 20,
-          }}
-        >
+        <View>
+          <OrderStatusBar status={order.status} />
           <View>
-            <View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: 'bold',
-                  marginBottom: 10,
-                }}
-              >
-                Platos
-              </Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{
-                  display: 'flex',
-                }}
-              >
-                {order.dishes?.map((dish, index) => {
-                  return <ItemsCardCook key={index} item={dish} />;
-                })}
-              </ScrollView>
-            </View>
+            {order.dishes && (
+              <>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 'bold',
+                    marginBottom: 10,
+                  }}
+                >
+                  Platos
+                </Text>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={{
+                    display: 'flex',
+                  }}
+                >
+                  {order.dishes?.map((dish, index) => {
+                    return <ItemsCardCook key={index} item={dish} />;
+                  })}
+                </ScrollView>
+              </>
+            )}
           </View>
         </View>
       </View>

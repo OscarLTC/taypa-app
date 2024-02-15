@@ -20,6 +20,7 @@ import {
 import { firestore } from '../../../config/Firebase';
 import { Order, itemOrder } from '../../../model/order.model';
 import { ItemsCardWaiter } from '../../../components/orders/order-card-items-details/ItemsCardWaiter';
+import { OrderStatusBar } from '../order-status/OrderStatusBar';
 
 interface OrderDetailsProps {
   route: Route<string>;
@@ -150,61 +151,62 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
           </View>
         </View>
         {order ? (
-          <View
-            style={{
-              marginTop: 20,
-            }}
-          >
-            {order.dishes && (
-              <>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    backgroundColor: '#F5F5F5',
-                    borderRadius: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Platos
-                  </Text>
+          <View>
+            <OrderStatusBar status={order.status} />
+            <View>
+              {order.dishes && (
+                <>
                   <View
                     style={{
-                      paddingVertical: 5,
-                      paddingHorizontal: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      backgroundColor: '#F5F5F5',
                       borderRadius: 10,
-                      backgroundColor: '#E3E3E3',
                     }}
                   >
                     <Text
                       style={{
+                        fontSize: 15,
                         fontWeight: 'bold',
-                        color: '#626262',
-                        fontSize: 12,
                       }}
-                    >{`S/ ${getSubTotalItems(order.dishes).toFixed(2)}`}</Text>
+                    >
+                      Platos
+                    </Text>
+                    <View
+                      style={{
+                        paddingVertical: 5,
+                        paddingHorizontal: 10,
+                        borderRadius: 10,
+                        backgroundColor: '#E3E3E3',
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          color: '#626262',
+                          fontSize: 12,
+                        }}
+                      >{`S/ ${getSubTotalItems(order.dishes).toFixed(
+                        2
+                      )}`}</Text>
+                    </View>
                   </View>
-                </View>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={{
-                    display: 'flex',
-                  }}
-                >
-                  {order.dishes.map((dish, index) => {
-                    return <ItemsCardWaiter key={index} item={dish} />;
-                  })}
-                </ScrollView>
-              </>
-            )}
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{
+                      display: 'flex',
+                    }}
+                  >
+                    {order.dishes.map((dish, index) => {
+                      return <ItemsCardWaiter key={index} item={dish} />;
+                    })}
+                  </ScrollView>
+                </>
+              )}
+            </View>
           </View>
         ) : (
           <View
