@@ -1,13 +1,14 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { Item } from '../../model/item.model';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { DishRemoveButton } from './DishRemoveButton';
+import { Item } from '../../model/item.model';
+import { DrinkRemoveButton } from './DrinkRemoveButton';
 
-interface DishCardProps {
-  dish: Item;
+interface DrinkCardProps {
+  drink: Item;
   navigation: NavigationProp<ParamListBase>;
 }
-export const DishCard = (props: DishCardProps) => {
+
+export const DrinkCard = (props: DrinkCardProps) => {
   return (
     <TouchableOpacity
       delayPressIn={100}
@@ -23,15 +24,15 @@ export const DishCard = (props: DishCardProps) => {
         padding: 10,
       }}
       onPress={() =>
-        props.navigation.navigate('dish-details', {
-          dishId: props.dish.id,
+        props.navigation.navigate('drink-details', {
+          drinkId: props.drink.id,
         })
       }
     >
       <Image
         source={
-          props.dish.image.url
-            ? { uri: props.dish.image.url }
+          props.drink.image.url
+            ? { uri: props.drink.image.url }
             : require('../../../../assets/lomo_saltado.png')
         }
         style={{
@@ -56,7 +57,7 @@ export const DishCard = (props: DishCardProps) => {
             fontSize: 12,
           }}
         >
-          {props.dish.name}
+          {props.drink.name}
         </Text>
         <Text
           style={{
@@ -66,10 +67,10 @@ export const DishCard = (props: DishCardProps) => {
             color: '#941B0C',
           }}
         >
-          {`S/ ${Number(props.dish.price).toFixed(2)}`}
+          {`S/ ${Number(props.drink.price).toFixed(2)}`}
         </Text>
       </View>
-      <DishRemoveButton dish={props.dish} />
+      <DrinkRemoveButton drink={props.drink} />
     </TouchableOpacity>
   );
 };

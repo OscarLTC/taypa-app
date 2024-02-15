@@ -1,30 +1,33 @@
-import React, { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import {
-  View,
+  ref,
+  deleteObject,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
+import { useState, useEffect } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import {
+  Image,
+  Keyboard,
   Text,
   TextInput,
   TouchableHighlight,
-  Image,
-  TouchableOpacity,
-  Keyboard,
+  View,
 } from 'react-native';
-import { Worker } from '../../../model/woker.model';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { firestore, storage } from '../../../config/Firebase';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { addDoc, collection } from 'firebase/firestore';
-import { AntDesign } from '@expo/vector-icons';
 import { useRecoilValue } from 'recoil';
+import { storage, firestore } from '../../../config/Firebase';
+import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
-import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker';
+import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface WorkerAddProps {
+interface DrinkEditProps {
+  route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const WorkerAdd = (props: WorkerAddProps) => {
+export const DrinkEdit = (props: DrinkEditProps) => {
   const {
     control,
     handleSubmit,
@@ -33,22 +36,21 @@ export const WorkerAdd = (props: WorkerAddProps) => {
     setError,
     watch,
     formState: { errors },
-  } = useForm<Worker>();
-  const roles = ['Cajero', 'Cocinero', 'Mesero'];
+  } = useForm<Item>();
   const [isLoading, setIsLoading] = useState(false);
-
+  const { drinkId } = props.route.params as { drinkId: string };
   const userData = useRecoilValue(userState);
 
   const onLoadImagePress = async () => {
     const result = await launchImageLibraryAsync({
       mediaTypes: MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
       quality: 1,
       base64: true,
     });
 
     if (!result.canceled) {
+      deteleDrinkImage();
       setValue('image', {
         name: result.assets[0].uri.split('/').pop() ?? '',
         url: result.assets[0].uri,
@@ -57,16 +59,26 @@ export const WorkerAdd = (props: WorkerAddProps) => {
     }
   };
 
-  const addWorker = async (worker: Worker) => {
+  const deteleDrinkImage = async () => {
+    const imageRef = ref(
+      storage,
+      `drinks/${watch('adminId')}/${watch('image.name')}`
+    );
+    await deleteObject(imageRef);
+  };
+
+  const updateDrink = async (drink: Item) => {
     setIsLoading(true);
-    const imageUrl = await uploadImageToFirebae();
-    addDoc(collection(firestore, 'workers'), {
-      ...worker,
-      isAvailable: true,
+    let imageUrl = drink.image;
+    if (drink.image.url.startsWith('file://')) {
+      imageUrl = await uploadImageToFirebae();
+    }
+    updateDoc(doc(firestore, 'drinks', drinkId), {
+      ...drink,
       image: imageUrl,
     }).then(() => {
       setIsLoading(false);
-      props.navigation.navigate('worker-list');
+      props.navigation.goBack();
     });
   };
 
@@ -86,34 +98,46 @@ export const WorkerAdd = (props: WorkerAddProps) => {
     };
   };
 
-  const onSubmitPress: SubmitHandler<Worker> = (data) => {
+  const onSubmitPress: SubmitHandler<Item> = (data) => {
     Keyboard.dismiss();
-
-    const selectedRoles = data.roles.filter(
-      (role) => role !== '' && role !== undefined
-    );
-
-    if (selectedRoles.length === 0) {
-      setError('roles', {
-        type: 'manual',
-        message: 'Debe seleccionar al menos un rol',
-      });
-      return;
-    }
 
     if (!watch('image')) {
       setError('image', { type: 'manual', message: 'Debe subir una imagen' });
       return;
     }
 
-    addWorker({
+    console.log({
       ...data,
-      names: data.names.trim(),
-      lastnames: data.lastnames.trim(),
+      name: data.name.trim(),
+      description: data.description.trim(),
       adminId: userData?.userId ?? '',
-      roles: selectedRoles,
+      price: data.price,
+    });
+    updateDrink({
+      ...data,
+      name: data.name.trim(),
+      description: data.description.trim(),
+      adminId: userData?.userId ?? '',
+      price: data.price,
     });
   };
+
+  const getDrinkDoc = async () => {
+    const drinksRef = doc(firestore, 'drinks', drinkId);
+    const drinkDoc = await getDoc(drinksRef);
+    if (drinkDoc.exists()) {
+      const data = drinkDoc.data();
+      for (const [key, value] of Object.entries(data)) {
+        setValue(key as keyof Item, value);
+      }
+    } else {
+      props.navigation.goBack();
+    }
+  };
+
+  useEffect(() => {
+    getDrinkDoc();
+  }, []);
 
   return (
     <>
@@ -137,25 +161,26 @@ export const WorkerAdd = (props: WorkerAddProps) => {
             style={{
               position: 'absolute',
               left: 0,
+              padding: 10,
               alignSelf: 'center',
               borderRadius: 100,
               backgroundColor: '#FFFFFF',
-              zIndex: 1,
-              flexDirection: 'row',
-              height: 40,
-              width: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
             }}
             delayPressOut={100}
             onPress={() => {
               props.navigation.goBack();
             }}
           >
-            <AntDesign name="arrowleft" size={20} color="black" />
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+              }}
+              source={require('../../../../../assets/arrow_back.png')}
+            />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Registrar Empleado
+            Registrar Bebida
           </Text>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
@@ -174,138 +199,121 @@ export const WorkerAdd = (props: WorkerAddProps) => {
         >
           <View>
             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-              <Text style={{ color: '#E74545' }}>{'* '}</Text>Nombres
+              <Text style={{ color: '#E74545' }}>{'* '}</Text>Nombre
             </Text>
             <Controller
               control={control}
-              rules={{
-                required: {
-                  message: 'Nombre requerido',
-                  value: true,
-                },
-                pattern: {
-                  message: 'Nombre inválido',
-                  value: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/,
-                },
-              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  onFocus={() => {
-                    clearErrors('names');
-                  }}
-                  value={value}
-                  maxLength={15}
+                  maxLength={50}
                   style={{
                     backgroundColor: '#FFFFFF',
                     borderRadius: 5,
                     borderWidth: 1,
-                    borderColor: errors.names ? '#CE3E21' : '#FFFFFF',
+                    borderColor: errors.name ? '#CE3E21' : '#FFFFFF',
                     paddingVertical: 5,
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
                   }}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
                 />
               )}
-              name="names"
+              name="name"
+              rules={{
+                required: 'Este campo es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'El nombre no puede tener más de 50 caracteres',
+                },
+              }}
             />
           </View>
           <View>
             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-              <Text style={{ color: '#E74545' }}>{'* '}</Text>Apellidos
+              Descripción
             </Text>
             <Controller
               control={control}
-              rules={{
-                required: {
-                  message: 'Apellido requerido',
-                  value: true,
-                },
-                pattern: {
-                  message: 'Apellido inválido',
-                  value: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/,
-                },
-              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  onFocus={() => {
-                    clearErrors('lastnames');
-                  }}
-                  value={value}
-                  maxLength={15}
+                  multiline={true}
+                  numberOfLines={4}
+                  maxLength={200}
                   style={{
                     backgroundColor: '#FFFFFF',
                     borderRadius: 5,
-                    borderWidth: 1,
-                    borderColor: errors.lastnames ? '#CE3E21' : '#FFFFFF',
                     paddingVertical: 5,
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
                   }}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  textAlignVertical="top"
                 />
               )}
-              name="lastnames"
+              name="description"
+              defaultValue=""
+              rules={{
+                maxLength: {
+                  value: 200,
+                  message:
+                    'La descripción no puede tener más de 200 caracteres',
+                },
+              }}
             />
           </View>
           <View>
             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-              <Text style={{ color: '#E74545' }}>{'* '}</Text>Roles
+              <Text style={{ color: '#E74545' }}>{'* '}</Text>Precio
             </Text>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                flexWrap: 'wrap',
+                alignItems: 'center',
                 gap: 10,
-                marginTop: 20,
-                justifyContent: 'space-between',
-                borderColor: errors.roles ? '#CE3E21' : 'transparent',
-                borderWidth: 1,
-                borderRadius: 10,
-                padding: 10,
               }}
             >
-              {roles.map((role, index) => (
-                <Controller
-                  key={index}
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <TouchableOpacity
-                      activeOpacity={0.8}
-                      onPress={() => {
-                        if (value?.includes(role)) {
-                          onChange(value?.filter((item) => item !== role));
-                        } else {
-                          onChange([...(value ?? []), role]);
-                        }
-                      }}
-                      style={{
-                        backgroundColor: value?.includes(role)
-                          ? '#F6AA1C'
-                          : '#FFFFFF',
-                        padding: 15,
-                        borderRadius: 10,
-                        elevation: 2,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontWeight: 'bold',
-                          color: value?.includes(role) ? '#FFFFFF' : '#5C5C5C',
-                        }}
-                      >
-                        {role}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                  name={`roles`}
-                />
-              ))}
+              <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 5 }}>
+                S/
+              </Text>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    maxLength={5}
+                    keyboardType="numeric"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: 5,
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
+                      marginTop: 10,
+                      elevation: 1,
+                      borderWidth: 1,
+                      borderColor: errors.price ? '#CE3E21' : '#FFFFFF',
+                      width: 60,
+                    }}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value?.toString()}
+                    placeholder="00.00"
+                  />
+                )}
+                name="price"
+                rules={{
+                  required: 'Este campo es requerido',
+                  pattern: {
+                    value: /^[0-9]+(\.[0-9]{1,2})?$/,
+                    message: 'Ingrese un precio válido',
+                  },
+                }}
+              />
             </View>
           </View>
           <View>
@@ -335,9 +343,14 @@ export const WorkerAdd = (props: WorkerAddProps) => {
                     source={
                       watch('image')
                         ? { uri: watch('image.url') }
-                        : require('../../../../../assets/usuario.png')
+                        : require('../../../../../assets/icono_plato.png')
                     }
-                    style={{ width: 150, height: 150, borderRadius: 10 }}
+                    style={{
+                      width: 150,
+                      height: 150,
+                      borderRadius: 10,
+                      objectFit: 'contain',
+                    }}
                   />
                 </View>
                 <Text style={{ fontSize: 8, marginTop: 4 }}>
@@ -391,11 +404,9 @@ export const WorkerAdd = (props: WorkerAddProps) => {
             textAlign: 'center',
           }}
         >
-          Registrar
+          Actualizar
         </Text>
       </TouchableHighlight>
     </>
   );
 };
-
-export default WorkerAdd;

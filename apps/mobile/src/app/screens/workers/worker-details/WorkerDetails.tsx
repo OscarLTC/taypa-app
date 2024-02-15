@@ -180,12 +180,14 @@ export const WorkerDetails = (props: WorkerDetailsProps) => {
           >
             <TouchableHighlight
               underlayColor={'#F6AA1C'}
+              disabled={!worker?.isAvailable}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 30,
                 alignSelf: 'center',
                 borderRadius: 10,
                 backgroundColor: '#5C5C5C',
+                opacity: worker?.isAvailable ? 1 : 0.5,
               }}
               delayPressOut={100}
               onPress={deleteWorker}

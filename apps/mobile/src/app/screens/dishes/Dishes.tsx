@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import DishListScreen from './dish-list/DishListScreen';
 import DishAdd from './dish-add/DishAddScreen';
 import DishDetails from './dish-details/DishDetailsScreen';
 import { DishEdit } from './dish-edit/DishEdit';
+import { DishListScreen } from './dish-list/DishListScreen';
 
 export const Dishes = () => {
   const Stack = createStackNavigator();

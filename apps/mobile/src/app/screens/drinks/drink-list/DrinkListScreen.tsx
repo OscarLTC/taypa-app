@@ -1,15 +1,13 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import React from 'react';
-
-import { View, Text, TouchableHighlight, Image } from 'react-native';
-import { DishList } from '../../../components/dishes/DishList';
 import { AntDesign } from '@expo/vector-icons';
+import { View, TouchableHighlight, Text, Image } from 'react-native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { DrinkList } from '../../../components/drinks/DrinkList';
 
-interface DishListProps {
+interface DrinkListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const DishListScreen = (props: DishListProps) => {
+export const DrinkListScreen = (props: DrinkListProps) => {
   return (
     <View
       style={{
@@ -48,7 +46,7 @@ export const DishListScreen = (props: DishListProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Platos</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Bebidas</Text>
         <TouchableHighlight
           underlayColor={'#941B0C'}
           style={{
@@ -66,7 +64,7 @@ export const DishListScreen = (props: DishListProps) => {
           }}
           delayPressOut={100}
           onPress={() => {
-            props.navigation.navigate('dish-add');
+            props.navigation.navigate('drink-add');
           }}
         >
           <AntDesign name="plus" size={25} color="white" />
@@ -78,7 +76,7 @@ export const DishListScreen = (props: DishListProps) => {
           ></Image>
         </View>
       </View>
-      <DishList navigation={props.navigation} />
+      <DrinkList navigation={props.navigation} />
     </View>
   );
 };
