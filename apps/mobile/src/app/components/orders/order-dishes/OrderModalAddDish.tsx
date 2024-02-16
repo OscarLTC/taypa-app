@@ -88,6 +88,7 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
                 width: 250,
                 height: 200,
                 objectFit: 'contain',
+                resizeMode: 'contain',
               }}
             />
           </View>

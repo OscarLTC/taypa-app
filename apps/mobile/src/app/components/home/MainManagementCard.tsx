@@ -21,7 +21,7 @@ export const MainManagementCard = (navigation: {
       title: 'Gestión de Adicionales',
       color: '#FE8282',
       image: require('../../../../assets/adicional.png'),
-      redirect: 'additionals',
+      redirect: 'additional',
     },
   ];
 
@@ -66,6 +66,7 @@ export const MainManagementCard = (navigation: {
               width: 150,
               height: 100,
               objectFit: 'contain',
+              resizeMode: 'contain',
             }}
             source={item.image}
           />

@@ -350,6 +350,7 @@ export const DrinkEdit = (props: DrinkEditProps) => {
                       height: 150,
                       borderRadius: 10,
                       objectFit: 'contain',
+                      resizeMode: 'contain',
                     }}
                   />
                 </View>

@@ -88,6 +88,7 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                 width: 200,
                 height: 100,
                 objectFit: 'contain',
+                resizeMode: 'contain',
               }}
             />
           </View>

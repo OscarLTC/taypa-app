@@ -1,12 +1,7 @@
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  deleteObject,
-} from 'firebase/storage';
-import { useEffect, useState } from 'react';
+import { addDoc, collection } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import {
   Image,
@@ -20,14 +15,13 @@ import { useRecoilValue } from 'recoil';
 import { firestore, storage } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
-import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface DishEditProps {
+interface AdditionalAddProps {
   navigation: NavigationProp<ParamListBase>;
-  route: Route<string>;
 }
 
-export const DishEdit = (props: DishEditProps) => {
+export const AdditionalAdd = (props: AdditionalAddProps) => {
   const {
     control,
     handleSubmit,
@@ -38,7 +32,7 @@ export const DishEdit = (props: DishEditProps) => {
     formState: { errors },
   } = useForm<Item>();
   const [isLoading, setIsLoading] = useState(false);
-  const { dishId } = props.route.params as { dishId: string };
+
   const userData = useRecoilValue(userState);
 
   const onLoadImagePress = async () => {
@@ -50,7 +44,6 @@ export const DishEdit = (props: DishEditProps) => {
     });
 
     if (!result.canceled) {
-      deteleDishImage();
       setValue('image', {
         name: result.assets[0].uri.split('/').pop() ?? '',
         url: result.assets[0].uri,
@@ -59,26 +52,15 @@ export const DishEdit = (props: DishEditProps) => {
     }
   };
 
-  const deteleDishImage = async () => {
-    const imageRef = ref(
-      storage,
-      `dishes/${watch('adminId')}/${watch('image.name')}`
-    );
-    await deleteObject(imageRef);
-  };
-
-  const updateDish = async (dish: Item) => {
+  const addDrink = async (drink: Item) => {
     setIsLoading(true);
-    let imageUrl = dish.image;
-    if (dish.image.url.startsWith('file://')) {
-      imageUrl = await uploadImageToFirebae();
-    }
-    updateDoc(doc(firestore, 'dishes', dishId), {
-      ...dish,
+    const imageUrl = await uploadImageToFirebae();
+    addDoc(collection(firestore, 'drinks'), {
+      ...drink,
       image: imageUrl,
     }).then(() => {
       setIsLoading(false);
-      props.navigation.goBack();
+      props.navigation.navigate('drink-list');
     });
   };
 
@@ -87,7 +69,7 @@ export const DishEdit = (props: DishEditProps) => {
 
     const fetchResponse = await fetch(watch('image.url'));
     const imageBlob = await fetchResponse.blob();
-    const storageRef = ref(storage, `workers/${userData?.userId}/${imageName}`);
+    const storageRef = ref(storage, `drinks/${userData?.userId}/${imageName}`);
 
     const snapshot = await uploadBytesResumable(storageRef, imageBlob);
     const downloadURL = await getDownloadURL(snapshot.ref);
@@ -106,14 +88,7 @@ export const DishEdit = (props: DishEditProps) => {
       return;
     }
 
-    console.log({
-      ...data,
-      name: data.name.trim(),
-      description: data.description.trim(),
-      adminId: userData?.userId ?? '',
-      price: data.price,
-    });
-    updateDish({
+    addDrink({
       ...data,
       name: data.name.trim(),
       description: data.description.trim(),
@@ -121,24 +96,6 @@ export const DishEdit = (props: DishEditProps) => {
       price: data.price,
     });
   };
-
-  const getDishDoc = async () => {
-    const dishRef = doc(firestore, 'dishes', dishId);
-    const dishDoc = await getDoc(dishRef);
-    if (dishDoc.exists()) {
-      const data = dishDoc.data();
-      for (const [key, value] of Object.entries(data)) {
-        setValue(key as keyof Item, value);
-      }
-    } else {
-      props.navigation.goBack();
-    }
-  };
-
-  useEffect(() => {
-    getDishDoc();
-  }, []);
-
   return (
     <>
       <View
@@ -180,7 +137,7 @@ export const DishEdit = (props: DishEditProps) => {
             />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Registrar Plato
+            Registrar Bebida
           </Text>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
@@ -227,10 +184,6 @@ export const DishEdit = (props: DishEditProps) => {
                 maxLength: {
                   value: 50,
                   message: 'El nombre no puede tener más de 50 caracteres',
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9\s]+$/,
-                  message: 'El nombre solo puede contener letras y números',
                 },
               }}
             />
@@ -409,7 +362,7 @@ export const DishEdit = (props: DishEditProps) => {
             textAlign: 'center',
           }}
         >
-          Actualizar
+          Registrar
         </Text>
       </TouchableHighlight>
     </>

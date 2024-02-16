@@ -38,6 +38,7 @@ export const DishCard = (props: DishCardProps) => {
           width: '100%',
           height: 100,
           objectFit: 'contain',
+          resizeMode: 'contain',
         }}
       ></Image>
       <View

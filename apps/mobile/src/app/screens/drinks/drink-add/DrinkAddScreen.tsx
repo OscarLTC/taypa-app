@@ -307,6 +307,7 @@ export const DrinkAdd = (props: DrinkAddProps) => {
                       height: 150,
                       borderRadius: 10,
                       objectFit: 'contain',
+                      resizeMode: 'contain',
                     }}
                   />
                 </View>

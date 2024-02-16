@@ -1,14 +1,14 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Item } from '../../model/item.model';
-import { DrinkRemoveButton } from './DrinkRemoveButton';
+import { AdditionalRemoveButton } from './AdditionalRemoveButton';
 
-interface DrinkCardProps {
-  drink: Item;
+interface AdditionalCardProps {
+  additional: Item;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const DrinkCard = (props: DrinkCardProps) => {
+export const AdditionalCard = (props: AdditionalCardProps) => {
   return (
     <TouchableOpacity
       delayPressIn={100}
@@ -24,15 +24,15 @@ export const DrinkCard = (props: DrinkCardProps) => {
         padding: 10,
       }}
       onPress={() =>
-        props.navigation.navigate('drink-details', {
-          drinkId: props.drink.id,
+        props.navigation.navigate('additional-details', {
+          additionalId: props.additional.id,
         })
       }
     >
       <Image
         source={
-          props.drink.image.url
-            ? { uri: props.drink.image.url }
+          props.additional.image.url
+            ? { uri: props.additional.image.url }
             : require('../../../../assets/lomo_saltado.png')
         }
         style={{
@@ -58,7 +58,7 @@ export const DrinkCard = (props: DrinkCardProps) => {
             fontSize: 12,
           }}
         >
-          {props.drink.name}
+          {props.additional.name}
         </Text>
         <Text
           style={{
@@ -68,10 +68,10 @@ export const DrinkCard = (props: DrinkCardProps) => {
             color: '#941B0C',
           }}
         >
-          {`S/ ${Number(props.drink.price).toFixed(2)}`}
+          {`S/ ${Number(props.additional.price).toFixed(2)}`}
         </Text>
       </View>
-      <DrinkRemoveButton drink={props.drink} />
+      <AdditionalRemoveButton additional={props.additional} />
     </TouchableOpacity>
   );
 };

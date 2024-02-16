@@ -312,6 +312,7 @@ export const DishAdd = (props: DishAddProps) => {
                       height: 150,
                       borderRadius: 10,
                       objectFit: 'contain',
+                      resizeMode: 'contain',
                     }}
                   />
                 </View>

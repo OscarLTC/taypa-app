@@ -12,6 +12,7 @@ import { Roles } from './roles/Roles';
 import { StatusBar } from 'react-native';
 import { Orders } from './orders/Order';
 import { Drinks } from './drinks/Drinks';
+import { Additional } from './additional/Additional';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -65,6 +66,11 @@ export const Container = (props: ContainerProps) => {
         name="drinks"
         options={{ headerShown: false }}
         component={Drinks}
+      />
+      <Stack.Screen
+        name="additional"
+        options={{ headerShown: false }}
+        component={Additional}
       />
       <Stack.Screen
         name="orders"

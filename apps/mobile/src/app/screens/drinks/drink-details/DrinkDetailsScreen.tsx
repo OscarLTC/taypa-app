@@ -120,6 +120,7 @@ export const DrinkDetails = (props: DrinkDetailsProps) => {
             }}
             style={{
               objectFit: 'contain',
+              resizeMode: 'contain',
               alignSelf: 'center',
               width: 300,
               height: 300,
