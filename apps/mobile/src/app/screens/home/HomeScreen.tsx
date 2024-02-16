@@ -33,11 +33,11 @@ export const HomeScreen = (props: HomeProps) => {
       icon: <FontAwesome5 name="coins" size={20} color="black" />,
       redirect: 'sales',
     },
-    {
-      title: 'Sesiones',
-      icon: <Fontisto name="eye" size={17} color="black" />,
-      redirect: 'sessions',
-    },
+    // {
+    //   title: 'Sesiones',
+    //   icon: <Fontisto name="eye" size={17} color="black" />,
+    //   redirect: 'sessions',
+    // },
   ];
   const resetUser = useResetRecoilState(userState);
 

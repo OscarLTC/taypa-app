@@ -300,7 +300,7 @@ export const DrinkAdd = (props: DrinkAddProps) => {
                     source={
                       watch('image')
                         ? { uri: watch('image.url') }
-                        : require('../../../../../assets/icono_plato.png')
+                        : require('../../../../../assets/drink.png')
                     }
                     style={{
                       width: 150,

@@ -180,7 +180,7 @@ export const DrinkEdit = (props: DrinkEditProps) => {
             />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Registrar Bebida
+            Actualizar Bebida
           </Text>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
@@ -343,7 +343,7 @@ export const DrinkEdit = (props: DrinkEditProps) => {
                     source={
                       watch('image')
                         ? { uri: watch('image.url') }
-                        : require('../../../../../assets/icono_plato.png')
+                        : require('../../../../../assets/drink.png')
                     }
                     style={{
                       width: 150,

@@ -52,15 +52,15 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
     }
   };
 
-  const addDrink = async (drink: Item) => {
+  const addAdditional = async (additional: Item) => {
     setIsLoading(true);
     const imageUrl = await uploadImageToFirebae();
-    addDoc(collection(firestore, 'drinks'), {
-      ...drink,
+    addDoc(collection(firestore, 'additional'), {
+      ...additional,
       image: imageUrl,
     }).then(() => {
       setIsLoading(false);
-      props.navigation.navigate('drink-list');
+      props.navigation.navigate('additional-list');
     });
   };
 
@@ -69,7 +69,10 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
 
     const fetchResponse = await fetch(watch('image.url'));
     const imageBlob = await fetchResponse.blob();
-    const storageRef = ref(storage, `drinks/${userData?.userId}/${imageName}`);
+    const storageRef = ref(
+      storage,
+      `additional/${userData?.userId}/${imageName}`
+    );
 
     const snapshot = await uploadBytesResumable(storageRef, imageBlob);
     const downloadURL = await getDownloadURL(snapshot.ref);
@@ -88,7 +91,7 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
       return;
     }
 
-    addDrink({
+    addAdditional({
       ...data,
       name: data.name.trim(),
       description: data.description.trim(),
@@ -137,7 +140,7 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
             />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Registrar Bebida
+            Registrar Adicional
           </Text>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
@@ -300,7 +303,7 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
                     source={
                       watch('image')
                         ? { uri: watch('image.url') }
-                        : require('../../../../../assets/icono_plato.png')
+                        : require('../../../../../assets/additional.png')
                     }
                     style={{
                       width: 150,

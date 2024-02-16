@@ -46,7 +46,7 @@ export const AdditionalListScreen = (props: AdditionalListProps) => {
         >
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Bebidas</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionales</Text>
         <TouchableHighlight
           underlayColor={'#941B0C'}
           style={{
