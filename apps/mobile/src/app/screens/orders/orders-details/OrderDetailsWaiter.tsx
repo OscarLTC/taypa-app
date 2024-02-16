@@ -1,6 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
-import { View, TouchableHighlight, Image, Text } from 'react-native';
+import {
+  View,
+  TouchableHighlight,
+  Image,
+  Text,
+  ScrollView,
+} from 'react-native';
 import { Table } from '../../../model/table.model';
 import { useEffect, useState } from 'react';
 import {
@@ -124,12 +130,20 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
             }}
             delayPressOut={100}
             onPress={() => {
-              props.navigation.navigate('order-add', {
-                table: table,
-              });
+              order
+                ? props.navigation.navigate('order-edit', {
+                    table: table,
+                  })
+                : props.navigation.navigate('order-add', {
+                    table: table,
+                  });
             }}
           >
-            <AntDesign name="plus" size={25} color="white" />
+            {order ? (
+              <AntDesign name="edit" size={20} color="white" />
+            ) : (
+              <AntDesign name="plus" size={20} color="white" />
+            )}
           </TouchableHighlight>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
@@ -139,20 +153,53 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
           </View>
         </View>
         {order ? (
-          <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ marginTop: 20 }}
+          >
             <OrderStatusBar status={order.status} />
             <View>
-              {order.dishes && (
+              {order.dishes && order.dishes.length > 0 && (
                 <ItemListWaiter items={order.dishes} title="Platos" />
               )}
-              {order.drinks && (
+              {order.drinks && order.drinks.length > 0 && (
                 <ItemListWaiter items={order.drinks} title="Bebidas" />
               )}
-              {order.aditional && (
-                <ItemListWaiter items={order.aditional} title="Adicionales" />
+              {order.additional && order.additional.length > 0 && (
+                <ItemListWaiter items={order.additional} title="Adicionales" />
               )}
             </View>
-          </View>
+            {order.note && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  backgroundColor: '#F5F5F5',
+                  borderRadius: 10,
+                  paddingVertical: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Nota:
+                </Text>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: '#626262',
+                    fontSize: 12,
+                  }}
+                >
+                  {order.note}
+                </Text>
+              </View>
+            )}
+          </ScrollView>
         ) : (
           <View
             style={{

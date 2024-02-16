@@ -10,6 +10,8 @@ import { userState } from '../../storage/user/user.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { orderDrinksState } from '../../storage/order/order-drinks/orderDrinks.atom';
 import { orderAdditionalState } from '../../storage/order/order-additional/orderAdditional.atom';
+import { subTotalDrinksSelector } from '../../storage/order/order-drinks/orderDrinks.selector';
+import { subTotalAdditionalSelector } from '../../storage/order/order-additional/orderAdditional.selector';
 
 interface OrderRegisterButtonProps {
   table: Table;
@@ -23,6 +25,8 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
   const [drinks, setDrinks] = useRecoilState(orderDrinksState);
   const [additional, setAdditional] = useRecoilState(orderAdditionalState);
   const dishesTotal = useRecoilValue(subTotalDishesSelector);
+  const drinksTotal = useRecoilValue(subTotalDrinksSelector);
+  const additionalTotal = useRecoilValue(subTotalAdditionalSelector);
 
   const onRegisterOrderPress = () => {
     console.log(props.note);
@@ -53,8 +57,8 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
         wasTaken: false,
       })),
       status: 'nueva',
-      total: dishesTotal,
-      note: props.note,
+      total: dishesTotal + drinksTotal + additionalTotal,
+      note: props.note ? props.note : '',
       createdAt: new Date(),
       updatedAt: new Date(),
     }).then(() => {

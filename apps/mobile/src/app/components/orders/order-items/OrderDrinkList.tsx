@@ -1,43 +1,38 @@
-import {
-  NavigationProp,
-  ParamListBase,
-  useIsFocused,
-} from '@react-navigation/native';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
+import { ItemsListSkeleton } from './ItemsListSkeleton';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { firestore } from '../../config/Firebase';
-import { Item } from '../../model/item.model';
-import { userState } from '../../storage/user/user.atom';
-import { ItemsListSkeleton } from '../orders/order-items/ItemsListSkeleton';
-import { DrinkCard } from './DrinkCard';
+import { firestore } from '../../../config/Firebase';
+import { Item } from '../../../model/item.model';
+import { userState } from '../../../storage/user/user.atom';
+import { OrderItemCard } from './OrderItemCard';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface DrinkListProps {
+interface OrderDrinkListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const DrinkList = (props: DrinkListProps) => {
+export const OrderDrinkList = (props: OrderDrinkListProps) => {
   const userData = useRecoilValue(userState);
-  const isDrinkListFocused = useIsFocused();
   const [drinks, setDrinks] = useState<Item[]>();
 
-  const adminId = userData?.userId;
-  const drinksCollection = collection(firestore, 'drinks');
-  const q = query(drinksCollection, where('adminId', '==', adminId));
+  const getDrinks = async () => {
+    const adminId = userData?.userId;
+    const drinksCollection = collection(firestore, 'drinks');
+    const q = query(drinksCollection, where('adminId', '==', adminId));
+    const drinksSnapshot = await getDocs(q);
+    const drinks = drinksSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setDrinks(drinks as Item[]);
+  };
 
   useEffect(() => {
-    if (isDrinkListFocused) {
-      const unsubscribe = onSnapshot(q, (drinkSnapshot) => {
-        const drinks = drinkSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setDrinks(drinks as Item[]);
-      });
-      return () => unsubscribe();
-    }
-  }, [isDrinkListFocused]);
+    getDrinks();
+  });
+
   return drinks ? (
     drinks.length > 0 ? (
       <ScrollView
@@ -54,9 +49,10 @@ export const DrinkList = (props: DrinkListProps) => {
           }}
         >
           {drinks.map((drink) => (
-            <DrinkCard
+            <OrderItemCard
               key={drink.id}
-              drink={drink}
+              type="drink"
+              item={drink}
               navigation={props.navigation}
             />
           ))}
@@ -78,7 +74,7 @@ export const DrinkList = (props: DrinkListProps) => {
             color: '#000000',
           }}
         >
-          No hay bebidas
+          No hay Bebidas
         </Text>
       </View>
     )

@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-export const DishListSkeleton = () => {
+export const ItemsListSkeleton = () => {
   return (
     <View style={{ marginTop: 40 }}>
       {Array.from({ length: 4 }).map((_, index) => (

@@ -11,7 +11,7 @@ export const OrderStatusBar = (props: OrderStatusBarProps) => {
       style={{
         width: '100%',
         height: 40,
-        marginVertical: 40,
+        marginBottom: 40,
       }}
     >
       <View

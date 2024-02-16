@@ -1,11 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { OrderAdd } from './orders-add/OrderAdd';
 import { OrderDetailsWaiter } from './orders-details/OrderDetailsWaiter';
-import { OrderDishes } from './order-dishes/OrderDishes';
+import { OrderDishes } from './order-items/OrderDishes';
 import { OrderDetailsCook } from './orders-details/OrderDetailsCook';
 import { OrderListCookScreen } from './order-list/OrderListCookScreen';
 import { OrderListCashierScreen } from './order-list/OrderListCashierScreen';
 import { OrderDetailsCashier } from './orders-details/OrderDetailsCashier';
+import { OrderDrinks } from './order-items/OrderDrinks';
+import { OrderAdditional } from './order-items/OrderAdditional';
 
 export const Orders = () => {
   const Stack = createStackNavigator();
@@ -46,6 +48,16 @@ export const Orders = () => {
         name="order-dish-list"
         options={{ headerShown: false }}
         component={OrderDishes}
+      />
+      <Stack.Screen
+        name="order-drink-list"
+        options={{ headerShown: false }}
+        component={OrderDrinks}
+      />
+      <Stack.Screen
+        name="order-additional-list"
+        options={{ headerShown: false }}
+        component={OrderAdditional}
       />
     </Stack.Navigator>
   );

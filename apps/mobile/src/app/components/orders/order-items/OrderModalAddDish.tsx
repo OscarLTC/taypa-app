@@ -5,9 +5,12 @@ import { useRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { itemOrder } from '../../../model/order.model';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 
 interface OrderModalAddItemProps {
   item: Item;
+  type: 'dish' | 'drink' | 'additional';
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
   navigation: NavigationProp<ParamListBase>;
@@ -17,9 +20,11 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
   const [quantity, setQuantity] = useState<number>(1);
 
   const [dishes, setDishes] = useRecoilState(orderDishesState);
+  const [drinks, setDrinks] = useRecoilState(orderDrinksState);
+  const [additional, setAdditional] = useRecoilState(orderAdditionalState);
 
   const onAddPress = () => {
-    const dishOrder: itemOrder = {
+    const itemOrder: itemOrder = {
       id: props.item.id,
       name: props.item.name,
       price: props.item.price,
@@ -30,7 +35,13 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
       quantity: quantity,
       wasTaken: false,
     };
-    setDishes([...dishes, dishOrder]);
+    if (props.type === 'dish') {
+      setDishes([...dishes, itemOrder]);
+    } else if (props.type === 'drink') {
+      setDrinks([...drinks, itemOrder]);
+    } else {
+      setAdditional([...additional, itemOrder]);
+    }
     props.setModalVisible(!props.modalVisible);
     props.navigation.goBack();
   };

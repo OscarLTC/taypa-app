@@ -10,7 +10,7 @@ import { useRecoilValue } from 'recoil';
 import { firestore } from '../../config/Firebase';
 import { Item } from '../../model/item.model';
 import { userState } from '../../storage/user/user.atom';
-import { DishListSkeleton } from '../dishes/DishListSkeleton';
+import { ItemsListSkeleton } from '../orders/order-items/ItemsListSkeleton';
 import { AdditionalCard } from './AdditionalCard';
 
 interface AdditionalListProps {
@@ -83,6 +83,6 @@ export const AdditionalList = (props: AdditionalListProps) => {
       </View>
     )
   ) : (
-    <DishListSkeleton />
+    <ItemsListSkeleton />
   );
 };

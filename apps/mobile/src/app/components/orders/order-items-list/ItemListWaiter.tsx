@@ -32,7 +32,7 @@ export const ItemListWaiter = (props: ItemListWaiterProps) => {
             fontWeight: 'bold',
           }}
         >
-          Platos
+          {props.title}
         </Text>
         <View
           style={{

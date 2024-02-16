@@ -6,25 +6,36 @@ import { OrderModalAddItem } from './OrderModalAddDish';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 
 interface OrderItemCardProps {
   item: Item;
   navigation: NavigationProp<ParamListBase>;
+  type: 'dish' | 'drink' | 'additional';
 }
 
 export const OrderItemCard = (props: OrderItemCardProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dishes = useRecoilValue(orderDishesState);
+  const drinks = useRecoilValue(orderDrinksState);
+  const additional = useRecoilValue(orderAdditionalState);
 
-  const isDishInOrder = (dish: Item) => {
-    return dishes.some((item) => item.id === dish.id);
+  const isItemInOrder = (item: Item) => {
+    if (props.type === 'dish') {
+      return dishes.some((dish) => dish.id === item.id);
+    } else if (props.type === 'drink') {
+      return drinks.some((drink) => drink.id === item.id);
+    } else {
+      return additional.some((add) => add.id === item.id);
+    }
   };
 
   return (
     <TouchableOpacity
       delayPressIn={100}
       delayPressOut={100}
-      disabled={isDishInOrder(props.item)}
+      disabled={isItemInOrder(props.item)}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -34,7 +45,7 @@ export const OrderItemCard = (props: OrderItemCardProps) => {
         borderRadius: 15,
         marginBottom: 20,
         padding: 10,
-        opacity: isDishInOrder(props.item) ? 0.5 : 1,
+        opacity: isItemInOrder(props.item) ? 0.5 : 1,
       }}
       onPress={() => {
         setModalVisible(true);
@@ -102,6 +113,7 @@ export const OrderItemCard = (props: OrderItemCardProps) => {
       </View>
       <OrderModalAddItem
         item={props.item}
+        type={props.type}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         navigation={props.navigation}

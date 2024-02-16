@@ -6,7 +6,7 @@ export interface Order {
   };
   dishes?: itemOrder[];
   drinks?: itemOrder[];
-  aditional?: itemOrder[];
+  additional?: itemOrder[];
   note: string;
   total: number;
   status:

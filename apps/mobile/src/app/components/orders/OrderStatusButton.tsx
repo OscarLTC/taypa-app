@@ -20,10 +20,12 @@ export const OrderStatusButton = (props: OrderStatusButtonProps) => {
   };
 
   const [status, setStatus] = useState<Status>(props.status as Status);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
 
   const onStatusChangePress = async () => {
+    setIsLoading(true);
     /*TODO: Que cuando el estado se tenga que cambiar a preparacion, a la vez
     se cambie la propuiedad 'wasTaken' de los items(dishes, drinks, additional) a true
     */
@@ -37,11 +39,13 @@ export const OrderStatusButton = (props: OrderStatusButtonProps) => {
       setStatus(nextStatus[status]!);
     }
     navigation.goBack();
+    setIsLoading(false);
   };
 
   return (
     props.order.status !== 'listo' && (
       <TouchableHighlight
+        disabled={isLoading}
         underlayColor={'#F6AA1C'}
         style={{
           position: 'absolute',

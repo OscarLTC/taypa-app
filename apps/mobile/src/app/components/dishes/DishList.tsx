@@ -11,7 +11,7 @@ import { firestore } from '../../config/Firebase';
 import { Item } from '../../model/item.model';
 import { userState } from '../../storage/user/user.atom';
 import { DishCard } from './DishCard';
-import { DishListSkeleton } from './DishListSkeleton';
+import { ItemsListSkeleton } from '../orders/order-items/ItemsListSkeleton';
 
 interface DishListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -79,6 +79,6 @@ export const DishList = (props: DishListProps) => {
       </View>
     )
   ) : (
-    <DishListSkeleton />
+    <ItemsListSkeleton />
   );
 };

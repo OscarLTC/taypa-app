@@ -9,32 +9,32 @@ import { userState } from '../../../storage/user/user.atom';
 import { OrderItemCard } from './OrderItemCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface OrderDishListProps {
+interface OrderAdditionalListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderDishList = (props: OrderDishListProps) => {
+export const OrderAdditionalList = (props: OrderAdditionalListProps) => {
   const userData = useRecoilValue(userState);
-  const [dishes, setDishes] = useState<Item[]>();
+  const [additional, setAdditional] = useState<Item[]>();
 
-  const getDishes = async () => {
+  const getAdditional = async () => {
     const adminId = userData?.userId;
-    const dishesCollection = collection(firestore, 'dishes');
-    const q = query(dishesCollection, where('adminId', '==', adminId));
-    const dishesSnapshot = await getDocs(q);
-    const dishes = dishesSnapshot.docs.map((doc) => ({
+    const AdditionalCollection = collection(firestore, 'additional');
+    const q = query(AdditionalCollection, where('adminId', '==', adminId));
+    const additionalSnapshot = await getDocs(q);
+    const additional = additionalSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setDishes(dishes as Item[]);
+    setAdditional(additional as Item[]);
   };
 
   useEffect(() => {
-    getDishes();
+    getAdditional();
   });
 
-  return dishes ? (
-    dishes.length > 0 ? (
+  return additional ? (
+    additional.length > 0 ? (
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ marginBottom: 10, marginTop: 30 }}
@@ -48,11 +48,11 @@ export const OrderDishList = (props: OrderDishListProps) => {
             flexWrap: 'wrap',
           }}
         >
-          {dishes.map((dish) => (
+          {additional.map((a) => (
             <OrderItemCard
-              key={dish.id}
-              type="dish"
-              item={dish}
+              key={a.id}
+              type="additional"
+              item={a}
               navigation={props.navigation}
             />
           ))}
@@ -74,7 +74,7 @@ export const OrderDishList = (props: OrderDishListProps) => {
             color: '#000000',
           }}
         >
-          No hay platillos
+          No hay Adicionales
         </Text>
       </View>
     )

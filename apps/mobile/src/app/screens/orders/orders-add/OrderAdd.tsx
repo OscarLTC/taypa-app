@@ -8,15 +8,15 @@ import {
   TextInput,
   Keyboard,
 } from 'react-native';
-import { OrderAddDishes } from '../../../components/orders/order-items/OrderAddDishes';
+import { OrderAddDishes } from '../../../components/orders/order-items-add/OrderAddDishes';
 import { Table } from '../../../model/table.model';
 import { useSetRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { OrderRegisterButton } from '../../../components/orders/OrderRegisterButton';
-import { OrderAddDrinks } from '../../../components/orders/order-items/OrderAddDrinks';
-import { OrderAddAdditional } from '../../../components/orders/order-items/OrderAddAdditional';
+import { OrderAddDrinks } from '../../../components/orders/order-items-add/OrderAddDrinks';
 import { Controller, useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { OrderAddAdditional } from '../../../components/orders/order-items-add/OrderAddAdditional';
 
 interface OrderAddProps {
   route: Route<string>;
