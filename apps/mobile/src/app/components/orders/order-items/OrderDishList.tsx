@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
-import { OrderItemCard } from './OrderDishCard';
+import { OrderItemCard } from './OrderItemCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderDishListProps {

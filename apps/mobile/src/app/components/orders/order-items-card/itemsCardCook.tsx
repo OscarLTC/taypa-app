@@ -1,5 +1,5 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { OrderModalDishEdit } from '../order-dishes/OrderModalDishEdit';
+import { OrderModalDishEdit } from '../order-items/OrderModalDishEdit';
 import { useState } from 'react';
 import { itemOrder } from '../../../model/order.model';
 

@@ -6,7 +6,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import { ItemsCardCook } from '../../../components/orders/order-card-items-details/itemsCardCook';
+import { ItemsCardCook } from '../../../components/orders/order-items-card/itemsCardCook';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { OrderStatusButton } from '../../../components/orders/OrderStatusButton';

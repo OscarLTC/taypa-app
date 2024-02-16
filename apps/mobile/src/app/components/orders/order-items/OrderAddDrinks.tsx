@@ -1,18 +1,18 @@
 import { Octicons } from '@expo/vector-icons';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { ItemsCardCook } from '../order-card-items-details/itemsCardCook';
+import { ItemsCardCook } from '../order-items-card/itemsCardCook';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
-import { subTotalDishesSelector } from '../../../storage/order/order-dishes/orderDishes.selector';
-import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { subTotalDrinksSelector } from '../../../storage/order/order-drinks/orderDrinks.selector';
 
-interface OrderAddDishesProps {
+interface OrderAddDrinksProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderAddDishes = (props: OrderAddDishesProps) => {
-  const dishes = useRecoilValue(orderDishesState);
-  const subTotalDishes = useRecoilValue(subTotalDishesSelector);
+export const OrderAddDrinks = (props: OrderAddDrinksProps) => {
+  const drinks = useRecoilValue(orderDrinksState);
+  const subTotalDrinks = useRecoilValue(subTotalDrinksSelector);
 
   return (
     <View
@@ -37,7 +37,7 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
             fontWeight: 'bold',
           }}
         >
-          Platos
+          Bebidas
         </Text>
         <View
           style={{
@@ -53,7 +53,7 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
               color: '#626262',
               fontSize: 12,
             }}
-          >{`S/ ${subTotalDishes.toFixed(2)}`}</Text>
+          >{`S/ ${subTotalDrinks.toFixed(2)}`}</Text>
         </View>
       </View>
       <ScrollView
@@ -63,12 +63,12 @@ export const OrderAddDishes = (props: OrderAddDishesProps) => {
           display: 'flex',
         }}
       >
-        {dishes?.map((dish, index) => {
-          return <ItemsCardCook key={index} item={dish} />;
+        {drinks?.map((drink, index) => {
+          return <ItemsCardCook key={index} item={drink} />;
         })}
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate('order-dish-list');
+            props.navigation.navigate('order-drink-list');
           }}
           style={{
             width: 110,

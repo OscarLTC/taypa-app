@@ -1,11 +1,22 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
-import { View, TouchableHighlight, Image, Text } from 'react-native';
-import { OrderAddDishes } from '../../../components/orders/order-dishes/OrderAddDishes';
+import {
+  View,
+  TouchableHighlight,
+  Image,
+  Text,
+  TextInput,
+  Keyboard,
+} from 'react-native';
+import { OrderAddDishes } from '../../../components/orders/order-items/OrderAddDishes';
 import { Table } from '../../../model/table.model';
 import { useSetRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { OrderRegisterButton } from '../../../components/orders/OrderRegisterButton';
+import { OrderAddDrinks } from '../../../components/orders/order-items/OrderAddDrinks';
+import { OrderAddAdditional } from '../../../components/orders/order-items/OrderAddAdditional';
+import { Controller, useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 interface OrderAddProps {
   route: Route<string>;
@@ -13,9 +24,22 @@ interface OrderAddProps {
 }
 
 export const OrderAdd = (props: OrderAddProps) => {
+  const { control, watch } = useForm<{ note: string }>();
+
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(
+    Keyboard.isVisible()
+  );
   const setDishesState = useSetRecoilState(orderDishesState);
 
   const { table } = props.route.params as { table: Table };
+
+  Keyboard.addListener('keyboardDidShow', () => {
+    setIsKeyboardVisible(true);
+  });
+
+  Keyboard.addListener('keyboardDidHide', () => {
+    setIsKeyboardVisible(false);
+  });
 
   return (
     <>
@@ -71,12 +95,68 @@ export const OrderAdd = (props: OrderAddProps) => {
           style={{
             marginTop: 30,
             paddingHorizontal: 10,
+            flexDirection: 'column',
+            gap: 10,
           }}
         >
-          <OrderAddDishes navigation={props.navigation} />
+          <View
+            style={{
+              flexDirection: 'column',
+              gap: 10,
+              display: isKeyboardVisible ? 'none' : 'flex',
+            }}
+          >
+            <OrderAddDishes navigation={props.navigation} />
+
+            <OrderAddDrinks navigation={props.navigation} />
+          </View>
+          <OrderAddAdditional navigation={props.navigation} />
+
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}
+            >
+              Nota
+            </Text>
+            <Controller
+              control={control}
+              name="note"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: 5,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    marginTop: 10,
+                    elevation: 1,
+                  }}
+                  onChangeText={onChange}
+                  value={value}
+                  multiline={true}
+                  numberOfLines={5}
+                  maxLength={200}
+                  textAlignVertical="top"
+                />
+              )}
+            />
+          </View>
         </View>
       </View>
-      <OrderRegisterButton table={table} navigation={props.navigation} />
+      <OrderRegisterButton
+        table={table}
+        navigation={props.navigation}
+        note={watch('note')}
+      />
     </>
   );
 };
