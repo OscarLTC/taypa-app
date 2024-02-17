@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   Keyboard,
+  Platform,
 } from 'react-native';
 import { OrderAddDishes } from '../../../components/orders/order-items-add/OrderAddDishes';
 import { Table } from '../../../model/table.model';
@@ -26,29 +27,26 @@ interface OrderAddProps {
 export const OrderAdd = (props: OrderAddProps) => {
   const { control, watch } = useForm<{ note: string }>();
 
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(
-    Keyboard.isVisible()
-  );
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const setDishesState = useSetRecoilState(orderDishesState);
 
   const { table } = props.route.params as { table: Table };
 
-  //TODO: Validar solo para movil
-
-  Keyboard.addListener('keyboardDidShow', () => {
-    setIsKeyboardVisible(true);
-  });
-
-  Keyboard.addListener('keyboardDidHide', () => {
-    setIsKeyboardVisible(false);
-  });
+  if (Platform.OS !== 'web') {
+    Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
+    });
+    Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardVisible(true);
+    });
+  }
 
   return (
     <>
       <View
         style={{
           padding: 30,
-          height: '100%',
+          flex: 1,
           backgroundColor: '#F5F5F5',
         }}
       >
@@ -99,7 +97,6 @@ export const OrderAdd = (props: OrderAddProps) => {
             paddingHorizontal: 10,
             flexDirection: 'column',
             gap: 10,
-            marginBottom: 100,
           }}
         >
           <View
@@ -138,7 +135,7 @@ export const OrderAdd = (props: OrderAddProps) => {
                   style={{
                     backgroundColor: '#FFFFFF',
                     borderRadius: 5,
-                    paddingVertical: 5,
+                    paddingVertical: 10,
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
@@ -146,7 +143,7 @@ export const OrderAdd = (props: OrderAddProps) => {
                   onChangeText={onChange}
                   value={value}
                   multiline={true}
-                  numberOfLines={5}
+                  numberOfLines={Platform.OS === 'web' ? 3 : 5}
                   maxLength={200}
                   textAlignVertical="top"
                 />

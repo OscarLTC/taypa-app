@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import {
   Image,
   Keyboard,
+  Platform,
   Text,
   TextInput,
   TouchableHighlight,
@@ -28,22 +29,21 @@ interface OrderEditProps {
 export const OrderEdit = (props: OrderEditProps) => {
   const { control, watch, setValue } = useForm<{ note: string }>();
 
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(
-    Keyboard.isVisible()
-  );
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
   const setDishesState = useSetRecoilState(orderDishesState);
   const setDrinksState = useSetRecoilState(orderDrinksState);
   const setAdditionalState = useSetRecoilState(orderAdditionalState);
 
   const { order } = props.route.params as { order: Order };
 
-  Keyboard.addListener('keyboardDidShow', () => {
-    setIsKeyboardVisible(true);
-  });
-
-  Keyboard.addListener('keyboardDidHide', () => {
-    setIsKeyboardVisible(false);
-  });
+  if (Platform.OS !== 'web') {
+    Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
+    });
+    Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardVisible(true);
+    });
+  }
 
   useEffect(() => {
     if (order) {
@@ -112,7 +112,6 @@ export const OrderEdit = (props: OrderEditProps) => {
             paddingHorizontal: 10,
             flexDirection: 'column',
             gap: 10,
-            marginBottom: 100,
           }}
         >
           <View
@@ -159,7 +158,7 @@ export const OrderEdit = (props: OrderEditProps) => {
                   onChangeText={onChange}
                   value={value}
                   multiline={true}
-                  numberOfLines={5}
+                  numberOfLines={Platform.OS === 'web' ? 3 : 5}
                   maxLength={200}
                   textAlignVertical="top"
                 />
