@@ -105,14 +105,6 @@ export const DrinkEdit = (props: DrinkEditProps) => {
       setError('image', { type: 'manual', message: 'Debe subir una imagen' });
       return;
     }
-
-    console.log({
-      ...data,
-      name: data.name.trim(),
-      description: data.description.trim(),
-      adminId: userData?.userId ?? '',
-      price: data.price,
-    });
     updateDrink({
       ...data,
       name: data.name.trim(),

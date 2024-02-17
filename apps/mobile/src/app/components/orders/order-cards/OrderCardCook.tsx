@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Order } from '../../../model/order.model';
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderCardCookProps {
@@ -9,11 +9,6 @@ interface OrderCardCookProps {
 }
 
 export const OrderCardCook = (props: OrderCardCookProps) => {
-  const orderDishesQuantity = props.order.dishes?.reduce(
-    (acc, dish) => acc + dish.quantity,
-    0
-  );
-
   const status = props.order.status;
 
   const statusColor = {
@@ -49,19 +44,56 @@ export const OrderCardCook = (props: OrderCardCookProps) => {
           overflow: 'hidden',
         }}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 15, color: '#941B0C' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#941B0C' }}>
           {props.order.table.name}
         </Text>
-        <Text
-          numberOfLines={1}
-          style={{ fontSize: 12 }}
-        >{`${orderDishesQuantity} platos`}</Text>
         <View>
-          <Text numberOfLines={1} style={{ fontSize: 12 }}>
-            {props.order.dishes
-              ?.map((dish) => `${dish.quantity} ${dish.name}`)
-              .join(', ')}
-          </Text>
+          {props.order.dishes && (
+            <Text numberOfLines={1} style={{ fontSize: 12 }}>
+              {props.order.dishes
+                ?.map((dish) => `${dish.quantity} ${dish.name}`)
+                .join(', ')}
+            </Text>
+          )}
+          {props.order.drinks && (
+            <Text numberOfLines={1} style={{ fontSize: 12 }}>
+              {props.order.drinks
+                ?.map((drink) => `${drink.quantity} ${drink.name}`)
+                .join(', ')}
+            </Text>
+          )}
+          {props.order.additional && (
+            <Text numberOfLines={1} style={{ fontSize: 12 }}>
+              {props.order.additional
+                ?.map(
+                  (additional) => `${additional.quantity} ${additional.name}`
+                )
+                .join(', ')}
+            </Text>
+          )}
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            right: 5,
+            top: 5,
+            padding: 5,
+            height: 30,
+            width: 30,
+            borderRadius: 50,
+            backgroundColor: '#F6AA1C',
+            justifyContent: 'center',
+            display: props.order.wasUpdated ? 'flex' : 'none',
+          }}
+        >
+          <AntDesign
+            style={{
+              alignSelf: 'center',
+            }}
+            name="exclamation"
+            size={20}
+            color="black"
+          />
         </View>
       </View>
       <View

@@ -1,10 +1,10 @@
 import { Octicons } from '@expo/vector-icons';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { ItemsCardCook } from '../role-items-card/itemsCardCook';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
 import { subTotalDrinksSelector } from '../../../storage/order/order-drinks/orderDrinks.selector';
+import { ItemsCard } from '../role-items-card/itemsCard';
 
 interface OrderAddDrinksProps {
   navigation: NavigationProp<ParamListBase>;
@@ -64,7 +64,7 @@ export const OrderAddDrinks = (props: OrderAddDrinksProps) => {
         }}
       >
         {drinks?.map((drink, index) => {
-          return <ItemsCardCook key={index} item={drink} type="drink" />;
+          return <ItemsCard key={index} item={drink} type="drink" />;
         })}
         <TouchableOpacity
           onPress={() => {

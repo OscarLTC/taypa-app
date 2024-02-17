@@ -1,10 +1,10 @@
 import { Octicons } from '@expo/vector-icons';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { ItemsCardCook } from '../role-items-card/itemsCardCook';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 import { subTotalAdditionalSelector } from '../../../storage/order/order-additional/orderAdditional.selector';
+import { ItemsCard } from '../role-items-card/itemsCard';
 
 interface OrderAddAdditionalProps {
   navigation: NavigationProp<ParamListBase>;
@@ -64,9 +64,7 @@ export const OrderAddAdditional = (props: OrderAddAdditionalProps) => {
         }}
       >
         {additional?.map((additional, index) => {
-          return (
-            <ItemsCardCook key={index} item={additional} type="additional" />
-          );
+          return <ItemsCard key={index} item={additional} type="additional" />;
         })}
         <TouchableOpacity
           onPress={() => {

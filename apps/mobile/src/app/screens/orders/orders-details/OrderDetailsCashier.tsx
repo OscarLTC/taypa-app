@@ -13,7 +13,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { useState } from 'react';
 import { OrderStatusBar } from '../order-status/OrderStatusBar';
-import { ItemListWaiter } from '../../../components/orders/order-items-list/ItemListWaiter';
+import { ItemListCashier } from '../../../components/orders/order-items-list/ItemListCashier';
 
 interface OrderDetailsCashierProps {
   route: Route<string>;
@@ -105,13 +105,13 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
           <OrderStatusBar status={order.status} />
           <View>
             {order.dishes && order.dishes.length > 0 && (
-              <ItemListWaiter items={order.dishes} title="Platos" />
+              <ItemListCashier items={order.dishes} title="Platos" />
             )}
             {order.drinks && order.drinks.length > 0 && (
-              <ItemListWaiter items={order.drinks} title="Bebidas" />
+              <ItemListCashier items={order.drinks} title="Bebidas" />
             )}
             {order.additional && order.additional.length > 0 && (
-              <ItemListWaiter items={order.additional} title="Adicionales" />
+              <ItemListCashier items={order.additional} title="Adicionales" />
             )}
           </View>
           <View
@@ -145,18 +145,6 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
             </Text>
           </View>
         </ScrollView>
-
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 30,
-            backgroundColor: '#F5F5F5',
-            borderRadius: 10,
-          }}
-        ></View>
       </View>
       <TouchableOpacity
         onPress={onPayOrderPress}

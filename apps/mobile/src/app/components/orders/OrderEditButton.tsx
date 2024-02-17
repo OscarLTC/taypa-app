@@ -33,20 +33,12 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
     setIsLoading(true);
     const orderRef = doc(firestore, 'orders', props.order.id);
     updateDoc(orderRef, {
-      dishes: dishes.map((dish) => ({
-        ...dish,
-        wasTaken: false,
-      })),
-      drinks: drinks.map((drink) => ({
-        ...drink,
-        wasTaken: false,
-      })),
-      additional: additional.map((add) => ({
-        ...add,
-        wasTaken: false,
-      })),
+      dishes,
+      drinks,
+      additional,
+      wasUpdated: true,
       status: 'nueva',
-      total: dishesTotal + drinksTotal + additionalTotal,
+      total: props.order.total + dishesTotal + drinksTotal + additionalTotal,
       note: props.note ? props.note : '',
       updatedAt: new Date(),
     }).then(() => {

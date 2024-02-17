@@ -29,7 +29,6 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
   const additionalTotal = useRecoilValue(subTotalAdditionalSelector);
 
   const onRegisterOrderPress = () => {
-    console.log(props.note);
     if (dishes.length === 0 && drinks.length === 0 && additional.length === 0) {
       return;
     }
@@ -56,6 +55,7 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
         image: add.image,
         wasTaken: false,
       })),
+      wasUpdated: false,
       status: 'nueva',
       total: dishesTotal + drinksTotal + additionalTotal,
       note: props.note ? props.note : '',

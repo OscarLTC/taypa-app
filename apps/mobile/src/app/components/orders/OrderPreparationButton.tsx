@@ -24,6 +24,13 @@ export const OrderPreparationButton = (props: OrderPreparationButtonProps) => {
       dishes: props.order.dishes?.map((dish) => {
         return { ...dish, wasTaken: true };
       }),
+      drinks: props.order.drinks?.map((drink) => {
+        return { ...drink, wasTaken: true };
+      }),
+      additional: props.order.additional?.map((add) => {
+        return { ...add, wasTaken: true };
+      }),
+      wasUpdated: false,
     });
     navigation.goBack();
     setIsLoading(false);

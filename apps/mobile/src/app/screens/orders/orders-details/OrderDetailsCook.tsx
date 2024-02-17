@@ -6,13 +6,13 @@ import {
   Text,
   Image,
 } from 'react-native';
-import { ItemsCardCook } from '../../../components/orders/role-items-card/itemsCardCook';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { OrderPreparationButton } from '../../../components/orders/OrderPreparationButton';
 import { OrderStatusBar } from '../order-status/OrderStatusBar';
 import { Statuses } from '../../../model/status.enum';
 import { OrderReadyButton } from '../../../components/orders/OrderReadyButton';
+import { ItemListCook } from '../../../components/orders/order-items-list/ItemListCook';
 
 interface OrderDetailsCookProps {
   route: Route<string>;
@@ -78,37 +78,55 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
             />
           </View>
         </View>
-        <View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            marginTop: 20,
+          }}
+        >
           <OrderStatusBar status={order.status} />
           <View>
-            {order.dishes && (
-              <>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 'bold',
-                    marginBottom: 10,
-                  }}
-                >
-                  Platos
-                </Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={{
-                    display: 'flex',
-                  }}
-                >
-                  {order.dishes?.map((dish, index) => {
-                    return (
-                      <ItemsCardCook key={index} item={dish} type="dish" />
-                    );
-                  })}
-                </ScrollView>
-              </>
+            {order.dishes && order.dishes.length > 0 && (
+              <ItemListCook items={order.dishes} title="Platos" />
+            )}
+            {order.drinks && order.drinks.length > 0 && (
+              <ItemListCook items={order.drinks} title="Bebidas" />
+            )}
+            {order.additional && order.additional.length > 0 && (
+              <ItemListCook items={order.additional} title="Adicionales" />
             )}
           </View>
-        </View>
+          {order.note && (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: '#F5F5F5',
+                borderRadius: 10,
+                paddingVertical: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: 'bold',
+                }}
+              >
+                Nota:
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: '#626262',
+                  fontSize: 12,
+                }}
+              >
+                {order.note}
+              </Text>
+            </View>
+          )}
+        </ScrollView>
       </View>
       {order.status === Statuses.Nueva && (
         <OrderPreparationButton order={order} status={order.status} />

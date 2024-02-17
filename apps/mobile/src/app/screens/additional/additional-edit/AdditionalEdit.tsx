@@ -106,13 +106,6 @@ export const AdditionalEdit = (props: AdditionalEditProps) => {
       return;
     }
 
-    console.log({
-      ...data,
-      name: data.name.trim(),
-      description: data.description.trim(),
-      adminId: userData?.userId ?? '',
-      price: data.price,
-    });
     updateAdditional({
       ...data,
       name: data.name.trim(),

@@ -6,6 +6,7 @@ export interface Order {
     id: string;
     name: string;
   };
+  wasUpdated: boolean;
   dishes?: itemOrder[];
   drinks?: itemOrder[];
   additional?: itemOrder[];

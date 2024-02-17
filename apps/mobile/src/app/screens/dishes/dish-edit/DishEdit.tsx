@@ -106,13 +106,6 @@ export const DishEdit = (props: DishEditProps) => {
       return;
     }
 
-    console.log({
-      ...data,
-      name: data.name.trim(),
-      description: data.description.trim(),
-      adminId: userData?.userId ?? '',
-      price: data.price,
-    });
     updateDish({
       ...data,
       name: data.name.trim(),

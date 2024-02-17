@@ -49,7 +49,7 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
 
   const onServedStatusChangePress = async () => {
     if (order?.status === 'listo') {
-      const orderId = order?.id;
+      const orderId = order.id;
       const orderRef = doc(firestore, 'orders', orderId);
       await updateDoc(orderRef, {
         status: 'servido',
