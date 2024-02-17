@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { Order } from '../../../model/order.model';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import moment from 'moment';
 
 interface OrderCardCookProps {
   navigation: NavigationProp<ParamListBase>;
@@ -39,39 +40,26 @@ export const OrderCardCook = (props: OrderCardCookProps) => {
     >
       <View
         style={{
+          height: '100%',
           width: '75%',
           padding: 15,
           overflow: 'hidden',
         }}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#941B0C' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 30, color: '#941B0C' }}>
           {props.order.table.name}
         </Text>
-        <View>
-          {props.order.dishes && (
-            <Text numberOfLines={1} style={{ fontSize: 12 }}>
-              {props.order.dishes
-                ?.map((dish) => `${dish.quantity} ${dish.name}`)
-                .join(', ')}
-            </Text>
-          )}
-          {props.order.drinks && (
-            <Text numberOfLines={1} style={{ fontSize: 12 }}>
-              {props.order.drinks
-                ?.map((drink) => `${drink.quantity} ${drink.name}`)
-                .join(', ')}
-            </Text>
-          )}
-          {props.order.additional && (
-            <Text numberOfLines={1} style={{ fontSize: 12 }}>
-              {props.order.additional
-                ?.map(
-                  (additional) => `${additional.quantity} ${additional.name}`
-                )
-                .join(', ')}
-            </Text>
-          )}
-        </View>
+        <Text
+          style={{
+            position: 'absolute',
+            color: '#a8a8a8',
+            bottom: 10,
+            left: 15,
+            fontSize: 12,
+          }}
+        >
+          {moment(props.order.createdAt.toDate()).fromNow()}
+        </Text>
         <View
           style={{
             position: 'absolute',

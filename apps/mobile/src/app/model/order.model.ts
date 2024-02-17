@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { Status } from './status.enum';
 
 export interface Order {
@@ -13,8 +14,8 @@ export interface Order {
   note: string;
   total: number;
   status: Status;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 }
 
 export interface itemOrder {
