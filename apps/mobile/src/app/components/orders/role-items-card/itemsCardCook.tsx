@@ -1,10 +1,11 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { OrderModalDishEdit } from '../order-items/OrderModalDishEdit';
+import { OrderModalDishEdit } from '../order-items/OrderModalItemEdit';
 import { useState } from 'react';
 import { itemOrder } from '../../../model/order.model';
 
 interface ItemsCardCookProps {
   item: itemOrder;
+  type: 'dish' | 'drink' | 'additional';
 }
 
 export const ItemsCardCook = (props: ItemsCardCookProps) => {
@@ -12,6 +13,7 @@ export const ItemsCardCook = (props: ItemsCardCookProps) => {
 
   return (
     <TouchableOpacity
+      disabled={props.item.wasTaken}
       onLongPress={() => {
         setModalVisible(true);
       }}
@@ -21,6 +23,7 @@ export const ItemsCardCook = (props: ItemsCardCookProps) => {
         borderRadius: 15,
         height: 110,
         width: 110,
+        opacity: props.item.wasTaken ? 0.5 : 1,
       }}
     >
       <View
@@ -37,8 +40,8 @@ export const ItemsCardCook = (props: ItemsCardCookProps) => {
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             objectFit: 'contain',
-            resizeMode: 'contain',
           }}
+          resizeMode="contain"
           source={{ uri: props.item.image.url }}
         />
       </View>
@@ -81,7 +84,8 @@ export const ItemsCardCook = (props: ItemsCardCookProps) => {
         </Text>
       </View>
       <OrderModalDishEdit
-        dish={props.item}
+        type={props.type}
+        item={props.item}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

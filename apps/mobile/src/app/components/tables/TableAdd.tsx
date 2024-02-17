@@ -35,8 +35,7 @@ export const TableAdd = (props: TableAddProps) => {
         borderRadius: 10,
         elevation: 1,
         height: 60,
-        width: '25%',
-        margin: 'auto',
+        width: '28%',
         justifyContent: 'center',
         alignItems: 'center',
       }}

@@ -3,36 +3,83 @@ import { itemOrder } from '../../../model/order.model';
 import { useRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { useState } from 'react';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 
 interface OrderModalDishEditProps {
-  dish: itemOrder;
+  type: 'dish' | 'drink' | 'additional';
+  item: itemOrder;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
 
 export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
   const [dishes, setDishes] = useRecoilState(orderDishesState);
-  const [quantity, setQuantity] = useState<number>(props.dish.quantity);
+  const [drinks, setDrinks] = useRecoilState(orderDrinksState);
+  const [additional, setAdditional] = useRecoilState(orderAdditionalState);
+  const [quantity, setQuantity] = useState<number>(props.item.quantity);
 
   const onRemovePress = () => {
-    const newDishes = dishes.filter((dish) => dish.id !== props.dish.id);
-    setDishes(newDishes);
+    if (props.type === 'dish') {
+      const newDishes = dishes.filter(
+        (dish) => dish.id !== props.item.id || dish.wasTaken
+      );
+      setDishes(newDishes);
+    } else if (props.type === 'drink') {
+      const newDrinks = drinks.filter(
+        (drink) => drink.id !== props.item.id || drink.wasTaken
+      );
+      setDrinks(newDrinks);
+    } else {
+      const newAdditional = additional.filter(
+        (add) => add.id !== props.item.id || add.wasTaken
+      );
+      setAdditional(newAdditional);
+    }
     props.setModalVisible(!props.modalVisible);
   };
 
   const onEditPress = () => {
-    const newDishes = dishes.map((dish) => {
-      if (dish.id === props.dish.id) {
-        const newDish = {
-          ...dish,
-          quantity: quantity,
-          subTotal: Number(dish.price) * quantity,
-        };
-        return newDish;
-      }
-      return dish;
-    });
-    setDishes(newDishes);
+    if (props.type === 'dish') {
+      const newDishes = dishes.map((dish) => {
+        if (dish.id === props.item.id && !dish.wasTaken) {
+          const newDish = {
+            ...dish,
+            quantity: quantity,
+            subTotal: Number(dish.price) * quantity,
+          };
+          return newDish;
+        }
+        return dish;
+      });
+      setDishes(newDishes);
+    } else if (props.type === 'drink') {
+      const newDrinks = drinks.map((drink) => {
+        if (drink.id === props.item.id && !drink.wasTaken) {
+          const newDrink = {
+            ...drink,
+            quantity: quantity,
+            subTotal: Number(drink.price) * quantity,
+          };
+          return newDrink;
+        }
+        return drink;
+      });
+      setDrinks(newDrinks);
+    } else {
+      const newAdditional = additional.map((add) => {
+        if (add.id === props.item.id && !add.wasTaken) {
+          const newAdditional = {
+            ...add,
+            quantity: quantity,
+            subTotal: Number(add.price) * quantity,
+          };
+          return newAdditional;
+        }
+        return add;
+      });
+      setAdditional(newAdditional);
+    }
     props.setModalVisible(!props.modalVisible);
   };
 
@@ -61,13 +108,6 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
             borderRadius: 20,
             padding: 30,
             alignItems: 'center',
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
             elevation: 5,
             gap: 20,
           }}
@@ -80,16 +120,16 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
           >
             <Image
               source={
-                props.dish.image.url
-                  ? { uri: props.dish.image.url }
+                props.item.image.url
+                  ? { uri: props.item.image.url }
                   : require('../../../../../assets/lomo_saltado.png')
               }
               style={{
                 width: 200,
                 height: 100,
                 objectFit: 'contain',
-                resizeMode: 'contain',
               }}
+              resizeMode="contain"
             />
           </View>
           <Text
@@ -99,7 +139,7 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
               fontWeight: 'bold',
             }}
           >
-            {props.dish.name}
+            {props.item.name}
           </Text>
           <View
             style={{
@@ -196,13 +236,13 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                 {
                   borderRadius: 10,
                   paddingVertical: 10,
-                  paddingHorizontal: quantity !== props.dish.quantity ? 20 : 15,
+                  paddingHorizontal: quantity !== props.item.quantity ? 20 : 15,
                   elevation: 2,
                   backgroundColor: '#941B0C',
                 },
               ]}
               onPress={
-                quantity !== props.dish.quantity ? onEditPress : onRemovePress
+                quantity !== props.item.quantity ? onEditPress : onRemovePress
               }
             >
               <Text
@@ -212,7 +252,7 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                   textAlign: 'center',
                 }}
               >
-                {quantity !== props.dish.quantity ? 'Editar' : 'Eliminar'}
+                {quantity !== props.item.quantity ? 'Editar' : 'Eliminar'}
               </Text>
             </TouchableOpacity>
           </View>

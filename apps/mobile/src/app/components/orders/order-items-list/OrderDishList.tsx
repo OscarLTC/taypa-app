@@ -1,40 +1,40 @@
 import { ScrollView, Text, View } from 'react-native';
-import { ItemsListSkeleton } from './ItemsListSkeleton';
+import { ItemsListSkeleton } from '../order-items/ItemsListSkeleton';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
-import { OrderItemCard } from './OrderItemCard';
+import { ItemAddCard } from '../order-items/ItemAddCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface OrderAdditionalListProps {
+interface OrderDishListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderAdditionalList = (props: OrderAdditionalListProps) => {
+export const OrderDishList = (props: OrderDishListProps) => {
   const userData = useRecoilValue(userState);
-  const [additional, setAdditional] = useState<Item[]>();
+  const [dishes, setDishes] = useState<Item[]>();
 
-  const getAdditional = async () => {
+  const getDishes = async () => {
     const adminId = userData?.userId;
-    const AdditionalCollection = collection(firestore, 'additional');
-    const q = query(AdditionalCollection, where('adminId', '==', adminId));
-    const additionalSnapshot = await getDocs(q);
-    const additional = additionalSnapshot.docs.map((doc) => ({
+    const dishesCollection = collection(firestore, 'dishes');
+    const q = query(dishesCollection, where('adminId', '==', adminId));
+    const dishesSnapshot = await getDocs(q);
+    const dishes = dishesSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setAdditional(additional as Item[]);
+    setDishes(dishes as Item[]);
   };
 
   useEffect(() => {
-    getAdditional();
+    getDishes();
   });
 
-  return additional ? (
-    additional.length > 0 ? (
+  return dishes ? (
+    dishes.length > 0 ? (
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ marginBottom: 10, marginTop: 30 }}
@@ -48,11 +48,11 @@ export const OrderAdditionalList = (props: OrderAdditionalListProps) => {
             flexWrap: 'wrap',
           }}
         >
-          {additional.map((a) => (
-            <OrderItemCard
-              key={a.id}
-              type="additional"
-              item={a}
+          {dishes.map((dish) => (
+            <ItemAddCard
+              key={dish.id}
+              type="dish"
+              item={dish}
               navigation={props.navigation}
             />
           ))}
@@ -74,7 +74,7 @@ export const OrderAdditionalList = (props: OrderAdditionalListProps) => {
             color: '#000000',
           }}
         >
-          No hay Adicionales
+          No hay platillos
         </Text>
       </View>
     )

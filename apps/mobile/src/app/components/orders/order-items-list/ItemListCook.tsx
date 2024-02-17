@@ -7,7 +7,7 @@ interface ItemListWaiterProps {
   title: string;
 }
 
-export const ItemListWaiter = (props: ItemListWaiterProps) => {
+export const ItemListCook = (props: ItemListWaiterProps) => {
   const getSubTotalItems = (items: itemOrder[]) => {
     return items.reduce((acc: number, item: itemOrder) => {
       return acc + item.subTotal;

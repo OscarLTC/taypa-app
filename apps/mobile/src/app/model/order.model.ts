@@ -1,3 +1,5 @@
+import { Status } from './status.enum';
+
 export interface Order {
   id: string;
   table: {
@@ -9,13 +11,7 @@ export interface Order {
   additional?: itemOrder[];
   note: string;
   total: number;
-  status:
-    | 'nueva'
-    | 'preparacion'
-    | 'listo'
-    | 'servido'
-    | 'completado'
-    | 'cancelado';
+  status: Status;
   createdAt: Date;
   updatedAt: Date;
 }

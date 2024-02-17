@@ -63,8 +63,22 @@ export const OrderListCashier = (props: OrderListCashierProps) => {
             ))}
         </ScrollView>
       ) : (
-        <View>
-          <Text>Aun no hay ordenes servidas </Text>
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 50,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            No hay ordenes servidas
+          </Text>
         </View>
       )}
     </View>

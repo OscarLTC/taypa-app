@@ -291,7 +291,7 @@ export const DishEdit = (props: DishEditProps) => {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     maxLength={5}
-                    keyboardType="numeric"
+                    inputMode="numeric"
                     style={{
                       backgroundColor: '#FFFFFF',
                       borderRadius: 5,
@@ -354,8 +354,8 @@ export const DishEdit = (props: DishEditProps) => {
                       height: 150,
                       borderRadius: 10,
                       objectFit: 'contain',
-                      resizeMode: 'contain',
                     }}
+                    resizeMode="contain"
                   />
                 </View>
                 <Text style={{ fontSize: 8, marginTop: 4 }}>

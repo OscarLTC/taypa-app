@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import { Item } from '../../../model/item.model';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
-import { OrderModalAddItem } from './OrderModalAddDish';
+import { OrderModalAddItem } from './OrderModalAddItem';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 
-interface OrderItemCardProps {
+interface ItemAddCardProps {
   item: Item;
   navigation: NavigationProp<ParamListBase>;
   type: 'dish' | 'drink' | 'additional';
 }
 
-export const OrderItemCard = (props: OrderItemCardProps) => {
+export const ItemAddCard = (props: ItemAddCardProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dishes = useRecoilValue(orderDishesState);
   const drinks = useRecoilValue(orderDrinksState);
@@ -23,11 +23,11 @@ export const OrderItemCard = (props: OrderItemCardProps) => {
 
   const isItemInOrder = (item: Item) => {
     if (props.type === 'dish') {
-      return dishes.some((dish) => dish.id === item.id);
+      return dishes.some((dish) => dish.id === item.id && !dish.wasTaken);
     } else if (props.type === 'drink') {
-      return drinks.some((drink) => drink.id === item.id);
+      return drinks.some((drink) => drink.id === item.id && !drink.wasTaken);
     } else {
-      return additional.some((add) => add.id === item.id);
+      return additional.some((add) => add.id === item.id && !add.wasTaken);
     }
   };
 
@@ -61,8 +61,8 @@ export const OrderItemCard = (props: OrderItemCardProps) => {
           width: '100%',
           height: 100,
           objectFit: 'contain',
-          resizeMode: 'contain',
         }}
+        resizeMode="contain"
       ></Image>
       <View
         style={{

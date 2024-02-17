@@ -66,8 +66,8 @@ export const MainManagementCard = (navigation: {
               width: 150,
               height: 100,
               objectFit: 'contain',
-              resizeMode: 'contain',
             }}
+            resizeMode="contain"
             source={item.image}
           />
         </TouchableOpacity>

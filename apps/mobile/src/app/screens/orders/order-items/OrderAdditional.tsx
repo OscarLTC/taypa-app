@@ -1,7 +1,7 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
-import { OrderAdditionalList } from '../../../components/orders/order-items/OrderAdditionalList';
+import { OrderAdditionalList } from '../../../components/orders/order-items-list/OrderAdditionalList';
 
 interface OrderAdditionalProps {
   navigation: NavigationProp<ParamListBase>;

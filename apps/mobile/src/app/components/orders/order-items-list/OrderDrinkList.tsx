@@ -1,12 +1,12 @@
 import { ScrollView, Text, View } from 'react-native';
-import { ItemsListSkeleton } from './ItemsListSkeleton';
+import { ItemsListSkeleton } from '../order-items/ItemsListSkeleton';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
-import { OrderItemCard } from './OrderItemCard';
+import { ItemAddCard } from '../order-items/ItemAddCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface OrderDrinkListProps {
@@ -49,7 +49,7 @@ export const OrderDrinkList = (props: OrderDrinkListProps) => {
           }}
         >
           {drinks.map((drink) => (
-            <OrderItemCard
+            <ItemAddCard
               key={drink.id}
               type="drink"
               item={drink}

@@ -120,11 +120,11 @@ export const DrinkDetails = (props: DrinkDetailsProps) => {
             }}
             style={{
               objectFit: 'contain',
-              resizeMode: 'contain',
               alignSelf: 'center',
               width: 300,
               height: 300,
             }}
+            resizeMode="contain"
           />
         </View>
         <View style={{ padding: 30, height: '50%' }}>
@@ -162,45 +162,45 @@ export const DrinkDetails = (props: DrinkDetailsProps) => {
               {drink?.description}
             </Text>
           </View>
-          <View
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 30,
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#5C5C5C',
-                paddingHorizontal: 30,
-                paddingVertical: 10,
-                borderRadius: 10,
-              }}
-              onPress={deleteDrink}
-            >
-              <Text style={{ color: '#FFFFFF' }}>Eliminar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#941B0C',
-                paddingHorizontal: 30,
-                paddingVertical: 10,
-                borderRadius: 10,
-              }}
-              onPress={() => {
-                props.navigation.navigate('drink-edit', {
-                  drinkId,
-                });
-              }}
-            >
-              <Text style={{ color: '#FFFFFF' }}>Actualizar</Text>
-            </TouchableOpacity>
-          </View>
         </View>
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          padding: 30,
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#5C5C5C',
+            paddingHorizontal: 30,
+            paddingVertical: 10,
+            borderRadius: 10,
+          }}
+          onPress={deleteDrink}
+        >
+          <Text style={{ color: '#FFFFFF' }}>Eliminar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#941B0C',
+            paddingHorizontal: 30,
+            paddingVertical: 10,
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            props.navigation.navigate('drink-edit', {
+              drinkId,
+            });
+          }}
+        >
+          <Text style={{ color: '#FFFFFF' }}>Actualizar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

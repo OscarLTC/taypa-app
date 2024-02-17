@@ -7,13 +7,13 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
-import { Order, itemOrder } from '../../../model/order.model';
-import { ItemsCardCashier } from '../../../components/orders/order-items-card/ItemsCardCashier';
+import { Order } from '../../../model/order.model';
 import { AntDesign } from '@expo/vector-icons';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { useState } from 'react';
 import { OrderStatusBar } from '../order-status/OrderStatusBar';
+import { ItemListWaiter } from '../../../components/orders/order-items-list/ItemListWaiter';
 
 interface OrderDetailsCashierProps {
   route: Route<string>;
@@ -24,12 +24,6 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
   const { order } = props.route.params as { order: Order };
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const getSubTotalItems = (items: itemOrder[]) => {
-    return items.reduce((acc: number, item: itemOrder) => {
-      return acc + item.subTotal;
-    }, 0);
-  };
 
   const onPayOrderPress = async () => {
     setIsLoading(true);
@@ -102,53 +96,55 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
             />
           </View>
         </View>
-        <View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            marginTop: 20,
+          }}
+        >
           <OrderStatusBar status={order.status} />
-          {order.dishes && (
-            <>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  backgroundColor: '#F5F5F5',
-                  borderRadius: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Platos
-                </Text>
-                <View
-                  style={{
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    borderRadius: 10,
-                    backgroundColor: '#E3E3E3',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      color: '#626262',
-                      fontSize: 12,
-                    }}
-                  >{`S/ ${getSubTotalItems(order.dishes).toFixed(2)}`}</Text>
-                </View>
-              </View>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {order.dishes?.map((dish, index) => {
-                  return <ItemsCardCashier key={index} item={dish} />;
-                })}
-              </ScrollView>
-            </>
-          )}
-        </View>
+          <View>
+            {order.dishes && order.dishes.length > 0 && (
+              <ItemListWaiter items={order.dishes} title="Platos" />
+            )}
+            {order.drinks && order.drinks.length > 0 && (
+              <ItemListWaiter items={order.drinks} title="Bebidas" />
+            )}
+            {order.additional && order.additional.length > 0 && (
+              <ItemListWaiter items={order.additional} title="Adicionales" />
+            )}
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: '#F5F5F5',
+              borderRadius: 10,
+              paddingVertical: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                alignSelf: 'center',
+              }}
+            >
+              Total:
+            </Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: '#621708',
+                fontSize: 16,
+                alignSelf: 'center',
+              }}
+            >
+              {order.total.toFixed(2)}
+            </Text>
+          </View>
+        </ScrollView>
 
         <View
           style={{

@@ -30,8 +30,8 @@ export const ItemsCardWaiter = (props: ItemsCardWaiterProps) => {
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             objectFit: 'contain',
-            resizeMode: 'contain',
           }}
+          resizeMode="contain"
           source={{ uri: props.item.image.url }}
         />
       </View>

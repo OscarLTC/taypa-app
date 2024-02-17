@@ -44,7 +44,6 @@ export const TableList = () => {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-          flex: 4,
           gap: 15,
           justifyContent: 'center',
           marginBottom: 10,
@@ -63,8 +62,7 @@ export const TableList = () => {
                   borderRadius: 10,
                   elevation: 1,
                   height: 60,
-                  width: '25%',
-                  margin: 'auto',
+                  width: '28%',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}

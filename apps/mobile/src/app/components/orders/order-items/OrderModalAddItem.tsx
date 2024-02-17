@@ -69,13 +69,6 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
             margin: 20,
             backgroundColor: 'white',
             borderRadius: 20,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
             elevation: 5,
             gap: 20,
           }}
@@ -99,8 +92,8 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
                 width: 250,
                 height: 200,
                 objectFit: 'contain',
-                resizeMode: 'contain',
               }}
+              resizeMode="contain"
             />
           </View>
           <View

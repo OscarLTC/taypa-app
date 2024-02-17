@@ -1,5 +1,5 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { OrderDishList } from '../../../components/orders/order-items/OrderDishList';
+import { OrderDishList } from '../../../components/orders/order-items-list/OrderDishList';
 import { AntDesign } from '@expo/vector-icons';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 

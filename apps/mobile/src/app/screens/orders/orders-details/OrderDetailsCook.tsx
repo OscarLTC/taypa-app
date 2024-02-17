@@ -6,11 +6,13 @@ import {
   Text,
   Image,
 } from 'react-native';
-import { ItemsCardCook } from '../../../components/orders/order-items-card/itemsCardCook';
+import { ItemsCardCook } from '../../../components/orders/role-items-card/itemsCardCook';
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
-import { OrderStatusButton } from '../../../components/orders/OrderStatusButton';
+import { OrderPreparationButton } from '../../../components/orders/OrderPreparationButton';
 import { OrderStatusBar } from '../order-status/OrderStatusBar';
+import { Statuses } from '../../../model/status.enum';
+import { OrderReadyButton } from '../../../components/orders/OrderReadyButton';
 
 interface OrderDetailsCookProps {
   route: Route<string>;
@@ -98,7 +100,9 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
                   }}
                 >
                   {order.dishes?.map((dish, index) => {
-                    return <ItemsCardCook key={index} item={dish} />;
+                    return (
+                      <ItemsCardCook key={index} item={dish} type="dish" />
+                    );
                   })}
                 </ScrollView>
               </>
@@ -106,7 +110,12 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
           </View>
         </View>
       </View>
-      <OrderStatusButton order={order} status={order.status} />
+      {order.status === Statuses.Nueva && (
+        <OrderPreparationButton order={order} status={order.status} />
+      )}
+      {order.status === Statuses.Preparacion && (
+        <OrderReadyButton order={order} status={order.status} />
+      )}
     </>
   );
 };

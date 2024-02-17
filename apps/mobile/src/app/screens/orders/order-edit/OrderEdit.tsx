@@ -1,39 +1,41 @@
 import { AntDesign } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
 import {
-  View,
-  TouchableHighlight,
   Image,
+  Keyboard,
   Text,
   TextInput,
-  Keyboard,
+  TouchableHighlight,
+  View,
 } from 'react-native';
-import { OrderAddDishes } from '../../../components/orders/order-items-add/OrderAddDishes';
-import { Table } from '../../../model/table.model';
 import { useSetRecoilState } from 'recoil';
-import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
-import { OrderRegisterButton } from '../../../components/orders/OrderRegisterButton';
-import { OrderAddDrinks } from '../../../components/orders/order-items-add/OrderAddDrinks';
-import { Controller, useForm } from 'react-hook-form';
 import { OrderAddAdditional } from '../../../components/orders/order-items-add/OrderAddAdditional';
-import { useState } from 'react';
+import { OrderAddDishes } from '../../../components/orders/order-items-add/OrderAddDishes';
+import { OrderAddDrinks } from '../../../components/orders/order-items-add/OrderAddDrinks';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
+import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
+import { Order } from '../../../model/order.model';
+import { useEffect, useState } from 'react';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
+import { OrderEditButton } from '../../../components/orders/OrderEditButton';
 
-interface OrderAddProps {
+interface OrderEditProps {
   route: Route<string>;
   navigation: NavigationProp<ParamListBase>;
 }
 
-export const OrderAdd = (props: OrderAddProps) => {
-  const { control, watch } = useForm<{ note: string }>();
+export const OrderEdit = (props: OrderEditProps) => {
+  const { control, watch, setValue } = useForm<{ note: string }>();
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(
     Keyboard.isVisible()
   );
   const setDishesState = useSetRecoilState(orderDishesState);
+  const setDrinksState = useSetRecoilState(orderDrinksState);
+  const setAdditionalState = useSetRecoilState(orderAdditionalState);
 
-  const { table } = props.route.params as { table: Table };
-
-  //TODO: Validar solo para movil
+  const { order } = props.route.params as { order: Order };
 
   Keyboard.addListener('keyboardDidShow', () => {
     setIsKeyboardVisible(true);
@@ -42,6 +44,15 @@ export const OrderAdd = (props: OrderAddProps) => {
   Keyboard.addListener('keyboardDidHide', () => {
     setIsKeyboardVisible(false);
   });
+
+  useEffect(() => {
+    if (order) {
+      setDishesState(order.dishes || []);
+      setDrinksState(order.drinks || []);
+      setAdditionalState(order.additional || []);
+      setValue('note', order.note);
+    }
+  }, []);
 
   return (
     <>
@@ -79,12 +90,14 @@ export const OrderAdd = (props: OrderAddProps) => {
             onPress={() => {
               props.navigation.goBack();
               setDishesState([]);
+              setDishesState([]);
+              setDishesState([]);
             }}
           >
             <AntDesign name="arrowleft" size={20} color="black" />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            {table?.name}
+            {order.table.name}
           </Text>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
@@ -155,9 +168,9 @@ export const OrderAdd = (props: OrderAddProps) => {
           </View>
         </View>
       </View>
-      <OrderRegisterButton
-        table={table}
+      <OrderEditButton
         navigation={props.navigation}
+        order={order}
         note={watch('note')}
       />
     </>

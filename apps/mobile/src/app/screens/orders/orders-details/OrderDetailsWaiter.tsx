@@ -132,7 +132,7 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
             onPress={() => {
               order
                 ? props.navigation.navigate('order-edit', {
-                    table: table,
+                    order,
                   })
                 : props.navigation.navigate('order-add', {
                     table: table,
@@ -155,7 +155,10 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
         {order ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{ marginTop: 20 }}
+            style={{
+              marginTop: 20,
+              marginBottom: order?.status === 'listo' ? 60 : 0,
+            }}
           >
             <OrderStatusBar status={order.status} />
             <View>

@@ -34,11 +34,11 @@ export const DishCard = (props: DishCardProps) => {
             ? { uri: props.dish.image.url }
             : require('../../../../assets/lomo_saltado.png')
         }
+        resizeMode="contain"
         style={{
           width: '100%',
           height: 100,
           objectFit: 'contain',
-          resizeMode: 'contain',
         }}
       ></Image>
       <View

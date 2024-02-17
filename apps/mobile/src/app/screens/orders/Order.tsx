@@ -8,6 +8,7 @@ import { OrderListCashierScreen } from './order-list/OrderListCashierScreen';
 import { OrderDetailsCashier } from './orders-details/OrderDetailsCashier';
 import { OrderDrinks } from './order-items/OrderDrinks';
 import { OrderAdditional } from './order-items/OrderAdditional';
+import { OrderEdit } from './order-edit/OrderEdit';
 
 export const Orders = () => {
   const Stack = createStackNavigator();
@@ -33,6 +34,11 @@ export const Orders = () => {
         name="order-add"
         options={{ headerShown: false }}
         component={OrderAdd}
+      />
+      <Stack.Screen
+        name="order-edit"
+        options={{ headerShown: false }}
+        component={OrderEdit}
       />
       <Stack.Screen
         name="order-list-cook"

@@ -64,8 +64,23 @@ export const OrderListCook = (props: OrderListCookProps) => {
             ))}
         </ScrollView>
       ) : (
-        <View>
-          <Text>No hay Ordenes</Text>
+        <View
+          style={{
+            marginTop: 60,
+            marginBottom: 30,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            No hay Ordenes
+          </Text>
         </View>
       )}
     </View>
