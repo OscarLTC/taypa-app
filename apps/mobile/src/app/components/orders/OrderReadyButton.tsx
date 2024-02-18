@@ -21,7 +21,6 @@ export const OrderReadyButton = (props: OrderReadyButtonProps) => {
     const orderRef = doc(firestore, 'orders', orderId);
     await updateDoc(orderRef, {
       status: Statuses.Listo,
-      updatedAt: new Date(),
     });
     navigation.goBack();
     setIsLoading(false);

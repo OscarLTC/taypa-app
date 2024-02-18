@@ -53,7 +53,6 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
       const orderRef = doc(firestore, 'orders', orderId);
       await updateDoc(orderRef, {
         status: 'servido',
-        updatedAt: new Date(),
       });
       setOrder({ ...order, status: 'listo' });
       props.navigation.goBack();

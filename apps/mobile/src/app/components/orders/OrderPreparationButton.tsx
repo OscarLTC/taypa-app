@@ -20,7 +20,6 @@ export const OrderPreparationButton = (props: OrderPreparationButtonProps) => {
     const orderRef = doc(firestore, 'orders', orderId);
     await updateDoc(orderRef, {
       status: 'preparacion',
-      updatedAt: new Date(),
       dishes: props.order.dishes?.map((dish) => {
         return { ...dish, wasTaken: true };
       }),

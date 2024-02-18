@@ -22,7 +22,8 @@
     "@react-native-async-storage/async-storage": "*",
     "expo-image-picker": "*",
     "base-64": "*",
-    "@expo/vector-icons": "*"
+    "@expo/vector-icons": "*",
+    "moment": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobile && cp package-lock.json apps/mobile",

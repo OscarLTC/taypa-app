@@ -46,8 +46,18 @@ export const OrderCardCook = (props: OrderCardCookProps) => {
           overflow: 'hidden',
         }}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 30, color: '#941B0C' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#941B0C' }}>
           {props.order.table.name}
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={{
+            fontSize: 12,
+            color: props.order.note !== '' ? 'black' : '#a8a8a8',
+          }}
+        >
+          <Text style={{ fontWeight: 'bold', color: 'black' }}>Nota:</Text>
+          {` ${props.order.note !== '' ? props.order.note : 'Sin nota'} `}
         </Text>
         <Text
           style={{
@@ -58,7 +68,7 @@ export const OrderCardCook = (props: OrderCardCookProps) => {
             fontSize: 12,
           }}
         >
-          {moment(props.order.createdAt.toDate()).fromNow()}
+          {moment(props.order.updatedAt.toDate()).fromNow()}
         </Text>
         <View
           style={{
