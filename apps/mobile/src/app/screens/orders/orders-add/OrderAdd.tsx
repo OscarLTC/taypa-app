@@ -13,7 +13,7 @@ import { OrderAddDishes } from '../../../components/orders/order-items-add/Order
 import { Table } from '../../../model/table.model';
 import { useSetRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
-import { OrderRegisterButton } from '../../../components/orders/OrderRegisterButton';
+import { OrderRegisterButton } from '../../../components/orders/order-buttons/OrderRegisterButton';
 import { OrderAddDrinks } from '../../../components/orders/order-items-add/OrderAddDrinks';
 import { Controller, useForm } from 'react-hook-form';
 import { OrderAddAdditional } from '../../../components/orders/order-items-add/OrderAddAdditional';

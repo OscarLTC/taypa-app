@@ -1,17 +1,17 @@
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import { firestore } from '../../config/Firebase';
-import { Table } from '../../model/table.model';
-import { orderDishesState } from '../../storage/order/order-dishes/orderDishes.atom';
+import { firestore } from '../../../config/Firebase';
+import { Table } from '../../../model/table.model';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { subTotalDishesSelector } from '../../storage/order/order-dishes/orderDishes.selector';
-import { userState } from '../../storage/user/user.atom';
+import { subTotalDishesSelector } from '../../../storage/order/order-dishes/orderDishes.selector';
+import { userState } from '../../../storage/user/user.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { orderDrinksState } from '../../storage/order/order-drinks/orderDrinks.atom';
-import { orderAdditionalState } from '../../storage/order/order-additional/orderAdditional.atom';
-import { subTotalDrinksSelector } from '../../storage/order/order-drinks/orderDrinks.selector';
-import { subTotalAdditionalSelector } from '../../storage/order/order-additional/orderAdditional.selector';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
+import { subTotalDrinksSelector } from '../../../storage/order/order-drinks/orderDrinks.selector';
+import { subTotalAdditionalSelector } from '../../../storage/order/order-additional/orderAdditional.selector';
 
 interface OrderRegisterButtonProps {
   table: Table;

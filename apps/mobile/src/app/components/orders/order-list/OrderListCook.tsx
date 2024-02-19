@@ -11,6 +11,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '../../../storage/user/user.atom';
 import { Order } from '../../../model/order.model';
 import { OrderCardCook } from '../order-cards/OrderCardCook';
+import { OrderListSkeleton } from './OrderListSkeleton';
 
 interface OrderListCookProps {
   navigation: NavigationProp<ParamListBase>;
@@ -85,8 +86,6 @@ export const OrderListCook = (props: OrderListCookProps) => {
       )}
     </View>
   ) : (
-    <View>
-      <Text>Skeleton</Text>
-    </View>
+    <OrderListSkeleton />
   );
 };

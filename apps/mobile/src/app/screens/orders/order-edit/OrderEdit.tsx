@@ -19,7 +19,7 @@ import { Order } from '../../../model/order.model';
 import { useEffect, useState } from 'react';
 import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
-import { OrderEditButton } from '../../../components/orders/OrderEditButton';
+import { OrderEditButton } from '../../../components/orders/order-buttons/OrderEditButton';
 
 interface OrderEditProps {
   route: Route<string>;

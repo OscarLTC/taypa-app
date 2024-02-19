@@ -11,6 +11,7 @@ import { Order } from '../../../model/order.model';
 import { userState } from '../../../storage/user/user.atom';
 import { View, ScrollView, Text } from 'react-native';
 import { OrderCardCashier } from '../order-cards/OrderCardCashier';
+import { OrderListSkeleton } from './OrderListSkeleton';
 
 interface OrderListCashierProps {
   navigation: NavigationProp<ParamListBase>;
@@ -83,8 +84,6 @@ export const OrderListCashier = (props: OrderListCashierProps) => {
       )}
     </View>
   ) : (
-    <View>
-      <Text>Skeleton</Text>
-    </View>
+    <OrderListSkeleton />
   );
 };

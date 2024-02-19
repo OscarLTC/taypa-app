@@ -1,18 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
-import { doc, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { Text, TouchableHighlight } from 'react-native';
-import { firestore } from '../../config/Firebase';
-import { Statuses } from '../../model/status.enum';
-import { Order } from '../../model/order.model';
+import { Order } from '../../../model/order.model';
+import { doc, updateDoc } from 'firebase/firestore';
+import { firestore } from '../../../config/Firebase';
 
-interface OrderReadyButtonProps {
+interface OrderPreparationButtonProps {
   order: Order;
   status: string;
 }
-export const OrderReadyButton = (props: OrderReadyButtonProps) => {
-  const [isLoading, setIsLoading] = useState(false);
 
+export const OrderPreparationButton = (props: OrderPreparationButtonProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
   const onStatusChangePress = async () => {
@@ -20,7 +19,17 @@ export const OrderReadyButton = (props: OrderReadyButtonProps) => {
     const orderId = props.order?.id;
     const orderRef = doc(firestore, 'orders', orderId);
     await updateDoc(orderRef, {
-      status: Statuses.Listo,
+      status: 'preparacion',
+      dishes: props.order.dishes?.map((dish) => {
+        return { ...dish, wasTaken: true };
+      }),
+      drinks: props.order.drinks?.map((drink) => {
+        return { ...drink, wasTaken: true };
+      }),
+      additional: props.order.additional?.map((add) => {
+        return { ...add, wasTaken: true };
+      }),
+      wasUpdated: false,
     });
     navigation.goBack();
     setIsLoading(false);
@@ -50,7 +59,7 @@ export const OrderReadyButton = (props: OrderReadyButtonProps) => {
           textTransform: 'capitalize',
         }}
       >
-        Listo
+        Preparación
       </Text>
     </TouchableHighlight>
   );

@@ -100,6 +100,7 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
           showsVerticalScrollIndicator={false}
           style={{
             marginTop: 20,
+            marginBottom: 60,
           }}
         >
           <OrderStatusBar status={order.status} />

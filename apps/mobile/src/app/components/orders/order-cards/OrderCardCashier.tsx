@@ -3,6 +3,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { Order } from '../../../model/order.model';
+import moment from 'moment';
 
 interface OrderCardCashierProps {
   navigation: NavigationProp<ParamListBase>;
@@ -10,11 +11,6 @@ interface OrderCardCashierProps {
 }
 
 export const OrderCardCashier = (props: OrderCardCashierProps) => {
-  const orderDishesQuantity = props.order.dishes?.reduce(
-    (acc, dish) => acc + dish.quantity,
-    0
-  );
-
   return (
     <TouchableOpacity
       style={{
@@ -33,30 +29,44 @@ export const OrderCardCashier = (props: OrderCardCashierProps) => {
     >
       <View
         style={{
+          height: '100%',
           width: '75%',
           padding: 15,
           overflow: 'hidden',
         }}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 15, color: '#941B0C' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#6a040f' }}>
           {props.order.table.name}
         </Text>
         <Text
           numberOfLines={1}
-          style={{ fontSize: 12 }}
-        >{`${orderDishesQuantity} platos`}</Text>
-        <View>
-          <Text numberOfLines={1} style={{ fontSize: 12 }}>
-            {props.order.dishes
-              ?.map((dish) => `${dish.quantity} ${dish.name}`)
-              .join(', ')}
+          style={{
+            fontSize: 12,
+            fontWeight: 'bold',
+            color: '#0d1c0d',
+          }}
+        >
+          <Text style={{ color: 'black', fontWeight: 'normal', fontSize: 12 }}>
+            Total:
           </Text>
-        </View>
+          {` S/ ${Number(props.order.total).toFixed(2)} `}
+        </Text>
+        <Text
+          style={{
+            position: 'absolute',
+            color: '#a8a8a8',
+            bottom: 10,
+            left: 15,
+            fontSize: 12,
+          }}
+        >
+          {moment(props.order.createdAt.toDate()).fromNow()}
+        </Text>
       </View>
       <View
         style={{
           width: '25%',
-          backgroundColor: '#941B0C',
+          backgroundColor: '#6a040f',
           borderTopEndRadius: 20,
           borderBottomRightRadius: 20,
           justifyContent: 'center',
