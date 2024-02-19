@@ -1,16 +1,13 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 import { View, Text, Image, TouchableHighlight } from 'react-native';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../config/Firebase';
-import { useResetRecoilState } from 'recoil';
-import { userState } from '../../storage/user/user.atom';
-import { FontAwesome } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MainManagementCard } from '../../components/home/MainManagementCard';
 import { LockViewModal } from '../../components/home/LockViewModal';
 import { useState } from 'react';
+import { SignOutModal } from '../../components/home/SignOutModal';
 
 interface HomeProps {
   navigation: NavigationProp<ParamListBase>;
@@ -33,24 +30,10 @@ export const HomeScreen = (props: HomeProps) => {
       icon: <FontAwesome5 name="coins" size={20} color="black" />,
       redirect: 'sales',
     },
-    // {
-    //   title: 'Sesiones',
-    //   icon: <Fontisto name="eye" size={17} color="black" />,
-    //   redirect: 'sessions',
-    // },
   ];
-  const resetUser = useResetRecoilState(userState);
 
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const onSignOutPress = () => {
-    props.navigation.navigate('sign-in');
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        resetUser();
-      }
-    });
-  };
+  const [modalLockVisible, setModalLockVisible] = useState(false);
+  const [modalSignOutVisible, setModalSignOutVisible] = useState(false);
 
   return (
     <View
@@ -80,13 +63,15 @@ export const HomeScreen = (props: HomeProps) => {
             flexDirection: 'row',
             height: 40,
             width: 40,
+            paddingLeft: 5,
             justifyContent: 'center',
+
             alignItems: 'center',
           }}
           delayPressOut={100}
-          onPress={onSignOutPress}
+          onPress={() => setModalSignOutVisible(true)}
         >
-          <FontAwesome name="user" size={25} color="white" />
+          <Entypo name="log-out" size={20} color="white" />
         </TouchableHighlight>
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
@@ -145,7 +130,7 @@ export const HomeScreen = (props: HomeProps) => {
           <TouchableHighlight
             underlayColor={'#F6AA1C'}
             delayPressOut={100}
-            onPress={() => setModalVisible(true)}
+            onPress={() => setModalLockVisible(true)}
             style={{
               backgroundColor: '#890303',
               paddingVertical: 20,
@@ -168,10 +153,15 @@ export const HomeScreen = (props: HomeProps) => {
           </TouchableHighlight>
         </View>
       </View>
+      <SignOutModal
+        navigation={props.navigation}
+        modalVisible={modalSignOutVisible}
+        setModalVisible={(modalVisible) => setModalSignOutVisible(modalVisible)}
+      />
       <LockViewModal
         navigation={props.navigation}
-        modalVisible={modalVisible}
-        setModalVisible={(modalVisible) => setModalVisible(modalVisible)}
+        modalVisible={modalLockVisible}
+        setModalVisible={(modalVisible) => setModalLockVisible(modalVisible)}
       />
     </View>
   );

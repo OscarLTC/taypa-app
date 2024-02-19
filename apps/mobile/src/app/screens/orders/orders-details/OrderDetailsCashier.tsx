@@ -2,18 +2,15 @@ import {
   View,
   ScrollView,
   Text,
-  TouchableOpacity,
   Image,
   TouchableHighlight,
 } from 'react-native';
 import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { AntDesign } from '@expo/vector-icons';
-import { doc, updateDoc } from 'firebase/firestore';
-import { firestore } from '../../../config/Firebase';
-import { useState } from 'react';
 import { OrderStatusBar } from '../order-status/OrderStatusBar';
 import { ItemListCashier } from '../../../components/orders/order-items-list/ItemListCashier';
+import { OrderPayButton } from '../../../components/orders/order-buttons/OrderPayButton';
 
 interface OrderDetailsCashierProps {
   route: Route<string>;
@@ -22,23 +19,6 @@ interface OrderDetailsCashierProps {
 
 export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
   const { order } = props.route.params as { order: Order };
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const onPayOrderPress = async () => {
-    setIsLoading(true);
-    const orderRef = doc(firestore, 'orders', order.id);
-    await updateDoc(orderRef, {
-      status: 'completado',
-    }).then(() => {
-      props.navigation.goBack();
-      const tableRef = doc(firestore, 'tables', order.table.id);
-      updateDoc(tableRef, {
-        isAvailable: true,
-      });
-      setIsLoading(false);
-    });
-  };
 
   return (
     <>
@@ -147,33 +127,11 @@ export const OrderDetailsCashier = (props: OrderDetailsCashierProps) => {
           </View>
         </ScrollView>
       </View>
-      <TouchableOpacity
-        onPress={onPayOrderPress}
-        disabled={isLoading}
-        style={{
-          backgroundColor: '#941B0C',
-          paddingVertical: 5,
-          paddingHorizontal: 15,
-          position: 'absolute',
-          width: '100%',
-          bottom: 0,
-          height: 60,
-          alignSelf: 'center',
-          justifyContent: 'center',
-          opacity: isLoading ? 0.5 : 1,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: 'bold',
-            color: '#FFFFFF',
-            textAlign: 'center',
-          }}
-        >
-          Pagar
-        </Text>
-      </TouchableOpacity>
+      <OrderPayButton
+        navigation={props.navigation}
+        orderId={order.id}
+        tableId={order.table.id}
+      />
     </>
   );
 };
