@@ -1,12 +1,22 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useIsFocused,
+} from '@react-navigation/native';
 
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  BackHandler,
+} from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MainManagementCard } from '../../components/home/MainManagementCard';
 import { LockViewModal } from '../../components/home/LockViewModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SignOutModal } from '../../components/home/SignOutModal';
 
 interface HomeProps {
@@ -34,6 +44,20 @@ export const HomeScreen = (props: HomeProps) => {
 
   const [modalLockVisible, setModalLockVisible] = useState(false);
   const [modalSignOutVisible, setModalSignOutVisible] = useState(false);
+
+  const isRolesFocused = useIsFocused();
+
+  useEffect(() => {
+    console.log(isRolesFocused);
+    const onBackPress = () => {
+      return isRolesFocused;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [isRolesFocused]);
 
   return (
     <View

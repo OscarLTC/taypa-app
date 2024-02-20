@@ -7,7 +7,7 @@ export const Roles = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{}}>
       <Stack.Screen
         name="roles-list"
         options={{ headerShown: false }}

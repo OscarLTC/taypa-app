@@ -9,18 +9,14 @@ import {
 } from 'react-native';
 import { Table } from '../../../model/table.model';
 import { useEffect, useState } from 'react';
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { Order } from '../../../model/order.model';
 import { OrderStatusBar } from '../order-status/OrderStatusBar';
 import { ItemListWaiter } from '../../../components/orders/order-items-list/ItemListWaiter';
+import { Statuses } from '../../../model/status.enum';
+import { OrderCancelButton } from '../../../components/orders/order-buttons/OrderCancelButton';
+import { OrderServedButton } from '../../../components/orders/order-buttons/OrderServedButton';
 
 interface OrderDetailsProps {
   route: Route<string>;
@@ -45,18 +41,6 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
       ...doc.data(),
     }));
     setOrder(order[0] as Order);
-  };
-
-  const onServedStatusChangePress = async () => {
-    if (order?.status === 'listo') {
-      const orderId = order.id;
-      const orderRef = doc(firestore, 'orders', orderId);
-      await updateDoc(orderRef, {
-        status: 'servido',
-      });
-      setOrder({ ...order, status: 'listo' });
-      props.navigation.goBack();
-    }
   };
 
   useEffect(() => {
@@ -156,7 +140,11 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
             showsVerticalScrollIndicator={false}
             style={{
               marginTop: 20,
-              marginBottom: order?.status === 'listo' ? 60 : 0,
+              marginBottom:
+                order.status === Statuses.Listo ||
+                order.status === Statuses.Nueva
+                  ? 60
+                  : 0,
             }}
           >
             <OrderStatusBar status={order.status} />
@@ -219,37 +207,24 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
                 textAlign: 'center',
               }}
             >
-              {'Agregue una orden para\n comenzar a tomar pedidos'}
+              {'Agregue una orden para\npara ver el detalle'}
             </Text>
           </View>
         )}
       </View>
-      {order?.status === 'listo' && (
-        <TouchableHighlight
-          underlayColor={'#F6AA1C'}
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            backgroundColor: '#941B0C',
-            padding: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          delayPressOut={100}
-          onPress={onServedStatusChangePress}
-        >
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 20,
-              fontWeight: 'bold',
-              textTransform: 'capitalize',
-            }}
-          >
-            Servido
-          </Text>
-        </TouchableHighlight>
+      {order?.status === Statuses.Listo && (
+        <OrderServedButton
+          navigation={props.navigation}
+          order={order}
+          setOrder={setOrder}
+        />
+      )}
+      {order?.status === Statuses.Nueva && (
+        <OrderCancelButton
+          orderId={order.id}
+          navigation={props.navigation}
+          tableId={order.table.id}
+        />
       )}
     </>
   );

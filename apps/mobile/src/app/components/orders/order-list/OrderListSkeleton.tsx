@@ -9,6 +9,7 @@ export const OrderListSkeleton = () => {
     >
       {Array.from({ length: 5 }).map((_, index) => (
         <View
+          key={index}
           style={{
             width: '100%',
             height: 120,

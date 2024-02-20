@@ -6,9 +6,14 @@ import {
   Image,
   TouchableHighlight,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import { UnlockViewModal } from '../../../components/home/UnlockViewModal';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useIsFocused,
+} from '@react-navigation/native';
 import { useRecoilRefresher_UNSTABLE, useRecoilState } from 'recoil';
 import { userLockedState } from '../../../storage/userLocked/userLocked.atom';
 
@@ -39,6 +44,19 @@ export const RolesListScreen = (props: RolesScreenProps) => {
   useEffect(() => {
     refreshUserLocked();
   });
+
+  const isRolesFocused = useIsFocused();
+
+  useEffect(() => {
+    const onBackPress = () => {
+      return isRolesFocused;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [isRolesFocused]);
 
   return (
     <View

@@ -1,8 +1,37 @@
+import { useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import { firestore } from '../../../config/Firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-export const OrderCancelButton = () => {
+interface OrderCancelButtonProps {
+  orderId: string;
+  tableId: string;
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const OrderCancelButton = (props: OrderCancelButtonProps) => {
+  const [loading, setLoading] = useState(false);
+
+  const onCancelOrderPress = async () => {
+    setLoading(true);
+    const orderRef = doc(firestore, 'orders', props.orderId);
+    await updateDoc(orderRef, {
+      status: 'cancelado',
+    }).then(async () => {
+      const tableRef = doc(firestore, 'tables', props.tableId);
+      await updateDoc(tableRef, {
+        isAvailable: true,
+      });
+      props.navigation.goBack();
+      setLoading(false);
+    });
+  };
+
   return (
     <TouchableOpacity
+      disabled={loading}
+      onPress={onCancelOrderPress}
       style={{
         backgroundColor: '#941B0C',
         paddingVertical: 5,
