@@ -20,7 +20,14 @@ export const Notifications = () => {
   const userLocked = useRecoilValue(userLockedState);
   const [notifications, setNotifications] = useState<Notification[]>();
 
-  const closeNotification = async (notifications: Notification[]) => {
+  const forceHideNotification = async (notificationId: string) => {
+    const notificationRef = doc(firestore, 'notifications', notificationId);
+    await updateDoc(notificationRef, {
+      isShown: true,
+    });
+  };
+
+  const hideNotification = async (notifications: Notification[]) => {
     notifications.forEach(async (notification) => {
       if (!notification.isShown) playSound();
     });
@@ -70,7 +77,7 @@ export const Notifications = () => {
             } as Notification)
         );
         setNotifications(notificationsData);
-        closeNotification(notificationsData);
+        hideNotification(notificationsData);
       });
       return () => unsubscribe();
     }
@@ -106,6 +113,7 @@ export const Notifications = () => {
             alignItems: 'center',
             elevation: 2,
           }}
+          onPress={() => forceHideNotification(notification.id)}
           key={notification.id}
         >
           <Text
