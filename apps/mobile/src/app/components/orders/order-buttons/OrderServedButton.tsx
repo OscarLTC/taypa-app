@@ -2,7 +2,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { Order } from '../../../model/order.model';
-import { Text, TouchableHighlight } from 'react-native';
+import { Platform, Text, TouchableHighlight } from 'react-native';
 
 interface OrderServedButtonProps {
   order: Order;
@@ -18,16 +18,17 @@ export const OrderServedButton = (props: OrderServedButtonProps) => {
       await updateDoc(orderRef, {
         status: 'servido',
       });
-      props.setOrder({ ...props.order, status: 'listo' });
       props.navigation.goBack();
+      props.setOrder({ ...props.order, status: 'listo' });
     }
   };
 
   return (
     <TouchableHighlight
       underlayColor={'#F6AA1C'}
+      // @ts-expect-error position fixed is not available in web
       style={{
-        position: 'absolute',
+        position: Platform.OS === 'web' ? 'fixed' : 'absolute',
         bottom: 0,
         width: '100%',
         backgroundColor: '#941B0C',

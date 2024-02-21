@@ -16,6 +16,7 @@ export const ItemsCardCook = (props: ItemsCardCookProps) => {
         height: 110,
         width: 110,
         opacity: props.item.wasTaken ? 0.5 : 1,
+        elevation: props.item.wasTaken ? 0 : 2,
       }}
     >
       <View

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Text, TouchableHighlight } from 'react-native';
+import { Platform, Text, TouchableHighlight } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import { Statuses } from '../../../model/status.enum';
 import { ItemOrder, Order } from '../../../model/order.model';
@@ -59,8 +59,9 @@ export const OrderReadyButton = (props: OrderReadyButtonProps) => {
     <TouchableHighlight
       disabled={isLoading}
       underlayColor={'#F6AA1C'}
+      // @ts-expect-error position fixed is not available in web
       style={{
-        position: 'absolute',
+        position: Platform.OS === 'web' ? 'fixed' : 'absolute',
         bottom: 0,
         width: '100%',
         backgroundColor: '#941B0C',

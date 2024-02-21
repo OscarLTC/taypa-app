@@ -143,7 +143,7 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
               marginBottom:
                 order.status === Statuses.Listo ||
                 order.status === Statuses.Nueva
-                  ? 60
+                  ? 40
                   : 0,
             }}
           >

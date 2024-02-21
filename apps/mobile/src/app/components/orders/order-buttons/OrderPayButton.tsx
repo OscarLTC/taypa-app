@@ -1,6 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Platform, Text, TouchableOpacity } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useResetRecoilState } from 'recoil';
@@ -43,11 +43,12 @@ export const OrderPayButton = (props: OrderPayButtonProps) => {
     <TouchableOpacity
       onPress={onPayOrderPress}
       disabled={isLoading}
+      // @ts-expect-error position fixed is not available in web
       style={{
+        position: Platform.OS === 'web' ? 'fixed' : 'absolute',
         backgroundColor: '#941B0C',
         paddingVertical: 5,
         paddingHorizontal: 15,
-        position: 'absolute',
         width: '100%',
         bottom: 0,
         height: 60,

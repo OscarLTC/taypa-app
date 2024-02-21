@@ -1,6 +1,6 @@
 import { updateDoc, doc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Platform, Text, TouchableOpacity } from 'react-native';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
@@ -59,11 +59,12 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
     <TouchableOpacity
       onPress={onEditOrderPress}
       disabled={isLoading}
+      // @ts-expect-error position fixed is not available in web
       style={{
         backgroundColor: '#941B0C',
         paddingVertical: 5,
         paddingHorizontal: 15,
-        position: 'absolute',
+        position: Platform.OS === 'web' ? 'fixed' : 'absolute',
         width: '100%',
         bottom: 0,
         height: 60,

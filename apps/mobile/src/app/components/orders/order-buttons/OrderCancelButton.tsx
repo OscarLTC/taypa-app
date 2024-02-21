@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Platform, Text, TouchableOpacity } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
@@ -32,11 +32,12 @@ export const OrderCancelButton = (props: OrderCancelButtonProps) => {
     <TouchableOpacity
       disabled={loading}
       onPress={onCancelOrderPress}
+      // @ts-expect-error position fixed is not available in web
       style={{
         backgroundColor: '#941B0C',
         paddingVertical: 5,
         paddingHorizontal: 15,
-        position: 'absolute',
+        position: Platform.OS === 'web' ? 'fixed' : 'absolute',
         width: '100%',
         bottom: 0,
         height: 60,
