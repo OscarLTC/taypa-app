@@ -13,6 +13,7 @@ import { StatusBar } from 'react-native';
 import { Orders } from './orders/Order';
 import { Drinks } from './drinks/Drinks';
 import { Additional } from './additional/Additional';
+import { Notifications } from '../components/notifications/Notifications';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -36,52 +37,55 @@ export const Container = (props: ContainerProps) => {
   }, [userSelector]);
 
   return (
-    <Stack.Navigator initialRouteName="auth">
-      <Stack.Screen
-        name="auth"
-        options={{ headerShown: false }}
-        component={Auth}
-      />
-      <Stack.Screen
-        name="home"
-        options={{ headerShown: false }}
-        component={HomeScreen}
-      />
-      <Stack.Screen
-        name="workers"
-        options={{ headerShown: false }}
-        component={Workers}
-      />
-      <Stack.Screen
-        name="tables"
-        options={{ headerShown: false }}
-        component={Tables}
-      />
-      <Stack.Screen
-        name="dishes"
-        options={{ headerShown: false }}
-        component={Dishes}
-      />
-      <Stack.Screen
-        name="drinks"
-        options={{ headerShown: false }}
-        component={Drinks}
-      />
-      <Stack.Screen
-        name="additional"
-        options={{ headerShown: false }}
-        component={Additional}
-      />
-      <Stack.Screen
-        name="orders"
-        options={{ headerShown: false }}
-        component={Orders}
-      />
-      <Stack.Screen
-        name="roles"
-        options={{ headerShown: false }}
-        component={Roles}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator initialRouteName="auth">
+        <Stack.Screen
+          name="auth"
+          options={{ headerShown: false, animationEnabled: false }}
+          component={Auth}
+        />
+        <Stack.Screen
+          name="home"
+          options={{ headerShown: false, animationEnabled: false }}
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          name="workers"
+          options={{ headerShown: false }}
+          component={Workers}
+        />
+        <Stack.Screen
+          name="tables"
+          options={{ headerShown: false }}
+          component={Tables}
+        />
+        <Stack.Screen
+          name="dishes"
+          options={{ headerShown: false }}
+          component={Dishes}
+        />
+        <Stack.Screen
+          name="drinks"
+          options={{ headerShown: false }}
+          component={Drinks}
+        />
+        <Stack.Screen
+          name="additional"
+          options={{ headerShown: false }}
+          component={Additional}
+        />
+        <Stack.Screen
+          name="orders"
+          options={{ headerShown: false }}
+          component={Orders}
+        />
+        <Stack.Screen
+          name="roles"
+          options={{ headerShown: false, animationEnabled: false }}
+          component={Roles}
+        />
+      </Stack.Navigator>
+      <Notifications />
+    </>
   );
 };

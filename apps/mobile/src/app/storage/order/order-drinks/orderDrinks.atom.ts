@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
-import { itemOrder } from '../../../model/order.model';
+import { ItemOrder } from '../../../model/order.model';
 
-export const orderDrinksState = atom<itemOrder[]>({
+export const orderDrinksState = atom<ItemOrder[]>({
   key: 'orderDrinksState',
   default: [],
 });

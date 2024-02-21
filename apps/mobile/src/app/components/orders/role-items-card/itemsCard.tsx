@@ -1,10 +1,10 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { OrderModalDishEdit } from '../order-items/OrderModalItemEdit';
 import { useState } from 'react';
-import { itemOrder } from '../../../model/order.model';
+import { ItemOrder } from '../../../model/order.model';
 
 interface ItemsCardProps {
-  item: itemOrder;
+  item: ItemOrder;
   type: 'dish' | 'drink' | 'additional';
 }
 

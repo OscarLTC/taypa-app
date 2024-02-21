@@ -47,17 +47,17 @@ export const HomeScreen = (props: HomeProps) => {
 
   const isRolesFocused = useIsFocused();
 
-  useEffect(() => {
-    console.log(isRolesFocused);
-    const onBackPress = () => {
-      return isRolesFocused;
-    };
+  // useEffect(() => {
+  //   console.log(isRolesFocused);
+  //   const onBackPress = () => {
+  //     return isRolesFocused;
+  //   };
 
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+  //   BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  }, [isRolesFocused]);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  // }, [isRolesFocused]);
 
   return (
     <View

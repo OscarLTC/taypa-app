@@ -1,15 +1,15 @@
 import { ScrollView, Text, View } from 'react-native';
-import { itemOrder } from '../../../model/order.model';
+import { ItemOrder } from '../../../model/order.model';
 import { ItemsCardCashier } from '../role-items-card/ItemsCardCashier';
 
 interface ItemListCashierProps {
-  items: itemOrder[];
+  items: ItemOrder[];
   title: string;
 }
 
 export const ItemListCashier = (props: ItemListCashierProps) => {
-  const getSubTotalItems = (items: itemOrder[]) => {
-    return items.reduce((acc: number, item: itemOrder) => {
+  const getSubTotalItems = (items: ItemOrder[]) => {
+    return items.reduce((acc: number, item: ItemOrder) => {
       return acc + item.subTotal;
     }, 0);
   };

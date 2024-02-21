@@ -3,14 +3,19 @@ import { Status } from './status.enum';
 
 export interface Order {
   id: string;
+  adminId: string;
+  worker: {
+    id: string;
+    name: string;
+  };
   table: {
     id: string;
     name: string;
   };
   wasUpdated: boolean;
-  dishes?: itemOrder[];
-  drinks?: itemOrder[];
-  additional?: itemOrder[];
+  dishes?: ItemOrder[];
+  drinks?: ItemOrder[];
+  additional?: ItemOrder[];
   note: string;
   total: number;
   status: Status;
@@ -18,7 +23,7 @@ export interface Order {
   updatedAt: Timestamp;
 }
 
-export interface itemOrder {
+export interface ItemOrder {
   id: string;
   name: string;
   price: number;

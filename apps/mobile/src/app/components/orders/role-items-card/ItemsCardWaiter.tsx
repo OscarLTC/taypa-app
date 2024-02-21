@@ -1,8 +1,8 @@
 import { Image, Text, View } from 'react-native';
-import { itemOrder } from '../../../model/order.model';
+import { ItemOrder } from '../../../model/order.model';
 
 interface ItemsCardWaiterProps {
-  item: itemOrder;
+  item: ItemOrder;
 }
 
 export const ItemsCardWaiter = (props: ItemsCardWaiterProps) => {

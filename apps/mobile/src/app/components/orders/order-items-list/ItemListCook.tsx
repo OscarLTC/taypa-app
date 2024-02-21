@@ -1,9 +1,9 @@
 import { ScrollView, Text, View } from 'react-native';
-import { itemOrder } from '../../../model/order.model';
+import { ItemOrder } from '../../../model/order.model';
 import { ItemsCardCook } from '../role-items-card/itemsCardCook';
 
 interface ItemListWaiterProps {
-  items: itemOrder[];
+  items: ItemOrder[];
   title: string;
 }
 

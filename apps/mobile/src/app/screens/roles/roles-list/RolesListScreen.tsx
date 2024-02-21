@@ -47,16 +47,16 @@ export const RolesListScreen = (props: RolesScreenProps) => {
 
   const isRolesFocused = useIsFocused();
 
-  useEffect(() => {
-    const onBackPress = () => {
-      return isRolesFocused;
-    };
+  // useEffect(() => {
+  //   const onBackPress = () => {
+  //     return isRolesFocused;
+  //   };
 
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+  //   BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  }, [isRolesFocused]);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  // }, [isRolesFocused]);
 
   return (
     <View

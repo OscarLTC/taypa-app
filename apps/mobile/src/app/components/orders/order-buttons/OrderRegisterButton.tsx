@@ -12,6 +12,7 @@ import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrink
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 import { subTotalDrinksSelector } from '../../../storage/order/order-drinks/orderDrinks.selector';
 import { subTotalAdditionalSelector } from '../../../storage/order/order-additional/orderAdditional.selector';
+import { userLockedState } from '../../../storage/userLocked/userLocked.atom';
 
 interface OrderRegisterButtonProps {
   table: Table;
@@ -27,6 +28,7 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
   const dishesTotal = useRecoilValue(subTotalDishesSelector);
   const drinksTotal = useRecoilValue(subTotalDrinksSelector);
   const additionalTotal = useRecoilValue(subTotalAdditionalSelector);
+  const workerLocked = useRecoilValue(userLockedState);
 
   const onRegisterOrderPress = () => {
     if (dishes.length === 0 && drinks.length === 0 && additional.length === 0) {
@@ -36,6 +38,7 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
     const orderRef = collection(firestore, 'orders');
     addDoc(orderRef, {
       adminId: userData?.userId,
+      worker: workerLocked?.user,
       table: {
         id: props.table.id,
         name: props.table.name,

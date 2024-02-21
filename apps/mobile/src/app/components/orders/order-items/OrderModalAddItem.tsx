@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { itemOrder } from '../../../model/order.model';
+import { ItemOrder } from '../../../model/order.model';
 import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 
@@ -24,7 +24,7 @@ export const OrderModalAddItem = (props: OrderModalAddItemProps) => {
   const [additional, setAdditional] = useRecoilState(orderAdditionalState);
 
   const onAddPress = () => {
-    const itemOrder: itemOrder = {
+    const itemOrder: ItemOrder = {
       id: props.item.id,
       name: props.item.name,
       price: props.item.price,

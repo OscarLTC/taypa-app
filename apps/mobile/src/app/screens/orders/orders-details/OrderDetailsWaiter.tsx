@@ -159,7 +159,8 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
                 <ItemListWaiter items={order.additional} title="Adicionales" />
               )}
             </View>
-            {order.note && (
+            {/* TODO: Revisar validación && */}
+            {order.note ? (
               <View
                 style={{
                   flexDirection: 'row',
@@ -188,6 +189,8 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
                   {order.note}
                 </Text>
               </View>
+            ) : (
+              <View></View>
             )}
           </ScrollView>
         ) : (
