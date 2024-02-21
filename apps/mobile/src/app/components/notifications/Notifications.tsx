@@ -6,20 +6,24 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { firestore } from '../../config/Firebase';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../storage/user/user.atom';
 import { useEffect, useState } from 'react';
 import { userLockedState } from '../../storage/userLocked/userLocked.atom';
 import { Notification } from '../../model/notification.model';
-
+import { Audio } from 'expo-av';
+import { FontAwesome } from '@expo/vector-icons';
 export const Notifications = () => {
   const userData = useRecoilValue(userState);
   const userLocked = useRecoilValue(userLockedState);
   const [notifications, setNotifications] = useState<Notification[]>();
 
   const closeNotification = async (notifications: Notification[]) => {
+    notifications.forEach(async (notification) => {
+      if (!notification.isShown) playSound();
+    });
     setTimeout(async () => {
       notifications.forEach(async (notification) => {
         const notificationRef = doc(
@@ -31,12 +35,24 @@ export const Notifications = () => {
           isShown: true,
         });
       });
-    }, 10000);
+    }, 5000);
+  };
+  const [sound, setSound] = useState<Audio.Sound>();
+
+  const playSound = async () => {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('../../../../assets/ding.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
   };
 
   useEffect(() => {
     if (userLocked?.user) {
-      console.log(userLocked);
       const adminId = userData?.userId;
       const notificationCollection = collection(firestore, 'notifications');
       const q = query(
@@ -53,7 +69,6 @@ export const Notifications = () => {
               ...doc.data(),
             } as Notification)
         );
-
         setNotifications(notificationsData);
         closeNotification(notificationsData);
       });
@@ -61,33 +76,49 @@ export const Notifications = () => {
     }
   }, [userLocked?.user]);
 
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   return (
     <View
       style={{
         position: 'absolute',
-        bottom: 0,
+        top: 0,
         width: '100%',
         paddingHorizontal: 20,
       }}
     >
       {notifications?.map((notification) => (
-        <View
+        <Pressable
           style={{
-            padding: 20,
-            backgroundColor: '#f44336',
-            marginBottom: 15,
+            padding: 15,
+            marginTop: 15,
+            borderRadius: 10,
+            backgroundColor: 'white',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            elevation: 2,
           }}
           key={notification.id}
         >
           <Text
             style={{
-              color: 'white',
+              fontSize: 12,
+              color: 'black',
               fontWeight: 'bold',
             }}
           >
             {notification.message}
           </Text>
-        </View>
+          <FontAwesome name="check-circle" size={24} color="#AFE39C" />
+        </Pressable>
       ))}
     </View>
   );

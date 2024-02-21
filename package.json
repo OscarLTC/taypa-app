@@ -28,7 +28,8 @@
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.9",
     "recoil": "^0.7.7",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "expo-av": "~13.4.1"
   },
   "devDependencies": {
     "@config-plugins/detox": "~6.0.0",

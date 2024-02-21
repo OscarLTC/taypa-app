@@ -222,11 +222,11 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
           setOrder={setOrder}
         />
       )}
-      {order?.status === Statuses.Nueva && (
+      {order?.status === Statuses.Nueva && !order?.wasUpdated && (
         <OrderCancelButton
-          orderId={order.id}
+          orderId={order?.id || ''}
           navigation={props.navigation}
-          tableId={order.table.id}
+          tableId={order?.table.id || ''}
         />
       )}
     </>

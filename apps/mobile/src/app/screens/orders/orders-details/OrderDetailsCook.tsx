@@ -96,7 +96,7 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
               <ItemListCook items={order.additional} title="Adicionales" />
             )}
           </View>
-          {order.note && (
+          {order.note ? (
             <View
               style={{
                 flexDirection: 'row',
@@ -125,6 +125,8 @@ export const OrderDetailsCook = (props: OrderDetailsCookProps) => {
                 {order.note}
               </Text>
             </View>
+          ) : (
+            <View></View>
           )}
         </ScrollView>
       </View>

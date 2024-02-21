@@ -26,8 +26,12 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
   const drinksTotal = useRecoilValue(subTotalDrinksSelector);
   const additionalTotal = useRecoilValue(subTotalAdditionalSelector);
 
-  const onRegisterOrderPress = () => {
-    if (dishes.length === 0 && drinks.length === 0 && additional.length === 0) {
+  const onEditOrderPress = () => {
+    const thereIsNoChanges =
+      props.order.dishes === dishes &&
+      props.order.drinks === drinks &&
+      props.order.additional === additional;
+    if (thereIsNoChanges) {
       return;
     }
     setIsLoading(true);
@@ -53,7 +57,7 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   return (
     <TouchableOpacity
-      onPress={onRegisterOrderPress}
+      onPress={onEditOrderPress}
       disabled={isLoading}
       style={{
         backgroundColor: '#941B0C',

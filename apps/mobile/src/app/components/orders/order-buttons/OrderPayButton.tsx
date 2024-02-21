@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { useResetRecoilState } from 'recoil';
+import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
 
 interface OrderPayButtonProps {
   orderId: string;
@@ -12,6 +16,9 @@ interface OrderPayButtonProps {
 
 export const OrderPayButton = (props: OrderPayButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const resetDishes = useResetRecoilState(orderDishesState);
+  const resetDrinks = useResetRecoilState(orderDrinksState);
+  const resetAdditional = useResetRecoilState(orderAdditionalState);
 
   const onPayOrderPress = async () => {
     setIsLoading(true);
@@ -23,6 +30,10 @@ export const OrderPayButton = (props: OrderPayButtonProps) => {
       const tableRef = doc(firestore, 'tables', props.tableId);
       updateDoc(tableRef, {
         isAvailable: true,
+      }).then(() => {
+        resetDishes();
+        resetDrinks();
+        resetAdditional();
       });
       setIsLoading(false);
     });

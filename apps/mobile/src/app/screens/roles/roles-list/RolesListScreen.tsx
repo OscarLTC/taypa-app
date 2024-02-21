@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   BackHandler,
+  Platform,
 } from 'react-native';
 import { UnlockViewModal } from '../../../components/home/UnlockViewModal';
 import {
@@ -47,16 +48,18 @@ export const RolesListScreen = (props: RolesScreenProps) => {
 
   const isRolesFocused = useIsFocused();
 
-  // useEffect(() => {
-  //   const onBackPress = () => {
-  //     return isRolesFocused;
-  //   };
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const onBackPress = () => {
+        return isRolesFocused;
+      };
 
-  //   BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-  //   return () =>
-  //     BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  // }, [isRolesFocused]);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }
+  }, [isRolesFocused]);
 
   return (
     <View

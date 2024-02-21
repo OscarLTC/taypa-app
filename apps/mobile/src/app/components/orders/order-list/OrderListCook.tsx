@@ -55,7 +55,7 @@ export const OrderListCook = (props: OrderListCookProps) => {
           }}
         >
           {orders
-            .sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
+            .sort((a, b) => Number(b.updatedAt) - Number(a.updatedAt))
             .map((order) => (
               <OrderCardCook
                 key={order.id}

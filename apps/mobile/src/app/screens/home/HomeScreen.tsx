@@ -10,6 +10,7 @@ import {
   Image,
   TouchableHighlight,
   BackHandler,
+  Platform,
 } from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -47,17 +48,18 @@ export const HomeScreen = (props: HomeProps) => {
 
   const isRolesFocused = useIsFocused();
 
-  // useEffect(() => {
-  //   console.log(isRolesFocused);
-  //   const onBackPress = () => {
-  //     return isRolesFocused;
-  //   };
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const onBackPress = () => {
+        return isRolesFocused;
+      };
 
-  //   BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-  //   return () =>
-  //     BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  // }, [isRolesFocused]);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }
+  }, [isRolesFocused]);
 
   return (
     <View
