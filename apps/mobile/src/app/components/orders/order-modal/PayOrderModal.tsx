@@ -53,6 +53,7 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
 
   const onPayOrderPress = async () => {
     setIsLoading(true);
+    if (!watch('method')) return setIsLoading(false);
     const orderRef = doc(firestore, 'orders', props.orderId);
     await updateDoc(orderRef, {
       status: 'completado',
