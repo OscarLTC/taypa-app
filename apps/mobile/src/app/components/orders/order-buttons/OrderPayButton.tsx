@@ -1,12 +1,7 @@
-import { doc, updateDoc } from 'firebase/firestore';
-import { useState } from 'react';
 import { Platform, Text, TouchableOpacity } from 'react-native';
-import { firestore } from '../../../config/Firebase';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { useResetRecoilState } from 'recoil';
-import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
-import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
-import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
+import { PayOrderModal } from '../order-modal/PayOrderModal';
+import { useState } from 'react';
 
 interface OrderPayButtonProps {
   orderId: string;
@@ -15,58 +10,43 @@ interface OrderPayButtonProps {
 }
 
 export const OrderPayButton = (props: OrderPayButtonProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const resetDishes = useResetRecoilState(orderDishesState);
-  const resetDrinks = useResetRecoilState(orderDrinksState);
-  const resetAdditional = useResetRecoilState(orderAdditionalState);
-
-  const onPayOrderPress = async () => {
-    setIsLoading(true);
-    const orderRef = doc(firestore, 'orders', props.orderId);
-    await updateDoc(orderRef, {
-      status: 'completado',
-    }).then(() => {
-      props.navigation.goBack();
-      const tableRef = doc(firestore, 'tables', props.tableId);
-      updateDoc(tableRef, {
-        isAvailable: true,
-      }).then(() => {
-        resetDishes();
-        resetDrinks();
-        resetAdditional();
-      });
-      setIsLoading(false);
-    });
-  };
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <TouchableOpacity
-      onPress={onPayOrderPress}
-      disabled={isLoading}
-      // @ts-expect-error position fixed is not available in web
-      style={{
-        position: Platform.OS === 'web' ? 'fixed' : 'absolute',
-        backgroundColor: '#941B0C',
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        width: '100%',
-        bottom: 0,
-        height: 60,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        opacity: isLoading ? 0.5 : 1,
-      }}
-    >
-      <Text
+    <>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        // @ts-expect-error position fixed is not available in web
         style={{
-          fontSize: 15,
-          fontWeight: 'bold',
-          color: '#FFFFFF',
-          textAlign: 'center',
+          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
+          backgroundColor: '#941B0C',
+          paddingVertical: 5,
+          paddingHorizontal: 15,
+          width: '100%',
+          bottom: 0,
+          height: 60,
+          alignSelf: 'center',
+          justifyContent: 'center',
         }}
       >
-        Pagar
-      </Text>
-    </TouchableOpacity>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: 'bold',
+            color: '#FFFFFF',
+            textAlign: 'center',
+          }}
+        >
+          Pagar
+        </Text>
+      </TouchableOpacity>
+      <PayOrderModal
+        modalVisible={modalVisible}
+        navigation={props.navigation}
+        setModalVisible={setModalVisible}
+        orderId={props.orderId}
+        tableId={props.tableId}
+      />
+    </>
   );
 };

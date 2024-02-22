@@ -17,6 +17,7 @@ export interface Order {
   drinks?: ItemOrder[];
   additional?: ItemOrder[];
   note: string;
+  paymentMethod: string;
   total: number;
   status: Status;
   createdAt: Timestamp;

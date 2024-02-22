@@ -1,6 +1,6 @@
 import { updateDoc, doc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Platform, Text, TouchableOpacity } from 'react-native';
+import { Platform, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
@@ -32,6 +32,7 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
       props.order.drinks === drinks &&
       props.order.additional === additional;
     if (thereIsNoChanges) {
+      ToastAndroid.show('No hay cambios', ToastAndroid.SHORT);
       return;
     }
     setIsLoading(true);

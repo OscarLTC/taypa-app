@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Platform, Text, TouchableOpacity } from 'react-native';
+import { Platform, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import { Table } from '../../../model/table.model';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
@@ -32,6 +32,7 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
 
   const onRegisterOrderPress = () => {
     if (dishes.length === 0 && drinks.length === 0 && additional.length === 0) {
+      ToastAndroid.show('No se han agregado platos', ToastAndroid.SHORT);
       return;
     }
     setIsLoading(true);
