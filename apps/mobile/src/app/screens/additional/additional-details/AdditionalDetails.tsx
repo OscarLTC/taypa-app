@@ -129,7 +129,7 @@ export const AdditionalDetails = (props: AdditionalDetailsProps) => {
         </View>
         <View style={{ padding: 30, height: '50%' }}>
           <View style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
               {additional?.name}
             </Text>
             <View
@@ -144,7 +144,7 @@ export const AdditionalDetails = (props: AdditionalDetailsProps) => {
               <Text
                 style={{
                   fontWeight: 'bold',
-                  fontSize: 13,
+                  fontSize: 15,
                   textAlign: 'center',
                   color: '#941B0C',
                 }}

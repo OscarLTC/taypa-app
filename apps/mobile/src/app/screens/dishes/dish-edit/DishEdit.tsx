@@ -173,7 +173,7 @@ export const DishEdit = (props: DishEditProps) => {
             />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Registrar Plato
+            Actualizar Plato
           </Text>
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
