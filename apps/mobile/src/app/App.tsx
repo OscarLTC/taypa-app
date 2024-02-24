@@ -24,6 +24,14 @@ export const App = () => {
       y: 'un año',
       yy: '%d años',
     },
+    longDateFormat: {
+      LT: 'HH:mm',
+      LTS: 'HH:mm:ss',
+      L: 'DD/MM/YYYY',
+      LL: 'D [de] MMMM [de] YYYY',
+      LLL: 'D [de] MMMM [de] YYYY HH:mm',
+      LLLL: 'dddd, D [de] MMMM [de] YYYY HH:mm',
+    },
   });
   if (typeof global.atob === 'undefined') {
     global.atob = decode;

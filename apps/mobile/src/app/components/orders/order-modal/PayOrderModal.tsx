@@ -58,6 +58,7 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
     await updateDoc(orderRef, {
       status: 'completado',
       paymentMethod: watch('method'),
+      updatedAt: new Date(),
     }).then(() => {
       props.setModalVisible(!props.modalVisible);
       props.navigation.goBack();

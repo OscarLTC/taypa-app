@@ -6,7 +6,7 @@ export interface Order {
   adminId: string;
   worker: {
     id: string;
-    name: string;
+    completeName: string;
   };
   table: {
     id: string;

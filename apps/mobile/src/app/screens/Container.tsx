@@ -14,6 +14,7 @@ import { Orders } from './orders/Order';
 import { Drinks } from './drinks/Drinks';
 import { Additional } from './additional/Additional';
 import { Notifications } from '../components/notifications/Notifications';
+import { Sales } from './sales/Sales';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -83,6 +84,11 @@ export const Container = (props: ContainerProps) => {
           name="roles"
           options={{ headerShown: false, animationEnabled: false }}
           component={Roles}
+        />
+        <Stack.Screen
+          name="sales"
+          options={{ headerShown: false, animationEnabled: false }}
+          component={Sales}
         />
       </Stack.Navigator>
       <Notifications />
