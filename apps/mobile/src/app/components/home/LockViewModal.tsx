@@ -75,6 +75,13 @@ export const LockViewModal = (props: LockViewModalProps) => {
             alignItems: 'center',
             elevation: 5,
             gap: 20,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
           }}
         >
           <Text
@@ -135,6 +142,13 @@ export const LockViewModal = (props: LockViewModalProps) => {
                 borderRadius: 10,
                 padding: 10,
                 elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
                 backgroundColor: '#5C5C5C',
               }}
               onPress={() => props.setModalVisible(!props.modalVisible)}

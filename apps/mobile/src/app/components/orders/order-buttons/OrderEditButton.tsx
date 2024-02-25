@@ -1,6 +1,6 @@
 import { updateDoc, doc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Platform, Text, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Platform, Text, TouchableOpacity } from 'react-native';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
@@ -11,6 +11,7 @@ import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrink
 import { subTotalDrinksSelector } from '../../../storage/order/order-drinks/orderDrinks.selector';
 import { Order } from '../../../model/order.model';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 interface OrderEditButtonProps {
   order: Order;
@@ -32,7 +33,15 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
       props.order.drinks === drinks &&
       props.order.additional === additional;
     if (thereIsNoChanges) {
-      ToastAndroid.show('No hay cambios', ToastAndroid.SHORT);
+      if (Platform.OS === 'web') {
+        alert('No hay cambios en la orden');
+      }
+      if (Platform.OS === 'android') {
+        Toast.show({
+          type: 'error',
+          text1: 'No hay cambios en la orden',
+        });
+      }
       return;
     }
     setIsLoading(true);

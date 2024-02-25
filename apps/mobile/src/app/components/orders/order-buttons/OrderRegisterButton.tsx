@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Platform, Text, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Platform, Text, TouchableOpacity } from 'react-native';
 import { firestore } from '../../../config/Firebase';
 import { Table } from '../../../model/table.model';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
@@ -13,6 +13,7 @@ import { orderAdditionalState } from '../../../storage/order/order-additional/or
 import { subTotalDrinksSelector } from '../../../storage/order/order-drinks/orderDrinks.selector';
 import { subTotalAdditionalSelector } from '../../../storage/order/order-additional/orderAdditional.selector';
 import { userLockedState } from '../../../storage/userLocked/userLocked.atom';
+import Toast from 'react-native-toast-message';
 
 interface OrderRegisterButtonProps {
   table: Table;
@@ -32,7 +33,15 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
 
   const onRegisterOrderPress = () => {
     if (dishes.length === 0 && drinks.length === 0 && additional.length === 0) {
-      ToastAndroid.show('No se han agregado platos', ToastAndroid.SHORT);
+      if (Platform.OS === 'web') {
+        alert('No hay productos en la orden');
+      }
+      if (Platform.OS === 'android') {
+        Toast.show({
+          type: 'error',
+          text1: 'No hay productos en la orden',
+        });
+      }
       return;
     }
     setIsLoading(true);

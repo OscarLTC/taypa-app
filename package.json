@@ -9,8 +9,10 @@
     "@react-native-async-storage/async-storage": "^1.18.2",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
+    "babel-plugin-react-native-web": "^0.19.10",
     "base-64": "^1.0.0",
     "expo": "49.0.16",
+    "expo-av": "~13.4.1",
     "expo-device": "~5.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "~12.3.0",
@@ -25,11 +27,11 @@
     "react-native": "0.72.10",
     "react-native-svg": "13.9.0",
     "react-native-svg-transformer": "1.0.0",
+    "react-native-toast-message": "^2.2.0",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.9",
     "recoil": "^0.7.7",
-    "tslib": "^2.3.0",
-    "expo-av": "~13.4.1"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@config-plugins/detox": "~6.0.0",

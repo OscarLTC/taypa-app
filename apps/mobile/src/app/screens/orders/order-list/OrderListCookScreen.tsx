@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { Image, Text, TouchableHighlight, View } from 'react-native';
+import { Image, Platform, Text, TouchableHighlight, View } from 'react-native';
 import { OrderListCook } from '../../../components/orders/order-list/OrderListCook';
 
 interface OrderListScreenProps {
@@ -55,6 +55,27 @@ export const OrderListCookScreen = (props: OrderListScreenProps) => {
         </View>
       </View>
       <OrderListCook navigation={props.navigation} />
+      <View
+        //@ts-expect-error - web style
+        style={{
+          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
+          bottom: 20,
+          right: 30,
+          backgroundColor: 'white',
+          borderRadius: 100,
+          width: 60,
+          height: 60,
+          justifyContent: 'center',
+          alignItems: 'center',
+          elevation: 1,
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 2,
+        }}
+      >
+        <FontAwesome5 name="question" size={25} color="gray" />
+      </View>
     </View>
   );
 };

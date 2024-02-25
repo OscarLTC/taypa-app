@@ -5,6 +5,7 @@ import React from 'react';
 import { decode } from 'base-64';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Container } from './screens/Container';
+import Toast from 'react-native-toast-message';
 import moment from 'moment';
 
 export const App = () => {
@@ -49,6 +50,7 @@ export const App = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast />
     </RecoilRoot>
   );
 };

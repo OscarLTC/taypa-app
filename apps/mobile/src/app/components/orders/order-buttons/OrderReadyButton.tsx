@@ -38,6 +38,7 @@ export const OrderReadyButton = (props: OrderReadyButtonProps) => {
       role: Role.Waiter,
       date: new Date(),
       isShown: false,
+      wasSoundPlayed: false,
     });
   };
 

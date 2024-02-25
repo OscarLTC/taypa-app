@@ -5,6 +5,7 @@ export interface Notification {
   adminId: number;
   message: string;
   date: Date;
+  wasSoundPlayed: boolean;
   isShown: boolean;
   role: Role;
 }

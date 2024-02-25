@@ -29,7 +29,10 @@ export const Notifications = () => {
 
   const hideNotification = async (notifications: Notification[]) => {
     notifications.forEach(async (notification) => {
-      if (!notification.isShown) playSound();
+      const notificationRef = doc(firestore, 'notifications', notification.id);
+      await updateDoc(notificationRef, {
+        wasSoundPlayed: true,
+      });
     });
     setTimeout(async () => {
       notifications.forEach(async (notification) => {
@@ -44,7 +47,6 @@ export const Notifications = () => {
       });
     }, 5000);
   };
-  const [sound, setSound] = useState<Audio.Sound>();
 
   const playSound = async () => {
     console.log('Loading Sound');
@@ -52,7 +54,6 @@ export const Notifications = () => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('../../../../assets/ding.mp3')
     );
-    setSound(sound);
 
     console.log('Playing Sound');
     await sound.playAsync();
@@ -68,7 +69,7 @@ export const Notifications = () => {
         where('isShown', '==', false),
         where('role', '==', userLocked.role)
       );
-      const unsubscribe = onSnapshot(q, (notificationSnapshot) => {
+      const unsubscribe = onSnapshot(q, async (notificationSnapshot) => {
         const notificationsData = notificationSnapshot.docs.map(
           (doc) =>
             ({
@@ -76,21 +77,15 @@ export const Notifications = () => {
               ...doc.data(),
             } as Notification)
         );
+        await notificationsData.forEach(async (notification) => {
+          !notification.wasSoundPlayed && (await playSound());
+        });
         setNotifications(notificationsData);
         hideNotification(notificationsData);
       });
       return () => unsubscribe();
     }
   }, [userLocked?.user]);
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          console.log('Unloading Sound');
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
 
   return (
     <View
