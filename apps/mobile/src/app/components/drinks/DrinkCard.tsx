@@ -1,9 +1,9 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Item } from '../../model/item.model';
-import { DrinkRemoveButton } from './DrinkRemoveButton';
 import { useState } from 'react';
 import { DrinkDetailsModal } from '../../screens/drinks/drink-details/DrinkDetailsModal';
+import { ItemRemoveButton } from '../Items/ItemRemoveButton';
 
 interface DrinkCardProps {
   drink: Item;
@@ -72,7 +72,7 @@ export const DrinkCard = (props: DrinkCardProps) => {
             {`S/ ${Number(props.drink.price).toFixed(2)}`}
           </Text>
         </View>
-        <DrinkRemoveButton drink={props.drink} />
+        <ItemRemoveButton item={props.drink} type="drink" />
       </TouchableOpacity>
       <DrinkDetailsModal
         item={props.drink}

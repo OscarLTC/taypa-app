@@ -5,9 +5,10 @@ import { orderDishesState } from '../../../storage/order/order-dishes/orderDishe
 import { useState } from 'react';
 import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
 import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
+import { ItemType } from '../../../model/item.model';
 
 interface OrderModalDishEditProps {
-  type: 'dish' | 'drink' | 'additional';
+  type: ItemType;
   item: ItemOrder;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;

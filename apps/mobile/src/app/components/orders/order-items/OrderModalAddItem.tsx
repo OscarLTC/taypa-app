@@ -1,5 +1,5 @@
 import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
-import { Item } from '../../../model/item.model';
+import { Item, ItemType } from '../../../model/item.model';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
@@ -10,7 +10,7 @@ import { orderAdditionalState } from '../../../storage/order/order-additional/or
 
 interface OrderModalAddItemProps {
   item: Item;
-  type: 'dish' | 'drink' | 'additional';
+  type: ItemType;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
   navigation: NavigationProp<ParamListBase>;

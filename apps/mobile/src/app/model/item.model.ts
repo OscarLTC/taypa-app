@@ -8,3 +8,5 @@ export interface Item {
   name: string;
   price: number;
 }
+
+export type ItemType = 'dish' | 'drink' | 'additional';

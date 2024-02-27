@@ -1,9 +1,9 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Item } from '../../model/item.model';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { DishRemoveButton } from './DishRemoveButton';
 import { useState } from 'react';
 import { DishDetailsModal } from '../../screens/dishes/dish-details/DishDetailsModal';
+import { ItemRemoveButton } from '../Items/ItemRemoveButton';
 
 interface DishCardProps {
   dish: Item;
@@ -71,7 +71,7 @@ export const DishCard = (props: DishCardProps) => {
             {`S/ ${Number(props.dish.price).toFixed(2)}`}
           </Text>
         </View>
-        <DishRemoveButton dish={props.dish} />
+        <ItemRemoveButton item={props.dish} type="dish" />
       </TouchableOpacity>
       <DishDetailsModal
         modalVisible={modalVisible}

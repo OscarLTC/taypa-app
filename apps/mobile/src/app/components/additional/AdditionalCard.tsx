@@ -1,7 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Item } from '../../model/item.model';
-import { AdditionalRemoveButton } from './AdditionalRemoveButton';
+import { ItemRemoveButton } from '../Items/ItemRemoveButton';
 import { useState } from 'react';
 import { AdditionalDetailsModal } from '../../screens/additional/additional-details/AdditionalDetailsModal';
 
@@ -72,7 +72,7 @@ export const AdditionalCard = (props: AdditionalCardProps) => {
             {`S/ ${Number(props.additional.price).toFixed(2)}`}
           </Text>
         </View>
-        <AdditionalRemoveButton additional={props.additional} />
+        <ItemRemoveButton item={props.additional} type="additional" />
       </TouchableOpacity>
       <AdditionalDetailsModal
         item={props.additional}
