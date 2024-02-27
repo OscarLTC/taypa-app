@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { ScrollView, Text, View } from 'react-native';
 import { firestore } from '../../config/Firebase';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,8 @@ export const SalesList = () => {
     const orderCollection = collection(firestore, 'orders');
     const q = query(
       orderCollection,
-      where('status', 'in', ['completado', 'cancelado'])
+      where('status', 'in', ['completado', 'cancelado']),
+      orderBy('createdAt', 'desc')
     );
     await getDocs(q).then((querySnapshot) => {
       const sales = querySnapshot.docs.map(
@@ -24,18 +25,14 @@ export const SalesList = () => {
           } as Order)
       );
       setTodaySales(
-        sales
-          .filter(
-            (sale) => sale.createdAt.toDate().getDate() === new Date().getDate()
-          )
-          .sort((a, b) => Number(b.createdAt) - Number(a.createdAt)) as Order[]
+        sales.filter(
+          (sale) => sale.createdAt.toDate().getDate() === new Date().getDate()
+        )
       );
       setOtherSales(
-        sales
-          .filter(
-            (sale) => sale.createdAt.toDate().getDate() !== new Date().getDate()
-          )
-          .sort((a, b) => Number(b.createdAt) - Number(a.createdAt)) as Order[]
+        sales.filter(
+          (sale) => sale.createdAt.toDate().getDate() !== new Date().getDate()
+        )
       );
     });
   };
