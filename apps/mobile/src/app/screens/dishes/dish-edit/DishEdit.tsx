@@ -109,7 +109,6 @@ export const DishEdit = (props: DishEditProps) => {
     updateDish({
       ...data,
       name: data.name.trim(),
-      description: data.description.trim(),
       adminId: userData?.userId ?? '',
       price: data.price,
     });
@@ -224,42 +223,6 @@ export const DishEdit = (props: DishEditProps) => {
                 pattern: {
                   value: /^[a-zA-Z0-9\s]+$/,
                   message: 'El nombre solo puede contener letras y números',
-                },
-              }}
-            />
-          </View>
-          <View>
-            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-              Descripción
-            </Text>
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  multiline={true}
-                  numberOfLines={4}
-                  maxLength={200}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: 5,
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    marginTop: 10,
-                    elevation: 1,
-                  }}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  textAlignVertical="top"
-                />
-              )}
-              name="description"
-              defaultValue=""
-              rules={{
-                maxLength: {
-                  value: 200,
-                  message:
-                    'La descripción no puede tener más de 200 caracteres',
                 },
               }}
             />

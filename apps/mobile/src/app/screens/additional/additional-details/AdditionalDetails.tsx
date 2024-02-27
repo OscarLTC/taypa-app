@@ -152,15 +152,6 @@ export const AdditionalDetails = (props: AdditionalDetailsProps) => {
                 S/ {Number(additional?.price).toFixed(2)}
               </Text>
             </View>
-            <Text
-              style={{
-                textAlign: 'justify',
-                fontSize: 13,
-                lineHeight: 20,
-              }}
-            >
-              {additional?.description}
-            </Text>
           </View>
         </View>
       </View>

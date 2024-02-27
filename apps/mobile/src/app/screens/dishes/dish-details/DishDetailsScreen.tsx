@@ -153,15 +153,6 @@ export const DishDetails = (props: DishDetailsProps) => {
                 S/ {Number(dish?.price).toFixed(2)}
               </Text>
             </View>
-            <Text
-              style={{
-                textAlign: 'justify',
-                fontSize: 15,
-                lineHeight: 20,
-              }}
-            >
-              {dish?.description}
-            </Text>
           </View>
         </View>
       </View>
