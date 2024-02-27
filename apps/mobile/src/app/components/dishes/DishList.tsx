@@ -38,6 +38,7 @@ export const DishList = (props: DishListProps) => {
       return () => unsubscribe();
     }
   }, [isDishListFocused]);
+
   return dishes ? (
     dishes.length > 0 ? (
       <ScrollView

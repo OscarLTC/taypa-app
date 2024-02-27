@@ -38,6 +38,7 @@ export const AdditionalList = (props: AdditionalListProps) => {
       return () => unsubscribe();
     }
   }, [isAdditionalListFocused]);
+
   return additional ? (
     additional.length > 0 ? (
       <ScrollView

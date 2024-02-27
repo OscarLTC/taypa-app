@@ -38,6 +38,7 @@ export const DrinkList = (props: DrinkListProps) => {
       return () => unsubscribe();
     }
   }, [isDrinkListFocused]);
+
   return drinks ? (
     drinks.length > 0 ? (
       <ScrollView

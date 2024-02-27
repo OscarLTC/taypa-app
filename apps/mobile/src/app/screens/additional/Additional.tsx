@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AdditionalListScreen } from './additional-list/AdditionalListScreen';
 import { AdditionalAdd } from './additional-add/AdditionalAdd';
 import { AdditionalEdit } from './additional-edit/AdditionalEdit';
-import { AdditionalDetails } from './additional-details/AdditionalDetails';
 
 export const Additional = () => {
   const Stack = createStackNavigator();
@@ -22,11 +21,6 @@ export const Additional = () => {
         name="additional-edit"
         options={{ headerShown: false }}
         component={AdditionalEdit}
-      />
-      <Stack.Screen
-        name="additional-details"
-        options={{ headerShown: false }}
-        component={AdditionalDetails}
       />
     </Stack.Navigator>
   );

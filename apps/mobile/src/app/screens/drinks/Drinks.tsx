@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { DrinkListScreen } from './drink-list/DrinkListScreen';
 import { DrinkAdd } from './drink-add/DrinkAddScreen';
 import { DrinkEdit } from './drink-edit/DrinkEdit';
-import { DrinkDetails } from './drink-details/DrinkDetailsScreen';
 
 export const Drinks = () => {
   const Stack = createStackNavigator();
@@ -22,11 +21,6 @@ export const Drinks = () => {
         name="drink-edit"
         options={{ headerShown: false }}
         component={DrinkEdit}
-      />
-      <Stack.Screen
-        name="drink-details"
-        options={{ headerShown: false }}
-        component={DrinkDetails}
       />
     </Stack.Navigator>
   );
