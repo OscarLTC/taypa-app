@@ -106,6 +106,13 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
             justifyContent: 'center',
             flexDirection: 'column',
             elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
             gap: 20,
           }}
         >
@@ -151,6 +158,13 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
                       borderRadius: 10,
                       padding: 5,
                       elevation: 2,
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 4,
                       backgroundColor:
                         value === method.method ? method.color : '#D9D9D9',
                     }}
@@ -184,6 +198,13 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
                 borderRadius: 10,
                 padding: 10,
                 elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
                 backgroundColor: '#5C5C5C',
               }}
               onPress={() => props.setModalVisible(!props.modalVisible)}
@@ -206,6 +227,13 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
                   borderRadius: 10,
                   padding: 10,
                   elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 4,
                   backgroundColor: '#941B0C',
                 },
               ]}

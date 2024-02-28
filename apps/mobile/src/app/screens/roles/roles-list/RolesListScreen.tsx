@@ -119,6 +119,10 @@ export const RolesListScreen = (props: RolesScreenProps) => {
                 width: '100%',
                 justifyContent: 'center',
                 elevation: 1,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 2,
               }}
             >
               <View style={{ overflow: 'hidden' }}>

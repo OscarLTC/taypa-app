@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   TextInput,
   Keyboard,
+  Platform,
 } from 'react-native';
 import { Item } from '../../../model/item.model';
 import { useRecoilValue } from 'recoil';
@@ -180,6 +181,10 @@ export const DishAdd = (props: DishAddProps) => {
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 1.5,
                   }}
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -228,6 +233,10 @@ export const DishAdd = (props: DishAddProps) => {
                       paddingHorizontal: 10,
                       marginTop: 10,
                       elevation: 1,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.1,
+                      shadowRadius: 1.5,
                       borderWidth: 1,
                       borderColor: errors.price ? '#CE3E21' : '#FFFFFF',
                       width: 60,
@@ -316,11 +325,12 @@ export const DishAdd = (props: DishAddProps) => {
       </View>
       <TouchableHighlight
         disabled={isLoading}
+        // @ts-expect-error position is not available in web
         style={{
+          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
           backgroundColor: '#941B0C',
           paddingVertical: 5,
           paddingHorizontal: 15,
-          position: 'absolute',
           width: '100%',
           bottom: 0,
           height: 60,

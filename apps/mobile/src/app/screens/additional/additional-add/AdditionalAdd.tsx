@@ -6,6 +6,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import {
   Image,
   Keyboard,
+  Platform,
   Text,
   TextInput,
   TouchableHighlight,
@@ -182,6 +183,10 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 2,
                   }}
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -226,6 +231,10 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
                       paddingHorizontal: 10,
                       marginTop: 10,
                       elevation: 1,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.2,
+                      shadowRadius: 2,
                       borderWidth: 1,
                       borderColor: errors.price ? '#CE3E21' : '#FFFFFF',
                       width: 60,
@@ -314,11 +323,12 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
       </View>
       <TouchableHighlight
         disabled={isLoading}
+        // @ts-expect-error position is not available in web
         style={{
+          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
           backgroundColor: '#941B0C',
           paddingVertical: 5,
           paddingHorizontal: 15,
-          position: 'absolute',
           width: '100%',
           bottom: 0,
           height: 60,

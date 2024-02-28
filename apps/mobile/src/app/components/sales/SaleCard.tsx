@@ -17,6 +17,13 @@ export const SaleCard = (props: SaleCardProps) => {
         padding: 15,
         overflow: 'hidden',
         elevation: 1,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
       }}
     >
       <View

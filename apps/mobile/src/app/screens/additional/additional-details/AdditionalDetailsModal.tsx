@@ -36,6 +36,13 @@ export const AdditionalDetailsModal = (props: AdditionalDetailsProps) => {
             backgroundColor: 'white',
             borderRadius: 20,
             elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
             gap: 20,
           }}
         >
@@ -120,6 +127,13 @@ export const AdditionalDetailsModal = (props: AdditionalDetailsProps) => {
                   paddingVertical: 10,
                   paddingHorizontal: 30,
                   elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
                   backgroundColor: '#5C5C5C',
                 }}
                 onPress={() => props.setModalVisible(!props.modalVisible)}
@@ -142,6 +156,13 @@ export const AdditionalDetailsModal = (props: AdditionalDetailsProps) => {
                     paddingVertical: 10,
                     paddingHorizontal: 20,
                     elevation: 2,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
                     backgroundColor: '#941B0C',
                   },
                 ]}

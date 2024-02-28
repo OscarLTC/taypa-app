@@ -16,6 +16,7 @@ import {
   TextInput,
   TouchableHighlight,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { firestore, storage } from '../../../config/Firebase';
@@ -232,6 +233,10 @@ export const WorkerEdit = (props: WorkerEditProps) => {
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 2,
                   }}
                 />
               )}
@@ -272,6 +277,10 @@ export const WorkerEdit = (props: WorkerEditProps) => {
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 2,
                   }}
                 />
               )}
@@ -317,6 +326,13 @@ export const WorkerEdit = (props: WorkerEditProps) => {
                         padding: 15,
                         borderRadius: 10,
                         elevation: 2,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
                       }}
                     >
                       <Text
@@ -390,11 +406,12 @@ export const WorkerEdit = (props: WorkerEditProps) => {
         </View>
       </View>
       <TouchableHighlight
+        // @ts-expect-error position is not available in web
         style={{
+          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
           backgroundColor: '#941B0C',
           paddingVertical: 5,
           paddingHorizontal: 15,
-          position: 'absolute',
           width: '100%',
           bottom: 0,
           height: 60,

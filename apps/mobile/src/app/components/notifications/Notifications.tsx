@@ -107,6 +107,13 @@ export const Notifications = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             elevation: 2,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
           }}
           onPress={() => forceHideNotification(notification.id)}
           key={notification.id}

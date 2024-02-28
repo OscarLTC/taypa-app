@@ -110,6 +110,13 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
             padding: 30,
             alignItems: 'center',
             elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
             gap: 20,
           }}
         >
@@ -157,6 +164,13 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                 width: 30,
                 height: 30,
                 elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
                 backgroundColor: quantity <= 1 ? '#E8E7E7' : '#941B0C',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -186,6 +200,13 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                 width: 30,
                 height: 30,
                 elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
                 backgroundColor: '#941B0C',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -217,6 +238,13 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                 borderRadius: 10,
                 padding: 10,
                 elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
                 backgroundColor: '#5C5C5C',
               }}
               onPress={() => props.setModalVisible(!props.modalVisible)}
@@ -239,6 +267,13 @@ export const OrderModalDishEdit = (props: OrderModalDishEditProps) => {
                   paddingVertical: 10,
                   paddingHorizontal: quantity !== props.item.quantity ? 20 : 15,
                   elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
                   backgroundColor: '#941B0C',
                 },
               ]}

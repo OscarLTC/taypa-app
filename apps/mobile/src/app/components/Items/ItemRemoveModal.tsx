@@ -36,6 +36,13 @@ export const ItemRemoveModal = (props: ItemRemoveModalProps) => {
             paddingHorizontal: 10,
             alignItems: 'center',
             elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
             gap: 20,
           }}
         >
@@ -98,6 +105,13 @@ export const ItemRemoveModal = (props: ItemRemoveModalProps) => {
                   borderRadius: 10,
                   padding: 10,
                   elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
                   backgroundColor: '#5C5C5C',
                 }}
                 onPress={() => props.setModalVisible(!props.modalVisible)}
@@ -119,6 +133,13 @@ export const ItemRemoveModal = (props: ItemRemoveModalProps) => {
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
                     backgroundColor: '#941B0C',
                   },
                 ]}

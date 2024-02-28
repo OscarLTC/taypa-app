@@ -154,6 +154,10 @@ export const OrderEdit = (props: OrderEditProps) => {
                     paddingHorizontal: 10,
                     marginTop: 10,
                     elevation: 1,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 2,
                   }}
                   onChangeText={onChange}
                   value={value}

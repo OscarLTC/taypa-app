@@ -18,6 +18,13 @@ export const ItemsCardCook = (props: ItemsCardCookProps) => {
         marginLeft: 2,
         opacity: props.item.wasTaken ? 0.5 : 1,
         elevation: props.item.wasTaken ? 0 : 2,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
       }}
     >
       <View

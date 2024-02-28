@@ -65,6 +65,13 @@ export const RolesTableList = (props: RolesTableListProps) => {
                 backgroundColor: table.isAvailable ? '#AFE39C' : '#FB8C8C',
                 borderRadius: 10,
                 elevation: 1,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
                 height: 60,
                 width: '25%',
                 margin: 'auto',

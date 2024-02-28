@@ -170,6 +170,13 @@ export const LockViewModal = (props: LockViewModalProps) => {
                   borderRadius: 10,
                   padding: 10,
                   elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
                   backgroundColor: '#941B0C',
                 },
               ]}

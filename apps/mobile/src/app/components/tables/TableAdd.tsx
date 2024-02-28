@@ -34,6 +34,13 @@ export const TableAdd = (props: TableAddProps) => {
         backgroundColor: '#D0CECE',
         borderRadius: 10,
         elevation: 1,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
         height: 60,
         width: '28%',
         justifyContent: 'center',
