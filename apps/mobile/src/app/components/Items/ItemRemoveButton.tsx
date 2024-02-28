@@ -35,9 +35,8 @@ export const ItemRemoveButton = (props: ItemRemoveButtonProps) => {
     Toast.show({
       type: 'success',
       position: 'bottom',
-      text1: `Se eliminó con éxito ${props.item.name}`,
+      text1: `${props.item.name} eliminado correctamente`,
       visibilityTime: 2000,
-      autoHide: true,
     });
   };
 

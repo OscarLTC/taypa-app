@@ -16,6 +16,7 @@ import { firestore, storage } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 interface DrinkAddProps {
   navigation: NavigationProp<ParamListBase>;
@@ -60,6 +61,13 @@ export const DrinkAdd = (props: DrinkAddProps) => {
       image: imageUrl,
     }).then(() => {
       setIsLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Bebida registrada',
+        text2: `${watch('name')} se ha registrado correctamente`,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
       props.navigation.navigate('drink-list');
     });
   };

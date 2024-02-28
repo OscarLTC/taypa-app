@@ -21,6 +21,7 @@ import { storage, firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 interface DrinkEditProps {
   route: Route<string>;
@@ -78,6 +79,13 @@ export const DrinkEdit = (props: DrinkEditProps) => {
       image: imageUrl,
     }).then(() => {
       setIsLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Bebida actualizada',
+        text2: `${watch('name')} se actualizó correctamente`,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
       props.navigation.goBack();
     });
   };

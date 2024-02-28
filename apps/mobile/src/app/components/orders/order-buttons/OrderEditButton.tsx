@@ -33,15 +33,12 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
       props.order.drinks === drinks &&
       props.order.additional === additional;
     if (thereIsNoChanges) {
-      if (Platform.OS === 'web') {
-        alert('No hay cambios en la orden');
-      }
-      if (Platform.OS === 'android') {
-        Toast.show({
-          type: 'error',
-          text1: 'No hay cambios en la orden',
-        });
-      }
+      Toast.show({
+        type: 'error',
+        text1: 'No hay cambios en la orden',
+        text2: 'Por favor, realice cambios para actualizar la orden',
+        visibilityTime: 3000,
+      });
       return;
     }
     setIsLoading(true);

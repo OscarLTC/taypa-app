@@ -17,6 +17,7 @@ import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker';
 import { addDoc, collection } from 'firebase/firestore';
 import { firestore, storage } from '../../../config/Firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import Toast from 'react-native-toast-message';
 
 interface DishAddProps {
   navigation: NavigationProp<ParamListBase>;
@@ -61,6 +62,13 @@ export const DishAdd = (props: DishAddProps) => {
       image: imageUrl,
     }).then(() => {
       setIsLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Plato registrado',
+        text2: `${watch('name')} se ha registrado correctamente`,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
       props.navigation.navigate('dish-list');
     });
   };

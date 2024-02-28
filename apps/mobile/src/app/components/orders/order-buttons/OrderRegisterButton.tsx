@@ -33,15 +33,13 @@ export const OrderRegisterButton = (props: OrderRegisterButtonProps) => {
 
   const onRegisterOrderPress = () => {
     if (dishes.length === 0 && drinks.length === 0 && additional.length === 0) {
-      if (Platform.OS === 'web') {
-        alert('No hay productos en la orden');
-      }
-      if (Platform.OS === 'android') {
-        Toast.show({
-          type: 'error',
-          text1: 'No hay productos en la orden',
-        });
-      }
+      Toast.show({
+        type: 'error',
+        text1: 'No hay productos en la orden',
+        text2: 'Por favor, agregue productos para registrar la orden',
+        visibilityTime: 3000,
+      });
+
       return;
     }
     setIsLoading(true);
