@@ -76,7 +76,7 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
                   fontSize: 12,
                   fontWeight: 'bold',
                   width: '70%',
-                  textAlign: 'center',
+                  textAlign: 'right',
                   color: 'white',
                 }}
               >
@@ -104,7 +104,7 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
               </View>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: 'right',
                   fontSize: 12,
                   fontWeight: 'bold',
                   width: '70%',
@@ -135,7 +135,7 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
               </View>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: 'right',
                   fontSize: 12,
                   fontWeight: 'bold',
                   width: '70%',
