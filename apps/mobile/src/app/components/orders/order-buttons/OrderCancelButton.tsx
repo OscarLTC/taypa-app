@@ -18,10 +18,10 @@ export const OrderCancelButton = (props: OrderCancelButtonProps) => {
         onPress={() => setModalVisible(true)}
         // @ts-expect-error position fixed is not available in web
         style={{
+          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
           backgroundColor: '#941B0C',
           paddingVertical: 5,
           paddingHorizontal: 15,
-          position: Platform.OS === 'web' ? 'fixed' : 'absolute',
           width: '100%',
           bottom: 0,
           height: 60,

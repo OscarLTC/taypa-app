@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 import { OrderListCook } from '../../../components/orders/order-list/OrderListCook';
-import { OrderInfoListCook } from '../../../components/orders/order-info/order-list-cook/OrderInfoListCook';
+import { OrderListCookButton } from '../../../components/orders/order-info/order-list-cook/OrderListCookButton';
 
 interface OrderListScreenProps {
   navigation: NavigationProp<ParamListBase>;
@@ -48,6 +48,7 @@ export const OrderListCookScreen = (props: OrderListScreenProps) => {
           <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Ordenes</Text>
+        <OrderListCookButton />
         <View style={{ position: 'absolute', top: -30, right: -30 }}>
           <Image
             source={require('../../../../../assets/araña_cortada_titulo.png')}
@@ -56,7 +57,6 @@ export const OrderListCookScreen = (props: OrderListScreenProps) => {
         </View>
       </View>
       <OrderListCook navigation={props.navigation} />
-      <OrderInfoListCook />
     </View>
   );
 };

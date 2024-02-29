@@ -11,13 +11,16 @@ import {
 } from 'react-native';
 import { OrderAddDishes } from '../../../components/orders/order-items-add/OrderAddDishes';
 import { Table } from '../../../model/table.model';
-import { useSetRecoilState } from 'recoil';
+import { useResetRecoilState } from 'recoil';
 import { orderDishesState } from '../../../storage/order/order-dishes/orderDishes.atom';
 import { OrderRegisterButton } from '../../../components/orders/order-buttons/OrderRegisterButton';
 import { OrderAddDrinks } from '../../../components/orders/order-items-add/OrderAddDrinks';
 import { Controller, useForm } from 'react-hook-form';
 import { OrderAddAdditional } from '../../../components/orders/order-items-add/OrderAddAdditional';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AddOrderButton } from '../../../components/orders/order-info/order-add-order/AddOrderButton';
+import { orderAdditionalState } from '../../../storage/order/order-additional/orderAdditional.atom';
+import { orderDrinksState } from '../../../storage/order/order-drinks/orderDrinks.atom';
 
 interface OrderAddProps {
   route: Route<string>;
@@ -28,7 +31,9 @@ export const OrderAdd = (props: OrderAddProps) => {
   const { control, watch } = useForm<{ note: string }>();
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const setDishesState = useSetRecoilState(orderDishesState);
+  const resetDishState = useResetRecoilState(orderDishesState);
+  const resetDrinkState = useResetRecoilState(orderDrinksState);
+  const resetAdditionalState = useResetRecoilState(orderAdditionalState);
 
   const { table } = props.route.params as { table: Table };
 
@@ -40,6 +45,12 @@ export const OrderAdd = (props: OrderAddProps) => {
       setIsKeyboardVisible(true);
     });
   }
+
+  useEffect(() => {
+    resetDishState();
+    resetDrinkState();
+    resetAdditionalState();
+  }, []);
 
   return (
     <>
@@ -76,7 +87,9 @@ export const OrderAdd = (props: OrderAddProps) => {
             delayPressOut={100}
             onPress={() => {
               props.navigation.goBack();
-              setDishesState([]);
+              resetDishState();
+              resetDrinkState();
+              resetAdditionalState();
             }}
           >
             <AntDesign name="arrowleft" size={20} color="black" />
@@ -84,6 +97,8 @@ export const OrderAdd = (props: OrderAddProps) => {
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
             {table?.name}
           </Text>
+
+          <AddOrderButton />
           <View style={{ position: 'absolute', top: -30, right: -30 }}>
             <Image
               source={require('../../../../../assets/araña_cortada_titulo.png')}

@@ -1,25 +1,31 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Modal, Pressable, Text, View } from 'react-native';
 
-interface OrderModalInfoCookProps {
+interface OrderListCookTooltipProps {
   modalVisible: boolean;
   setModalVisible: (modalVisible: boolean) => void;
 }
 
-export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
+export const OrderListCookTooltip = (props: OrderListCookTooltipProps) => {
   return (
-    <Modal animationType="fade" transparent={true} visible={props.modalVisible}>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={props.modalVisible}
+      onRequestClose={() => props.setModalVisible(false)}
+    >
       <View
         style={{
           height: '100%',
           width: '100%',
           position: 'absolute',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: props.modalVisible ? 'flex' : 'none',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
         }}
       ></View>
       <View
         style={{
-          height: '25%',
+          height: '30%',
           width: '100%',
           backgroundColor: 'white',
           borderTopRightRadius: 30,
@@ -47,9 +53,11 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
           <View
             style={{
               width: '80%',
+              marginTop: 10,
               flexDirection: 'column',
-              justifyContent: 'space-between',
-              height: '75%',
+              justifyContent: 'center',
+              height: '70%',
+              gap: 10,
             }}
           >
             <View
@@ -75,9 +83,10 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
                 style={{
                   fontSize: 12,
                   fontWeight: 'bold',
-                  width: '70%',
+                  width: '80%',
                   textAlign: 'right',
                   color: 'white',
+                  paddingRight: 20,
                 }}
               >
                 Tienes una nueva orden
@@ -107,8 +116,10 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
                   textAlign: 'right',
                   fontSize: 12,
                   fontWeight: 'bold',
-                  width: '70%',
+                  width: '80%',
                   color: 'white',
+
+                  paddingRight: 20,
                 }}
               >
                 La orden está en preparación
@@ -138,8 +149,9 @@ export const OrderModalInfoCook = (props: OrderModalInfoCookProps) => {
                   textAlign: 'right',
                   fontSize: 12,
                   fontWeight: 'bold',
-                  width: '70%',
+                  width: '80%',
                   color: 'white',
+                  paddingRight: 20,
                 }}
               >
                 La orden está lista para servir

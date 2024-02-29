@@ -49,7 +49,7 @@ export const OrderEditButton = (props: OrderEditButtonProps) => {
       additional,
       wasUpdated: true,
       status: 'nueva',
-      total: props.order.total + dishesTotal + drinksTotal + additionalTotal,
+      total: dishesTotal + drinksTotal + additionalTotal,
       note: props.note ? props.note : '',
       updatedAt: new Date(),
     }).then(() => {

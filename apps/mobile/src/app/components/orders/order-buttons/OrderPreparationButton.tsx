@@ -42,22 +42,25 @@ export const OrderPreparationButton = (props: OrderPreparationButtonProps) => {
       // @ts-expect-error position fixed is not available in web
       style={{
         position: Platform.OS === 'web' ? 'fixed' : 'absolute',
-        bottom: 0,
+        bbackgroundColor: '#941B0C',
+        paddingVertical: 5,
+        paddingHorizontal: 15,
         width: '100%',
-        backgroundColor: '#941B0C',
-        padding: 20,
+        bottom: 0,
+        height: 60,
+        alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
+        opacity: isLoading ? 0.5 : 1,
       }}
       delayPressOut={100}
       onPress={onStatusChangePress}
     >
       <Text
         style={{
-          color: 'white',
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: 'bold',
-          textTransform: 'capitalize',
+          color: '#FFFFFF',
+          textAlign: 'center',
         }}
       >
         Preparación
