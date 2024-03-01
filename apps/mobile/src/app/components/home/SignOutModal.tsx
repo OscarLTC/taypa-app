@@ -2,7 +2,7 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/Firebase';
-import { useResetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { userState } from '../../storage/user/user.atom';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -13,13 +13,15 @@ interface SignOutModalProps {
 }
 
 export const SignOutModal = (props: SignOutModalProps) => {
-  const resetUser = useResetRecoilState(userState);
+  const setUserState = useSetRecoilState(userState);
 
   const onSignOutPress = () => {
-    props.navigation.navigate('sign-in');
+    props.navigation.navigate('auth', {
+      screen: 'sign-in',
+    });
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        resetUser();
+        setUserState('');
       }
     });
   };

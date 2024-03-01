@@ -1,13 +1,24 @@
 import { selector } from 'recoil';
 import { userState } from './user.atom';
+import { Session } from '../../model/session.model';
 
-export const isUserSignedInSelector = selector({
-  key: 'IsUserSignedIn',
+export const userRedirect = selector({
+  key: 'userRedirect',
   get: ({ get }) => {
     const user = get(userState);
-    return {
-      isUserSignedIn: user !== null,
-      isUserLocked: user?.isLocked ?? false,
-    };
+    let redirect = '';
+    if (user !== null && user !== '') {
+      const session = user as Session;
+      if (session.isLocked) {
+        redirect = 'roles';
+      } else {
+        redirect = 'home';
+      }
+    } else if (user === '') {
+      redirect = 'auth';
+    } else {
+      redirect = 'splash';
+    }
+    return redirect;
   },
 });

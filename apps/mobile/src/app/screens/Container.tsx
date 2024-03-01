@@ -5,8 +5,6 @@ import HomeScreen from './home/HomeScreen';
 import Workers from './workers/Workers';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { useRecoilValue } from 'recoil';
-import { isUserSignedInSelector } from '../storage/user/user.selector';
 import Tables from './tables/Tables';
 import { Roles } from './roles/Roles';
 import { StatusBar } from 'react-native';
@@ -23,24 +21,13 @@ interface ContainerProps {
 
 export const Container = (props: ContainerProps) => {
   const Stack = createStackNavigator();
-  const userSelector = useRecoilValue(isUserSignedInSelector);
 
   useEffect(() => {
     StatusBar.setHidden(true);
-
-    setTimeout(() => {
-      if (userSelector.isUserLocked) {
-        props.navigation.navigate('roles');
-      } else if (userSelector.isUserSignedIn) {
-        props.navigation.navigate('home');
-      } else {
-        props.navigation.navigate('auth');
-      }
-    }, 1500);
     return () => {
       StatusBar.setHidden(false);
     };
-  }, [userSelector]);
+  }, []);
 
   return (
     <>
