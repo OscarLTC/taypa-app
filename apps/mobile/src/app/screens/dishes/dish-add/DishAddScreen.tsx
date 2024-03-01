@@ -19,6 +19,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { firestore, storage } from '../../../config/Firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import Toast from 'react-native-toast-message';
+import { AntDesign } from '@expo/vector-icons';
 
 interface DishAddProps {
   navigation: NavigationProp<ParamListBase>;
@@ -127,23 +128,22 @@ export const DishAdd = (props: DishAddProps) => {
             style={{
               position: 'absolute',
               left: 0,
-              padding: 10,
               alignSelf: 'center',
               borderRadius: 100,
               backgroundColor: '#FFFFFF',
+              zIndex: 1,
+              flexDirection: 'row',
+              height: 40,
+              width: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             delayPressOut={100}
             onPress={() => {
               props.navigation.goBack();
             }}
           >
-            <Image
-              style={{
-                width: 20,
-                height: 20,
-              }}
-              source={require('../../../../../assets/arrow_back.png')}
-            />
+            <AntDesign name="arrowleft" size={20} color="black" />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
             Registrar Plato

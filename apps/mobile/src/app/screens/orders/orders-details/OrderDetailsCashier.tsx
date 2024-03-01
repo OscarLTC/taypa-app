@@ -8,7 +8,7 @@ import {
 import { Route, NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { AntDesign } from '@expo/vector-icons';
-import { OrderStatusBar } from '../order-status/OrderStatusBar';
+import { OrderStatusBar } from '../../../components/orders/order-status/OrderStatusBar';
 import { ItemListCashier } from '../../../components/orders/order-items-list/ItemListCashier';
 import { OrderPayButton } from '../../../components/orders/order-buttons/OrderPayButton';
 

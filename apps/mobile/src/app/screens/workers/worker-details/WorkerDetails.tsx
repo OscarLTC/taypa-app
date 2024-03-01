@@ -11,6 +11,8 @@ import { View, Text, Image, TouchableHighlight } from 'react-native';
 import { firestore, storage } from '../../../config/Firebase';
 import { Worker } from '../../../model/woker.model';
 import { deleteObject, ref } from 'firebase/storage';
+import { WorkerDetailsSkeleton } from '../../../components/workers/WorkerDetailsSkeleton';
+import { AntDesign } from '@expo/vector-icons';
 
 interface WorkerDetailsProps {
   route: Route<string>;
@@ -70,24 +72,23 @@ export const WorkerDetails = (props: WorkerDetailsProps) => {
           style={{
             position: 'absolute',
             left: 30,
-            top: 60,
-            padding: 10,
+            top: 20,
             alignSelf: 'center',
             borderRadius: 100,
             backgroundColor: '#FFFFFF',
+            zIndex: 1,
+            flexDirection: 'row',
+            height: 40,
+            width: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           delayPressOut={100}
           onPress={() => {
             props.navigation.goBack();
           }}
         >
-          <Image
-            style={{
-              width: 20,
-              height: 20,
-            }}
-            source={require('../../../../../assets/arrow_back.png')}
-          />
+          <AntDesign name="arrowleft" size={20} color="black" />
         </TouchableHighlight>
         <View style={{ position: 'absolute', right: 0 }}>
           <Image
@@ -127,93 +128,99 @@ export const WorkerDetails = (props: WorkerDetailsProps) => {
             />
           </View>
         </View>
-        <View
-          style={{
-            paddingVertical: 20,
-            paddingHorizontal: 40,
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            height: '30%',
-          }}
-        >
-          <Text
-            style={{ fontWeight: '500', fontSize: 19 }}
-          >{`${worker?.names} ${worker?.lastnames}`}</Text>
-          <View style={{}}>
-            <Text style={{ fontWeight: '500', color: '#777676', fontSize: 12 }}>
-              Roles
-            </Text>
+        {worker ? (
+          <View
+            style={{
+              paddingVertical: 20,
+              paddingHorizontal: 40,
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              height: '30%',
+            }}
+          >
+            <Text
+              style={{ fontWeight: '500', fontSize: 19 }}
+            >{`${worker?.names} ${worker?.lastnames}`}</Text>
+            <View style={{}}>
+              <Text
+                style={{ fontWeight: '500', color: '#777676', fontSize: 12 }}
+              >
+                Roles
+              </Text>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-              }}
-            >
-              {worker?.roles?.sort().map((role, index) => (
-                <View
-                  key={index}
-                  style={{
-                    backgroundColor: '#FFC4BD',
-                    paddingVertical: 10,
-                    paddingHorizontal: 15,
-                    borderRadius: 20,
-                    marginTop: 10,
-                    alignSelf: 'flex-start',
-                  }}
-                >
-                  <Text
+              <View
+                style={{
+                  flexDirection: 'row',
+                  gap: 10,
+                }}
+              >
+                {worker?.roles?.sort().map((role, index) => (
+                  <View
+                    key={index}
                     style={{
-                      color: '#890303',
-                      fontWeight: '500',
-                      fontSize: 14,
+                      backgroundColor: '#FFC4BD',
+                      paddingVertical: 10,
+                      paddingHorizontal: 15,
+                      borderRadius: 20,
+                      marginTop: 10,
+                      alignSelf: 'flex-start',
                     }}
                   >
-                    {role}
-                  </Text>
-                </View>
-              ))}
+                    <Text
+                      style={{
+                        color: '#890303',
+                        fontWeight: '500',
+                        fontSize: 14,
+                      }}
+                    >
+                      {role}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            >
+              <TouchableHighlight
+                underlayColor={'#F6AA1C'}
+                disabled={!worker?.isAvailable}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 30,
+                  alignSelf: 'center',
+                  borderRadius: 10,
+                  backgroundColor: '#5C5C5C',
+                  opacity: worker?.isAvailable ? 1 : 0.5,
+                }}
+                delayPressOut={100}
+                onPress={deleteWorker}
+              >
+                <Text style={{ color: '#fff' }}>Eliminar</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'#F6AA1C'}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 30,
+                  alignSelf: 'center',
+                  borderRadius: 10,
+                  backgroundColor: '#941B0C',
+                }}
+                delayPressOut={100}
+                onPress={() => {
+                  props.navigation.navigate('worker-edit', {
+                    workerId: workerId,
+                  });
+                }}
+              >
+                <Text style={{ color: '#fff' }}>Actualizar</Text>
+              </TouchableHighlight>
             </View>
           </View>
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
-            <TouchableHighlight
-              underlayColor={'#F6AA1C'}
-              disabled={!worker?.isAvailable}
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 30,
-                alignSelf: 'center',
-                borderRadius: 10,
-                backgroundColor: '#5C5C5C',
-                opacity: worker?.isAvailable ? 1 : 0.5,
-              }}
-              delayPressOut={100}
-              onPress={deleteWorker}
-            >
-              <Text style={{ color: '#fff' }}>Eliminar</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor={'#F6AA1C'}
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 30,
-                alignSelf: 'center',
-                borderRadius: 10,
-                backgroundColor: '#941B0C',
-              }}
-              delayPressOut={100}
-              onPress={() => {
-                props.navigation.navigate('worker-edit', {
-                  workerId: workerId,
-                });
-              }}
-            >
-              <Text style={{ color: '#fff' }}>Actualizar</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
+        ) : (
+          <WorkerDetailsSkeleton />
+        )}
       </View>
     </View>
   );

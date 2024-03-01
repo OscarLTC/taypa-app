@@ -12,11 +12,12 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { firestore } from '../../../config/Firebase';
 import { Order } from '../../../model/order.model';
-import { OrderStatusBar } from '../order-status/OrderStatusBar';
+import { OrderStatusBar } from '../../../components/orders/order-status/OrderStatusBar';
 import { ItemListWaiter } from '../../../components/orders/order-items-list/ItemListWaiter';
 import { Statuses } from '../../../model/status.enum';
 import { OrderCancelButton } from '../../../components/orders/order-buttons/OrderCancelButton';
 import { OrderServedButton } from '../../../components/orders/order-buttons/OrderServedButton';
+import { OrderDetailsSkeleton } from '../../../components/orders/order-details-skeleton/OrderDetailsSkeleton';
 
 interface OrderDetailsProps {
   route: Route<string>;
@@ -26,6 +27,7 @@ interface OrderDetailsProps {
 export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
   const { table } = props.route.params as { table: Table };
   const [order, setOrder] = useState<Order>();
+  const [loading, setLoading] = useState(true);
 
   const getOrder = async () => {
     const orderRef = collection(firestore, 'orders');
@@ -41,6 +43,7 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
       ...doc.data(),
     }));
     setOrder(order[0] as Order);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -135,7 +138,9 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
             />
           </View>
         </View>
-        {order ? (
+        {loading ? (
+          <OrderDetailsSkeleton />
+        ) : order ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{

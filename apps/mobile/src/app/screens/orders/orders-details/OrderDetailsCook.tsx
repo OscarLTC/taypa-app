@@ -9,7 +9,7 @@ import {
 import { NavigationProp, ParamListBase, Route } from '@react-navigation/native';
 import { Order } from '../../../model/order.model';
 import { OrderPreparationButton } from '../../../components/orders/order-buttons/OrderPreparationButton';
-import { OrderStatusBar } from '../order-status/OrderStatusBar';
+import { OrderStatusBar } from '../../../components/orders/order-status/OrderStatusBar';
 import { Statuses } from '../../../model/status.enum';
 import { OrderReadyButton } from '../../../components/orders/order-buttons/OrderReadyButton';
 import { ItemListCook } from '../../../components/orders/order-items-list/ItemListCook';

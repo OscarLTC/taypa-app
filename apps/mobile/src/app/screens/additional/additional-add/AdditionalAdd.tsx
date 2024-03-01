@@ -18,6 +18,7 @@ import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { AntDesign } from '@expo/vector-icons';
 
 interface AdditionalAddProps {
   navigation: NavigationProp<ParamListBase>;
@@ -129,23 +130,22 @@ export const AdditionalAdd = (props: AdditionalAddProps) => {
             style={{
               position: 'absolute',
               left: 0,
-              padding: 10,
               alignSelf: 'center',
               borderRadius: 100,
               backgroundColor: '#FFFFFF',
+              zIndex: 1,
+              flexDirection: 'row',
+              height: 40,
+              width: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             delayPressOut={100}
             onPress={() => {
               props.navigation.goBack();
             }}
           >
-            <Image
-              style={{
-                width: 20,
-                height: 20,
-              }}
-              source={require('../../../../../assets/arrow_back.png')}
-            />
+            <AntDesign name="arrowleft" size={20} color="black" />
           </TouchableHighlight>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
             Registrar Adicional
