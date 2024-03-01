@@ -15,6 +15,7 @@ import { Drinks } from './drinks/Drinks';
 import { Additional } from './additional/Additional';
 import { Notifications } from '../components/notifications/Notifications';
 import { Sales } from './sales/Sales';
+import { SplashScreen } from './splash/SplashScreen';
 
 interface ContainerProps {
   navigation: NavigationProp<ParamListBase>;
@@ -27,11 +28,15 @@ export const Container = (props: ContainerProps) => {
   useEffect(() => {
     StatusBar.setHidden(true);
 
-    if (userSelector.isUserLocked) {
-      props.navigation.navigate('roles');
-    } else if (userSelector.isUserSignedIn) {
-      props.navigation.navigate('home');
-    }
+    setTimeout(() => {
+      if (userSelector.isUserLocked) {
+        props.navigation.navigate('roles');
+      } else if (userSelector.isUserSignedIn) {
+        props.navigation.navigate('home');
+      } else {
+        props.navigation.navigate('auth');
+      }
+    }, 1500);
     return () => {
       StatusBar.setHidden(false);
     };
@@ -39,7 +44,12 @@ export const Container = (props: ContainerProps) => {
 
   return (
     <>
-      <Stack.Navigator initialRouteName="auth">
+      <Stack.Navigator initialRouteName="splash">
+        <Stack.Screen
+          name="splash"
+          options={{ headerShown: false, animationEnabled: false }}
+          component={SplashScreen}
+        />
         <Stack.Screen
           name="auth"
           options={{ headerShown: false, animationEnabled: false }}

@@ -49,13 +49,10 @@ export const Notifications = () => {
   };
 
   const playSound = async () => {
-    console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('../../../../assets/ding.mp3')
     );
-
-    console.log('Playing Sound');
     await sound.playAsync();
   };
 
