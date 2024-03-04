@@ -2,9 +2,10 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/Firebase';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { userState } from '../../storage/user/user.atom';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Session } from '../../model/session.model';
 
 interface SignOutModalProps {
   modalVisible: boolean;
@@ -13,7 +14,7 @@ interface SignOutModalProps {
 }
 
 export const SignOutModal = (props: SignOutModalProps) => {
-  const setUserState = useSetRecoilState(userState);
+  const [userSessionState, setUserSessionState] = useRecoilState(userState);
 
   const onSignOutPress = () => {
     props.navigation.navigate('auth', {
@@ -21,7 +22,10 @@ export const SignOutModal = (props: SignOutModalProps) => {
     });
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserState('');
+        setUserSessionState({
+          ...userSessionState,
+          isSignedIn: false,
+        } as Session);
       }
     });
   };

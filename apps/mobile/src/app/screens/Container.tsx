@@ -48,6 +48,11 @@ export const Container = (props: ContainerProps) => {
           component={HomeScreen}
         />
         <Stack.Screen
+          name="roles"
+          options={{ headerShown: false, animationEnabled: false }}
+          component={Roles}
+        />
+        <Stack.Screen
           name="workers"
           options={{ headerShown: false }}
           component={Workers}
@@ -77,11 +82,7 @@ export const Container = (props: ContainerProps) => {
           options={{ headerShown: false }}
           component={Orders}
         />
-        <Stack.Screen
-          name="roles"
-          options={{ headerShown: false, animationEnabled: false }}
-          component={Roles}
-        />
+
         <Stack.Screen
           name="sales"
           options={{ headerShown: false, animationEnabled: false }}

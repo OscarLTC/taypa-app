@@ -1,22 +1,37 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { Image, View } from 'react-native';
-import { userRedirect } from '../../storage/user/user.selector';
 import { useRecoilValue } from 'recoil';
+import { userState } from '../../storage/user/user.atom';
 
 interface SplashScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
 export const SplashScreen = (props: SplashScreenProps) => {
-  const redirectValue = useRecoilValue(userRedirect);
+  const redirectValue = useRecoilValue(userState);
 
   useEffect(() => {
-    const redirect = redirectValue;
-    setTimeout(() => {
-      props.navigation.navigate(redirect);
-    }, 1500);
-  }, [redirectValue]);
+    const user = redirectValue;
+
+    console.log(user);
+
+    if (user !== undefined) {
+      let redirect = 'splash';
+
+      if (user?.isLocked) {
+        redirect = 'roles';
+      } else if (user?.isSignedIn) {
+        redirect = 'home';
+      } else {
+        redirect = 'auth';
+      }
+
+      setTimeout(() => {
+        props.navigation.navigate(redirect);
+      }, 1500);
+    }
+  }, [redirectValue, props.navigation]);
 
   return (
     <View

@@ -9,6 +9,8 @@ const localStorageEffect =
     AsyncStorage.getItem(key).then((savedValue) => {
       if (savedValue != null) {
         setSelf(JSON.parse(savedValue));
+      } else {
+        setSelf(null);
       }
     });
 

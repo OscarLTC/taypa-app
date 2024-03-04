@@ -41,6 +41,7 @@ export const SignIn = (props: SignInProps) => {
           userId: userCredential.user.uid,
           accessToken: token,
           isLocked: false,
+          isSignedIn: true,
         });
         props.navigation.navigate('home');
         setValue('email', '');
