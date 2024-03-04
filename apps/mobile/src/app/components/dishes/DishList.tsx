@@ -3,15 +3,23 @@ import {
   ParamListBase,
   useIsFocused,
 } from '@react-navigation/native';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from 'firebase/firestore';
+import { useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { firestore } from '../../config/Firebase';
 import { Item } from '../../model/item.model';
 import { userState } from '../../storage/user/user.atom';
 import { DishCard } from './DishCard';
 import { ItemsListSkeleton } from '../orders/order-items/ItemsListSkeleton';
+import { dishesState } from '../../storage/dishes/dishes.atom';
+import { DishFilter } from './DishFilter';
 
 interface DishListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -20,11 +28,15 @@ interface DishListProps {
 export const DishList = (props: DishListProps) => {
   const userData = useRecoilValue(userState);
   const isDishListFocused = useIsFocused();
-  const [dishes, setDishes] = useState<Item[]>();
+  const [dishes, setDishes] = useRecoilState(dishesState);
 
   const adminId = userData?.userId;
   const dishesCollection = collection(firestore, 'dishes');
-  const q = query(dishesCollection, where('adminId', '==', adminId));
+  const q = query(
+    dishesCollection,
+    where('adminId', '==', adminId),
+    orderBy('name')
+  );
 
   useEffect(() => {
     if (isDishListFocused) {
@@ -37,28 +49,35 @@ export const DishList = (props: DishListProps) => {
       });
       return () => unsubscribe();
     }
-  }, [isDishListFocused]);
+  }, [isDishListFocused, q, setDishes]);
 
   return dishes ? (
     dishes.length > 0 ? (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ marginBottom: 10, marginTop: 30 }}
-        scrollEventThrottle={16}
-      >
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-          }}
+      <>
+        <DishFilter />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ marginBottom: 10, marginTop: 30 }}
+          scrollEventThrottle={16}
         >
-          {dishes.map((dish) => (
-            <DishCard key={dish.id} dish={dish} navigation={props.navigation} />
-          ))}
-        </View>
-      </ScrollView>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+            }}
+          >
+            {dishes.map((dish) => (
+              <DishCard
+                key={dish.id}
+                dish={dish}
+                navigation={props.navigation}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      </>
     ) : (
       <View
         style={{
