@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { Item } from '../../model/item.model';
 
-export const dishesState = atom<Item[]>({
-  key: 'dishesState',
+export const drinksState = atom<Item[]>({
+  key: 'drinksState',
   default: undefined,
 });

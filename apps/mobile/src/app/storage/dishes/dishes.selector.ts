@@ -8,12 +8,12 @@ export const dishesSelector = selector({
     const filter = get(dishesFilterState);
     const list = get(dishesState);
 
-    if (filter === '') {
+    if (!filter.trim()) {
       return list;
-    } else {
-      return list.filter((item) =>
-        item.name.toLowerCase().includes(filter.toLowerCase())
-      );
     }
+
+    return list.filter((dish) =>
+      dish.name.toLowerCase().includes(filter.toLowerCase())
+    );
   },
 });

@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Text, TouchableHighlight, Image } from 'react-native';
 import { DishList } from '../../../components/dishes/DishList';
 import { AntDesign } from '@expo/vector-icons';
+import { DishFilter } from '../../../components/dishes/DishFilter';
 
 interface DishListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -78,6 +79,7 @@ export const DishListScreen = (props: DishListProps) => {
           ></Image>
         </View>
       </View>
+      <DishFilter />
       <DishList navigation={props.navigation} />
     </View>
   );

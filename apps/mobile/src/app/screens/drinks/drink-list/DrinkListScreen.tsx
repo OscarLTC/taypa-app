@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { View, TouchableHighlight, Text, Image } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { DrinkList } from '../../../components/drinks/DrinkList';
+import { DrinkFilter } from '../../../components/drinks/DrinkFilter';
 
 interface DrinkListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -76,6 +77,7 @@ export const DrinkListScreen = (props: DrinkListProps) => {
           ></Image>
         </View>
       </View>
+      <DrinkFilter />
       <DrinkList navigation={props.navigation} />
     </View>
   );

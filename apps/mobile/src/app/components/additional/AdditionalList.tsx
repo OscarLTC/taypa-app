@@ -3,15 +3,24 @@ import {
   ParamListBase,
   useIsFocused,
 } from '@react-navigation/native';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from 'firebase/firestore';
+import { useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { firestore } from '../../config/Firebase';
 import { Item } from '../../model/item.model';
 import { userState } from '../../storage/user/user.atom';
 import { ItemsListSkeleton } from '../orders/order-items/ItemsListSkeleton';
 import { AdditionalCard } from './AdditionalCard';
+import { additionalSelector } from '../../storage/additional/additional.selector';
+import { additionalState } from '../../storage/additional/additional.atom';
+import { additionalFilterState } from '../../storage/additional/additionalFilter.atom';
 
 interface AdditionalListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -20,11 +29,17 @@ interface AdditionalListProps {
 export const AdditionalList = (props: AdditionalListProps) => {
   const userData = useRecoilValue(userState);
   const isAdditionalListFocused = useIsFocused();
-  const [additional, setAdditional] = useState<Item[]>();
+  const additional = useRecoilValue(additionalSelector);
+  const setAdditional = useSetRecoilState(additionalState);
+  const resetFilter = useResetRecoilState(additionalFilterState);
 
   const adminId = userData?.userId;
   const additionalCollection = collection(firestore, 'additional');
-  const q = query(additionalCollection, where('adminId', '==', adminId));
+  const q = query(
+    additionalCollection,
+    where('adminId', '==', adminId),
+    orderBy('name')
+  );
 
   useEffect(() => {
     if (isAdditionalListFocused) {
@@ -35,7 +50,10 @@ export const AdditionalList = (props: AdditionalListProps) => {
         }));
         setAdditional(additional as Item[]);
       });
-      return () => unsubscribe();
+      return () => {
+        unsubscribe();
+        resetFilter();
+      };
     }
   }, [isAdditionalListFocused]);
 

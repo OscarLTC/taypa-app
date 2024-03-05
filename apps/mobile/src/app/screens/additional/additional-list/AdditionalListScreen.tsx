@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { View, TouchableHighlight, Image, Text } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { AdditionalList } from '../../../components/additional/AdditionalList';
+import { AdditionalFilter } from '../../../components/additional/AdditionalFilter';
 
 interface AdditionalListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -76,6 +77,7 @@ export const AdditionalListScreen = (props: AdditionalListProps) => {
           ></Image>
         </View>
       </View>
+      <AdditionalFilter />
       <AdditionalList navigation={props.navigation} />
     </View>
   );

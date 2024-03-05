@@ -3,15 +3,24 @@ import {
   ParamListBase,
   useIsFocused,
 } from '@react-navigation/native';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from 'firebase/firestore';
+import { useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { firestore } from '../../config/Firebase';
 import { Item } from '../../model/item.model';
 import { userState } from '../../storage/user/user.atom';
 import { ItemsListSkeleton } from '../orders/order-items/ItemsListSkeleton';
 import { DrinkCard } from './DrinkCard';
+import { drinksState } from '../../storage/drinks/drinks.atom';
+import { drinksSelector } from '../../storage/drinks/drinks.selector';
+import { drinksFilterState } from '../../storage/drinks/drinksFilter.atom';
 
 interface DrinkListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -20,11 +29,17 @@ interface DrinkListProps {
 export const DrinkList = (props: DrinkListProps) => {
   const userData = useRecoilValue(userState);
   const isDrinkListFocused = useIsFocused();
-  const [drinks, setDrinks] = useState<Item[]>();
+  const drinks = useRecoilValue(drinksSelector);
+  const setDrinks = useSetRecoilState(drinksState);
+  const resetFilter = useResetRecoilState(drinksFilterState);
 
   const adminId = userData?.userId;
   const drinksCollection = collection(firestore, 'drinks');
-  const q = query(drinksCollection, where('adminId', '==', adminId));
+  const q = query(
+    drinksCollection,
+    where('adminId', '==', adminId),
+    orderBy('name')
+  );
 
   useEffect(() => {
     if (isDrinkListFocused) {
@@ -35,7 +50,10 @@ export const DrinkList = (props: DrinkListProps) => {
         }));
         setDrinks(drinks as Item[]);
       });
-      return () => unsubscribe();
+      return () => {
+        unsubscribe();
+        resetFilter();
+      };
     }
   }, [isDrinkListFocused]);
 
