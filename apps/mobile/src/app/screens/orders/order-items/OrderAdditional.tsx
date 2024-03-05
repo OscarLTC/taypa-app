@@ -2,6 +2,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 import { OrderAdditionalList } from '../../../components/orders/order-items-list/OrderAdditionalList';
+import { AdditionalFilter } from '../../../components/additional/AdditionalFilter';
 
 interface OrderAdditionalProps {
   navigation: NavigationProp<ParamListBase>;
@@ -63,6 +64,7 @@ export const OrderAdditional = (props: OrderAdditionalProps) => {
           />
         </View>
       </View>
+      <AdditionalFilter />
       <OrderAdditionalList navigation={props.navigation} />
     </View>
   );

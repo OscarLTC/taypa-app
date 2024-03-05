@@ -1,13 +1,16 @@
 import { ScrollView, Text, View } from 'react-native';
 import { ItemsListSkeleton } from '../order-items/ItemsListSkeleton';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { ItemAddCard } from '../order-items/ItemAddCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { dishesSelector } from '../../../storage/dishes/dishes.selector';
+import { dishesState } from '../../../storage/dishes/dishes.atom';
+import { dishesFilterState } from '../../../storage/dishes/dishesFilter.atom';
 
 interface OrderDishListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -15,12 +18,18 @@ interface OrderDishListProps {
 
 export const OrderDishList = (props: OrderDishListProps) => {
   const userData = useRecoilValue(userState);
-  const [dishes, setDishes] = useState<Item[]>();
+  const dishes = useRecoilValue(dishesSelector);
+  const setDishes = useSetRecoilState(dishesState);
+  const resetFilter = useResetRecoilState(dishesFilterState);
 
   const getDishes = async () => {
     const adminId = userData?.userId;
     const dishesCollection = collection(firestore, 'dishes');
-    const q = query(dishesCollection, where('adminId', '==', adminId));
+    const q = query(
+      dishesCollection,
+      where('adminId', '==', adminId),
+      orderBy('name')
+    );
     const dishesSnapshot = await getDocs(q);
     const dishes = dishesSnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -31,7 +40,9 @@ export const OrderDishList = (props: OrderDishListProps) => {
 
   useEffect(() => {
     getDishes();
-  });
+
+    return () => resetFilter();
+  }, []);
 
   return dishes ? (
     dishes.length > 0 ? (

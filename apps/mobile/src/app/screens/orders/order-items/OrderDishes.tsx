@@ -2,6 +2,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { OrderDishList } from '../../../components/orders/order-items-list/OrderDishList';
 import { AntDesign } from '@expo/vector-icons';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
+import { DishFilter } from '../../../components/dishes/DishFilter';
 
 interface OrderDishesProps {
   navigation: NavigationProp<ParamListBase>;
@@ -63,6 +64,7 @@ export const OrderDishes = (props: OrderDishesProps) => {
           />
         </View>
       </View>
+      <DishFilter />
       <OrderDishList navigation={props.navigation} />
     </View>
   );

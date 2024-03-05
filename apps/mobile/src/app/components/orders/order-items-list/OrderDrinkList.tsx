@@ -1,13 +1,16 @@
 import { ScrollView, Text, View } from 'react-native';
 import { ItemsListSkeleton } from '../order-items/ItemsListSkeleton';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useEffect } from 'react';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { ItemAddCard } from '../order-items/ItemAddCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { drinksSelector } from '../../../storage/drinks/drinks.selector';
+import { drinksState } from '../../../storage/drinks/drinks.atom';
+import { drinksFilterState } from '../../../storage/drinks/drinksFilter.atom';
 
 interface OrderDrinkListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -15,7 +18,9 @@ interface OrderDrinkListProps {
 
 export const OrderDrinkList = (props: OrderDrinkListProps) => {
   const userData = useRecoilValue(userState);
-  const [drinks, setDrinks] = useState<Item[]>();
+  const drinks = useRecoilValue(drinksSelector);
+  const setDrinks = useSetRecoilState(drinksState);
+  const resetFilter = useResetRecoilState(drinksFilterState);
 
   const getDrinks = async () => {
     const adminId = userData?.userId;
@@ -31,7 +36,9 @@ export const OrderDrinkList = (props: OrderDrinkListProps) => {
 
   useEffect(() => {
     getDrinks();
-  });
+
+    return () => resetFilter();
+  }, []);
 
   return drinks ? (
     drinks.length > 0 ? (

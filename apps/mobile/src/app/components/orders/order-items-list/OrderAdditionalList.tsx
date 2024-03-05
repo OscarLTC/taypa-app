@@ -1,13 +1,16 @@
 import { ScrollView, Text, View } from 'react-native';
 import { ItemsListSkeleton } from '../order-items/ItemsListSkeleton';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { firestore } from '../../../config/Firebase';
 import { Item } from '../../../model/item.model';
 import { userState } from '../../../storage/user/user.atom';
 import { ItemAddCard } from '../order-items/ItemAddCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { additionalState } from '../../../storage/additional/additional.atom';
+import { additionalSelector } from '../../../storage/additional/additional.selector';
+import { additionalFilterState } from '../../../storage/additional/additionalFilter.atom';
 
 interface OrderAdditionalListProps {
   navigation: NavigationProp<ParamListBase>;
@@ -15,12 +18,18 @@ interface OrderAdditionalListProps {
 
 export const OrderAdditionalList = (props: OrderAdditionalListProps) => {
   const userData = useRecoilValue(userState);
-  const [additional, setAdditional] = useState<Item[]>();
+  const additional = useRecoilValue(additionalSelector);
+  const setAdditional = useSetRecoilState(additionalState);
+  const resetFilter = useResetRecoilState(additionalFilterState);
 
   const getAdditional = async () => {
     const adminId = userData?.userId;
     const AdditionalCollection = collection(firestore, 'additional');
-    const q = query(AdditionalCollection, where('adminId', '==', adminId));
+    const q = query(
+      AdditionalCollection,
+      where('adminId', '==', adminId),
+      orderBy('name')
+    );
     const additionalSnapshot = await getDocs(q);
     const additional = additionalSnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -31,7 +40,9 @@ export const OrderAdditionalList = (props: OrderAdditionalListProps) => {
 
   useEffect(() => {
     getAdditional();
-  });
+
+    return () => resetFilter();
+  }, []);
 
   return additional ? (
     additional.length > 0 ? (
