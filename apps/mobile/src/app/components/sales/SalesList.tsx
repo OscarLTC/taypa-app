@@ -4,12 +4,20 @@ import { firestore } from '../../config/Firebase';
 import { useEffect, useState } from 'react';
 import { Order } from '../../model/order.model';
 import { SaleCard } from './SaleCard';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { SaleListSkeleton } from './SaleListSkeleton';
 
-export const SalesList = () => {
+interface SalesListProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+export const SalesList = (props: SalesListProps) => {
   const [todaySales, setTodaySales] = useState<Order[]>();
   const [otherSales, setOtherSales] = useState<Order[]>();
+  const [isLoading, setIsLoading] = useState(true);
 
   const getSales = async () => {
+    setIsLoading(true);
     const orderCollection = collection(firestore, 'orders');
     const q = query(
       orderCollection,
@@ -34,6 +42,7 @@ export const SalesList = () => {
           (sale) => sale.createdAt.toDate().getDate() !== new Date().getDate()
         )
       );
+      setIsLoading(false);
     });
   };
 
@@ -41,7 +50,9 @@ export const SalesList = () => {
     getSales();
   }, []);
 
-  return (
+  return isLoading ? (
+    <SaleListSkeleton />
+  ) : (todaySales?.length ?? 0) + (otherSales?.length ?? 0) > 0 ? (
     <ScrollView
       showsVerticalScrollIndicator
       style={{
@@ -55,7 +66,7 @@ export const SalesList = () => {
           margin: 10,
         }}
       >
-        {todaySales && (
+        {todaySales && todaySales.length > 0 && (
           <>
             <Text
               style={{
@@ -67,8 +78,12 @@ export const SalesList = () => {
             >
               Hoy
             </Text>
-            {todaySales?.map((sale) => (
-              <SaleCard key={sale.id} sale={sale} />
+            {todaySales.map((sale) => (
+              <SaleCard
+                navigation={props.navigation}
+                key={sale.id}
+                sale={sale}
+              />
             ))}
           </>
         )}
@@ -86,11 +101,33 @@ export const SalesList = () => {
               Días anteriores
             </Text>
             {otherSales?.map((sale) => (
-              <SaleCard key={sale.id} sale={sale} />
+              <SaleCard
+                navigation={props.navigation}
+                key={sale.id}
+                sale={sale}
+              />
             ))}
           </>
         )}
       </View>
     </ScrollView>
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          textAlign: 'center',
+        }}
+      >
+        No hay ventas registradas el día de hoy ni en días anteriores
+      </Text>
+    </View>
   );
 };

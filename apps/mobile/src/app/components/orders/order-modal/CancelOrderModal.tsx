@@ -13,10 +13,10 @@ interface CancelOrderModalProps {
 }
 
 export const CancelOrderModal = (props: CancelOrderModalProps) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onCancelOrderPress = async () => {
-    setLoading(true);
+    setIsLoading(true);
     const orderRef = doc(firestore, 'orders', props.orderId);
     await updateDoc(orderRef, {
       status: 'cancelado',
@@ -27,7 +27,7 @@ export const CancelOrderModal = (props: CancelOrderModalProps) => {
       });
       props.setModalVisible(!props.modalVisible);
       props.navigation.goBack();
-      setLoading(false);
+      setIsLoading(false);
     });
   };
 
@@ -122,7 +122,7 @@ export const CancelOrderModal = (props: CancelOrderModalProps) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              disabled={loading}
+              disabled={isLoading}
               activeOpacity={0.6}
               style={[
                 {

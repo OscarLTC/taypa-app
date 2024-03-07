@@ -32,6 +32,14 @@ export const App = () => {
       LL: 'D [de] MMMM [de] YYYY',
       LLL: 'D [de] MMMM [de] YYYY HH:mm',
       LLLL: 'dddd, D [de] MMMM [de] YYYY HH:mm',
+      lt: 'HH:mm',
+    },
+    meridiem: (hour, minute, isLowercase) => {
+      if (hour < 12) {
+        return 'AM';
+      } else {
+        return 'PM';
+      }
     },
   });
   if (typeof global.atob === 'undefined') {

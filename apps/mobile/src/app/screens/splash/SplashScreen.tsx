@@ -14,8 +14,6 @@ export const SplashScreen = (props: SplashScreenProps) => {
   useEffect(() => {
     const user = redirectValue;
 
-    console.log(user);
-
     if (user !== undefined) {
       let redirect = 'splash';
 

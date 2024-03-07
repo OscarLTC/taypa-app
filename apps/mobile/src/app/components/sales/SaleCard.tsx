@@ -1,14 +1,16 @@
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Order } from '../../model/order.model';
 import moment from 'moment';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface SaleCardProps {
+  navigation: NavigationProp<ParamListBase>;
   sale: Order;
 }
 
 export const SaleCard = (props: SaleCardProps) => {
   return (
-    <View
+    <TouchableOpacity
       style={{
         width: '100%',
         backgroundColor: '#FFFFFF',
@@ -24,6 +26,9 @@ export const SaleCard = (props: SaleCardProps) => {
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
+      }}
+      onPress={() => {
+        props.navigation.navigate('sale-details', props.sale);
       }}
     >
       <View
@@ -72,13 +77,13 @@ export const SaleCard = (props: SaleCardProps) => {
             fontSize: 12,
             backgroundColor: '#D9D9D9',
             padding: 1,
-            borderRadius: 5,
+            borderRadius: 30,
             color: '#655F5F',
           }}
         >
           {props.sale.paymentMethod}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

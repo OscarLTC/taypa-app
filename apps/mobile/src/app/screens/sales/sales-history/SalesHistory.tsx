@@ -56,7 +56,7 @@ export const SalesHistory = (props: SalesHistoryProps) => {
           />
         </View>
       </View>
-      <SalesList />
+      <SalesList navigation={props.navigation} />
     </View>
   );
 };

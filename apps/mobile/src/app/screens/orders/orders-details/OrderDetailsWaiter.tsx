@@ -27,7 +27,7 @@ interface OrderDetailsProps {
 export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
   const { table } = props.route.params as { table: Table };
   const [order, setOrder] = useState<Order>();
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getOrder = async () => {
     const orderRef = collection(firestore, 'orders');
@@ -43,7 +43,7 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
       ...doc.data(),
     }));
     setOrder(order[0] as Order);
-    setLoading(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -138,7 +138,7 @@ export const OrderDetailsWaiter = (props: OrderDetailsProps) => {
             />
           </View>
         </View>
-        {loading ? (
+        {isLoading ? (
           <OrderDetailsSkeleton />
         ) : order ? (
           <ScrollView
