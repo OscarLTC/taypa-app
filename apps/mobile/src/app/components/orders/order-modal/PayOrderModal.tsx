@@ -17,6 +17,29 @@ interface PayOrderModalProps {
   tableId: string;
 }
 
+export const paymentMethods = [
+  {
+    method: 'Yape',
+    color: '#5e0a71',
+  },
+  {
+    method: 'Plin',
+    color: '#14d9c9',
+  },
+  {
+    method: 'Efectivo',
+    color: '#00986d',
+  },
+  {
+    method: 'Tarjeta',
+    color: '#ef8c1a',
+  },
+  {
+    method: 'Otro',
+    color: '#553208',
+  },
+];
+
 export const PayOrderModal = (props: PayOrderModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const resetDishes = useResetRecoilState(orderDishesState);
@@ -27,29 +50,6 @@ export const PayOrderModal = (props: PayOrderModalProps) => {
     method: string;
     color: string;
   }>();
-
-  const paymentMethods = [
-    {
-      method: 'Yape',
-      color: '#5e0a71',
-    },
-    {
-      method: 'Plin',
-      color: '#14d9c9',
-    },
-    {
-      method: 'Efectivo',
-      color: '#00986d',
-    },
-    {
-      method: 'Tarjeta',
-      color: '#ef8c1a',
-    },
-    {
-      method: 'Otro',
-      color: '#553208',
-    },
-  ];
 
   const onPayOrderPress = async () => {
     setIsLoading(true);

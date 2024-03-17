@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { Order } from '../../model/order.model';
 import moment from 'moment';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { Statuses } from '../../model/status.enum';
 
 interface SaleCardProps {
   navigation: NavigationProp<ParamListBase>;
@@ -51,7 +52,11 @@ export const SaleCard = (props: SaleCardProps) => {
             fontSize: 14,
             color: '#890303',
           }}
-        >{`S/ ${props.sale.total.toFixed(2)}`}</Text>
+        >
+          {props.sale.status !== Statuses.Cancelado
+            ? `S/ ${props.sale.total.toFixed(2)}`
+            : '----'}
+        </Text>
       </View>
       <View
         style={{
@@ -69,19 +74,22 @@ export const SaleCard = (props: SaleCardProps) => {
         >
           {props.sale.worker?.completeName}
         </Text>
+
         <Text
           style={{
             textAlign: 'center',
-            width: 70,
+            width: 80,
             fontWeight: 'bold',
             fontSize: 12,
-            backgroundColor: '#D9D9D9',
-            padding: 1,
+            backgroundColor:
+              props.sale.status === Statuses.Cancelado ? '#890303' : '#D9D9D9',
+            padding: 2,
             borderRadius: 30,
-            color: '#655F5F',
+            color:
+              props.sale.status === Statuses.Cancelado ? 'white' : '#655F5F',
           }}
         >
-          {props.sale.paymentMethod}
+          {props.sale.paymentMethod ?? 'Cancelado'}
         </Text>
       </View>
     </TouchableOpacity>

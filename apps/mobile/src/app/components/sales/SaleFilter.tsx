@@ -43,6 +43,7 @@ export const SaleFilter = () => {
           testID="dateTimePicker"
           value={salesFilter}
           mode={'date'}
+          locale="es-ES"
           is24Hour={true}
           onChange={onChange}
           maximumDate={new Date()}

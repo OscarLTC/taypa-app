@@ -80,7 +80,7 @@ export const SalesHistory = (props: SalesHistoryProps) => {
             marginTop: 10,
           }}
         >
-          {`Total: S/ ${totalSelector}`}
+          {`Total del día: S/ ${totalSelector.toFixed(2)}`}
         </Text>
       </View>
       <SalesList navigation={props.navigation} />
