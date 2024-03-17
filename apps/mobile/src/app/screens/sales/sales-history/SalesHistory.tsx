@@ -2,12 +2,17 @@ import { Image, Text, TouchableHighlight, View } from 'react-native';
 import { SalesList } from '../../../components/sales/SalesList';
 import { AntDesign } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { SaleFilter } from '../../../components/sales/SaleFilter';
+import { useRecoilValue } from 'recoil';
+import { salesSelector } from '../../../storage/sales/sales.selector';
 
 interface SalesHistoryProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
 export const SalesHistory = (props: SalesHistoryProps) => {
+  const totalSelector = useRecoilValue(salesSelector);
+
   return (
     <View
       style={{
@@ -55,6 +60,28 @@ export const SalesHistory = (props: SalesHistoryProps) => {
             style={{ width: 175, height: 190 }}
           />
         </View>
+      </View>
+      <View
+        style={{
+          paddingHorizontal: 10,
+        }}
+      >
+        <SaleFilter />
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 12,
+            color: '#6a040f',
+            padding: 5,
+            backgroundColor: 'white',
+            borderRadius: 5,
+            display: 'flex',
+            alignSelf: 'flex-start',
+            marginTop: 10,
+          }}
+        >
+          {`Total: S/ ${totalSelector}`}
+        </Text>
       </View>
       <SalesList navigation={props.navigation} />
     </View>

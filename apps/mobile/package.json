@@ -26,7 +26,8 @@
     "moment": "*",
     "react-native-sound": "*",
     "expo-av": "*",
-    "react-native-toast-message": "*"
+    "react-native-toast-message": "*",
+    "@react-native-community/datetimepicker": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobile && cp package-lock.json apps/mobile",

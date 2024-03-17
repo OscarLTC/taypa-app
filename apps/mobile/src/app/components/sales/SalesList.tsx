@@ -6,15 +6,35 @@ import { Order } from '../../model/order.model';
 import { SaleCard } from './SaleCard';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { SaleListSkeleton } from './SaleListSkeleton';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { salesState } from '../../storage/sales/sales.atom';
+import { salesFilterState } from '../../storage/sales/salesFilter.atom';
 
 interface SalesListProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
 export const SalesList = (props: SalesListProps) => {
-  const [todaySales, setTodaySales] = useState<Order[]>();
-  const [otherSales, setOtherSales] = useState<Order[]>();
   const [isLoading, setIsLoading] = useState(true);
+  const [sales, setSales] = useRecoilState(salesState);
+  const filter = useRecoilValue(salesFilterState);
+  const startOfDay = new Date(
+    filter.getFullYear(),
+    filter.getMonth(),
+    filter.getDate(),
+    0,
+    0,
+    0
+  );
+
+  const endOfDay = new Date(
+    filter.getFullYear(),
+    filter.getMonth(),
+    filter.getDate(),
+    23,
+    59,
+    59
+  );
 
   const getSales = async () => {
     setIsLoading(true);
@@ -22,6 +42,8 @@ export const SalesList = (props: SalesListProps) => {
     const q = query(
       orderCollection,
       where('status', 'in', ['completado', 'cancelado']),
+      where('createdAt', '>=', startOfDay),
+      where('createdAt', '<=', endOfDay),
       orderBy('createdAt', 'desc')
     );
     await getDocs(q).then((querySnapshot) => {
@@ -32,27 +54,18 @@ export const SalesList = (props: SalesListProps) => {
             ...doc.data(),
           } as Order)
       );
-      setTodaySales(
-        sales.filter(
-          (sale) => sale.createdAt.toDate().getDate() === new Date().getDate()
-        )
-      );
-      setOtherSales(
-        sales.filter(
-          (sale) => sale.createdAt.toDate().getDate() !== new Date().getDate()
-        )
-      );
+      setSales(sales);
       setIsLoading(false);
     });
   };
 
   useEffect(() => {
     getSales();
-  }, []);
+  }, [filter]);
 
   return isLoading ? (
     <SaleListSkeleton />
-  ) : (todaySales?.length ?? 0) + (otherSales?.length ?? 0) > 0 ? (
+  ) : sales?.length ?? 0 ? (
     <ScrollView
       showsVerticalScrollIndicator
       style={{
@@ -66,41 +79,9 @@ export const SalesList = (props: SalesListProps) => {
           margin: 10,
         }}
       >
-        {todaySales && todaySales.length > 0 && (
+        {sales && sales.length > 0 && (
           <>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-                color: '#6a040f',
-                paddingLeft: 10,
-              }}
-            >
-              Hoy
-            </Text>
-            {todaySales.map((sale) => (
-              <SaleCard
-                navigation={props.navigation}
-                key={sale.id}
-                sale={sale}
-              />
-            ))}
-          </>
-        )}
-
-        {otherSales && (
-          <>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-                color: '#6a040f',
-                paddingLeft: 10,
-              }}
-            >
-              Días anteriores
-            </Text>
-            {otherSales?.map((sale) => (
+            {sales.map((sale) => (
               <SaleCard
                 navigation={props.navigation}
                 key={sale.id}
@@ -126,7 +107,7 @@ export const SalesList = (props: SalesListProps) => {
           textAlign: 'center',
         }}
       >
-        No hay ventas registradas el día de hoy ni en días anteriores
+        {'No hay ventas registradas en esta fecha.'}
       </Text>
     </View>
   );
